@@ -1,0 +1,39 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures":{
+      "all": "oceanica:diving/blocks/diving.aquatorch"
+    },
+    "model": "oceanica:diving.aquatorch"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "facing": {
+      "up": {"model": "oceanica:diving.aquatorch"},
+      "east": {"model": "oceanica:diving.aquatorch_wall"},
+      "south": {"model": "oceanica:diving.aquatorch_wall", "y": 90},
+      "west": {"model": "oceanica:diving.aquatorch_wall", "y": 180},
+      "north": {"model": "oceanica:diving.aquatorch_wall", "y": 270}
+    },
+    "level": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {},
+      "8": {},
+      "9": {},
+      "10": {},
+      "11": {},
+      "12": {},
+      "13": {},
+      "14": {},
+      "15": {}
+    }
+
+  }
+}

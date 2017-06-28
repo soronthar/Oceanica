@@ -1,0 +1,88 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+  maven { url "http://dvs1.progwml6.com/files/maven" }
+  maven { url "http://tehnut.info/maven" }
+  ivy {
+       name "LatMod"
+       artifactPattern "http://mods.latmod.com/[module]/[revision]/[module]-[revision](-[classifier]).[ext]"
+  }
+
+}
+
+ext.buildnumber=""
+if (System.getenv().BUILD_NUMBER) {
+    ext.buildnumber="-" + System.getenv().BUILD_NUMBER
+}
+
+version = "${minecraft_version}-${mod_version}${buildnumber}"
+group= "mc.oceanica"
+archivesBaseName = "Oceanica"
+
+minecraft {
+    version = "${minecraft_version}-${forge_version}"
+    runDir = "run"
+    mappings = "${mappings_version}"
+    replace "@VERSION@", "${mod_version}"
+    replace "@FORGEVERSION@", "${forge_version}"
+    replaceIn "OceanicaInfo.java"
+}
+
+dependencies {
+  runtime "mezz.jei:jei_${minecraft_version}:${jei_version}"
+  compile "LatMod:FTBLib:${ftbl_version}:api"
+  runtime "LatMod:FTBLib:${ftbl_version}"
+
+}
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+publishing {
+    tasks.publish.dependsOn 'build'
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'Oceanica'
+            artifact jar
+        }
+    }
+    repositories {
+        if (project.hasProperty('maven_repo')) {
+            maven { url maven_repo }
+        } else {
+            mavenLocal()
+        }
+    }
+}
+
+idea { module { inheritOutputDirs = true } }

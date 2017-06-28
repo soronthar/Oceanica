@@ -1,0 +1,21 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "oceanica",
+    "name": "Oceanica - Abyss Adventures",
+    "description": "Let's see where this get us.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": " ",
+    "updateUrl": "",
+    "authorList": [ "soronthar" ],
+    "credits": "Authored by soronthar, inspired on Mariculture by joshie",
+    "logoFile": "",
+    "screenshots": [ "" ],
+    "parent": "",
+    "requiredMods": [  ],
+    "dependencies": [  ],
+    "dependants": [ ],
+    "useDependencyInformation": true
+  }]
+}

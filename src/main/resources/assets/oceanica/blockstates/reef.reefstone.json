@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "oceanica:reef.reefstone"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "oceanica:reef/blocks/14_coral_red"
+  }
+}
