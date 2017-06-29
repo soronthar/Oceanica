@@ -28,7 +28,7 @@ import static mc.oceanica.OceanicaInfo.MODID;
 
 
 public class ItemMask extends ItemArmor {
-
+//TODO: head model
     public ItemMask() {
         super(ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.HEAD);
         this.setUnlocalizedName(OceanicaInfo.MODID + ".diving.mask");
@@ -92,7 +92,7 @@ public class ItemMask extends ItemArmor {
 
     public static boolean hasArmor(EntityPlayer player, EntityEquipmentSlot slot, Item item) {
         ItemStack stack = player.getItemStackFromSlot(slot);
-        return stack != null && stack.getItem() == item;
+        return !stack.isEmpty() && stack.getItem() == item;
     }
 
 }
