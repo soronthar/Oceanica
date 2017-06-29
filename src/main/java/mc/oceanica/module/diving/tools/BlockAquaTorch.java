@@ -42,7 +42,7 @@ public class BlockAquaTorch extends AquaticBlock {
     protected BlockStateContainer createBlockState() { return super.createBlockState(FACING); }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        switch ((EnumFacing) state.getValue(FACING)) {
+        switch ( state.getValue(FACING)) {
             case EAST:
                 return TORCH_EAST_AABB;
             case WEST:
@@ -106,7 +106,7 @@ public class BlockAquaTorch extends AquaticBlock {
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!this.checkForDrop(worldIn, pos, state)) {
-            EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
             EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
             EnumFacing opposite = enumfacing.getOpposite();
             boolean flag = false;
@@ -125,7 +125,7 @@ public class BlockAquaTorch extends AquaticBlock {
     }
 
     private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
-        if (state.getBlock() != this || !this.canPlaceAt(worldIn, pos, (EnumFacing) state.getValue(FACING))) {
+        if (state.getBlock() != this || !this.canPlaceAt(worldIn, pos, state.getValue(FACING))) {
             if (worldIn.getBlockState(pos).getBlock() == this) {
                 this.dropBlockAsItem(worldIn, pos, state, 0);
                 worldIn.setBlockToAir(pos);
@@ -167,7 +167,7 @@ public class BlockAquaTorch extends AquaticBlock {
      * Convert the BlockState into the correct metadata value
      */
     public int getMetaFromState(IBlockState state) {
-        switch ((EnumFacing) state.getValue(FACING)) {
+        switch (state.getValue(FACING)) {
             case EAST: return 1;
             case WEST: return 2;
             case SOUTH: return 3;
@@ -184,7 +184,7 @@ public class BlockAquaTorch extends AquaticBlock {
      * blockstate.
      */
     public IBlockState withRotation(IBlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -192,7 +192,7 @@ public class BlockAquaTorch extends AquaticBlock {
      * blockstate.
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     @SideOnly(Side.CLIENT)
@@ -202,7 +202,7 @@ public class BlockAquaTorch extends AquaticBlock {
 
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-        EnumFacing enumfacing = (EnumFacing) stateIn.getValue(FACING);
+        EnumFacing enumfacing = stateIn.getValue(FACING);
         // The particles should start in the center of the block, around 1/4 from the top
         double xOffset = (double) pos.getX() + 0.5D;
         double yOffset = (double) pos.getY() + 0.7D;

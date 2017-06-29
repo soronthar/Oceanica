@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "oceanica:reef/blocks/15_coral_black"
+  }
+}

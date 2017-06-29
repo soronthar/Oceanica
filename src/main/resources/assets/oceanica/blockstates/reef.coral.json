@@ -9,6 +9,24 @@
   "variants": {
     "normal": [{}],
     "inventory": [{}],
+    "coraltype": {
+      "white":{"textures" : {"cross": "oceanica:reef/blocks/0_coral_white"}},
+      "orange":{"textures" : {"cross": "oceanica:reef/blocks/1_coral_orange"}},
+      "magenta":{"textures" : {"cross": "oceanica:reef/blocks/2_coral_magenta"}},
+      "light_blue":{"textures" : {"cross": "oceanica:reef/blocks/3_coral_light_blue"}},
+      "yellow":{"textures" : {"cross": "oceanica:reef/blocks/4_coral_yellow"}},
+      "lime":{"textures" : {"cross": "oceanica:reef/blocks/5_coral_lime"}},
+      "pink":{"textures" : {"cross": "oceanica:reef/blocks/6_coral_pink"}},
+      "gray":{"textures" : {"cross": "oceanica:reef/blocks/7_coral_gray"}},
+      "silver":{"textures" : {"cross": "oceanica:reef/blocks/8_coral_lightgray"}},
+      "cyan":{"textures" : {"cross": "oceanica:reef/blocks/9_coral_cyan"}},
+      "purple":{"textures" : {"cross": "oceanica:reef/blocks/10_coral_purple"}},
+      "blue":{"textures" : {"cross": "oceanica:reef/blocks/11_coral_blue"}},
+      "brown":{"textures" : {"cross": "oceanica:reef/blocks/12_coral_brown"}},
+      "green":{"textures" : {"cross": "oceanica:reef/blocks/13_coral_green"}},
+      "red":{"textures" : {"cross": "oceanica:reef/blocks/14_coral_red"}},
+      "black":{"textures" : {"cross": "oceanica:reef/blocks/15_coral_black"}}
+    },
     "level": {
       "0": {},
       "1": {},

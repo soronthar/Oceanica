@@ -6,9 +6,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -31,6 +35,7 @@ public abstract class AquaticBlock extends Block {
     protected void registerItem() {
         GameRegistry.register(new ItemBlock(this), getRegistryName());
     }
+
 
     @Override
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) { return false; }
