@@ -2,10 +2,12 @@ package mc.oceanica.module.reef.world;
 
 import mc.oceanica.Oceanica;
 import mc.oceanica.module.reef.ReefModule;
+import mc.oceanica.module.reef.block.BlockCoral;
 import mc.oceanica.module.reef.block.BlockReefStone;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,6 +20,8 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import static mc.oceanica.module.reef.ReefModule.CORAL;
 
 
 public class ReefWorldGenerator implements IWorldGenerator {
@@ -33,6 +37,10 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
     private static List SPAWNABLE_BLOCKS=Arrays.asList(Blocks.DIRT,Blocks.GRAVEL, Blocks.SAND);
 
+    //TODO: tweak generation
+    //TODO: Density Bias according to the depth
+    //TODO: Type Bias according to the depth and biome
+    //TODO: Reduce spread of secondary.
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 
@@ -75,6 +83,10 @@ public class ReefWorldGenerator implements IWorldGenerator {
                     BlockPos topBlock = world.getTopSolidOrLiquidBlock(getPosByFacing(x+xOffset, z, EnumFacing.WEST, zOffset)).down();
                     if (canSpawnInBlock(world,topBlock) && getReefStone() !=null) {
                         world.setBlockState(topBlock, getReefStone().getDefaultState(), 2 | 16);
+                        if (random.nextDouble()<.7d) {
+                            IBlockState state = CORAL.getDefaultState().withProperty(BlockCoral.CORAL_TYPE, EnumDyeColor.byMetadata(random.nextInt(15)));
+                            world.setBlockState(topBlock.up(),state, 2 | 16);
+                        }
                     }
                 }
             }

@@ -35,7 +35,7 @@ import static mc.oceanica.core.BlockProperties.LEVEL;
 
 public class BlockCoral extends AquaticBlock implements IPlantable {
     //TODO drop if the supporting block is destroyed
-    public static final EnumPlantType CORAL = EnumPlantType.getPlantType("Coral");
+    static final EnumPlantType CORAL = EnumPlantType.getPlantType("Coral");
     public static final PropertyEnum<EnumDyeColor> CORAL_TYPE = PropertyEnum.create("coraltype", EnumDyeColor.class);
 
 
