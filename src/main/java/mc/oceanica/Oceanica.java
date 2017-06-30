@@ -17,10 +17,11 @@ import static mc.oceanica.OceanicaInfo.*;
 @Mod(
         modid = MODID,
         version = MODVERSION,
+        dependencies = "required-after:Forge@[14.21.1.2387,)",
         useMetadata = true
 )
 public class Oceanica {
-    @SidedProxy(clientSide = PACKAGE+".proxy.ClientProxy", serverSide = PACKAGE+".proxy.ServerProxy")
+    @SidedProxy(clientSide = PACKAGE+".proxy.ClientProxy", serverSide = PACKAGE+".proxy.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance
@@ -37,14 +38,10 @@ public class Oceanica {
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent e) {
-        proxy.init(e);
-    }
+    public void init(FMLInitializationEvent e) { proxy.init(e); }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent e) {
-        proxy.postInit(e);
-    }
+    public void postInit(FMLPostInitializationEvent e) { proxy.postInit(e); }
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {

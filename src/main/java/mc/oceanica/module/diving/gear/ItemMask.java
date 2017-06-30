@@ -21,19 +21,22 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import static mc.oceanica.OceanicaInfo.MODID;
 
-
+@Mod.EventBusSubscriber
 public class ItemMask extends ItemArmor {
-//TODO: head model
+    public static final String REGISTRY_NAME = "diving.mask";
+    public static final String MOD_CONTEXT = OceanicaInfo.MODID + ":"+ REGISTRY_NAME;
+
+    //TODO: head model
     public ItemMask() {
         super(ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.HEAD);
-        this.setUnlocalizedName(OceanicaInfo.MODID + ".diving.mask");
-        this.setRegistryName(new ResourceLocation(MODID, "diving.mask"));
-        GameRegistry.register(this);
+        this.setUnlocalizedName(OceanicaInfo.MODID + "."+ REGISTRY_NAME);
+        this.setRegistryName(new ResourceLocation(MODID, REGISTRY_NAME));
         MinecraftForge.EVENT_BUS.register(this);
     }
 

@@ -1,5 +1,6 @@
 package mc.oceanica.module.reef.block;
 
+import mc.oceanica.OceanicaInfo;
 import mc.oceanica.core.AquaticBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -7,7 +8,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,19 +21,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-import static mc.oceanica.core.BlockProperties.LEVEL;
-
 
 public class BlockCoral extends AquaticBlock implements IPlantable {
+    public static final String REGISTRY_NAME = "reef.coral";
+    public static final String MOD_CONTEXT =  OceanicaInfo.MODID + ":"+ REGISTRY_NAME;
+
     //TODO drop if the supporting block is destroyed
     static final EnumPlantType CORAL = EnumPlantType.getPlantType("Coral");
     public static final PropertyEnum<EnumDyeColor> CORAL_TYPE = PropertyEnum.create("coraltype", EnumDyeColor.class);
@@ -54,7 +53,7 @@ public class BlockCoral extends AquaticBlock implements IPlantable {
     }
 
     @Override
-    protected void registerItem() {
+    public Item getItem() {
         ItemBlock item=new ItemBlock(this) {
             @Override
             public int getMetadata(int damage) {
@@ -64,7 +63,7 @@ public class BlockCoral extends AquaticBlock implements IPlantable {
         item.setUnlocalizedName(this.getUnlocalizedName());
         item.setRegistryName(getRegistryName());
         item.setHasSubtypes(true);
-        GameRegistry.register(item);
+       return item;
     }
 
     @Override
@@ -77,12 +76,11 @@ public class BlockCoral extends AquaticBlock implements IPlantable {
         return new ItemStack(this, 1, state.getValue(CORAL_TYPE).getMetadata());
     }
 
-
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-        if (tab.equals(CreativeTabs.MISC)) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab.equals(getCreativeTabToDisplayOn())) {
             for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
-                list.add(new ItemStack(itemIn, 1, dyeColor.getMetadata()));
+                items.add(new ItemStack(this, 1, dyeColor.getMetadata()));
             }
         }
     }

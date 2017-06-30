@@ -1,5 +1,7 @@
 package mc.oceanica.module.diving.tools;
 
+import mc.oceanica.Oceanica;
+import mc.oceanica.OceanicaInfo;
 import mc.oceanica.core.AquaticBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -20,6 +22,9 @@ import java.util.Random;
 import static net.minecraft.block.BlockTorch.FACING;
 
 public class BlockAquaTorch extends AquaticBlock {
+    public static final String REGISTRY_NAME = "diving.aquatorch";
+    public static final String MOD_CONTEXT =  OceanicaInfo.MODID + ":"+ REGISTRY_NAME;
+
     static final AxisAlignedBB STANDING_AABB = new AxisAlignedBB(0.4000000059604645D, 0.0D, 0.4000000059604645D, 0.6000000238418579D, 0.6000000238418579D, 0.6000000238418579D);
     static final AxisAlignedBB TORCH_NORTH_AABB = new AxisAlignedBB(0.3499999940395355D, 0.20000000298023224D, 0.699999988079071D, 0.6499999761581421D, 0.800000011920929D, 1.0D);
     static final AxisAlignedBB TORCH_SOUTH_AABB = new AxisAlignedBB(0.3499999940395355D, 0.20000000298023224D, 0.0D, 0.6499999761581421D, 0.800000011920929D, 0.30000001192092896D);
@@ -28,7 +33,7 @@ public class BlockAquaTorch extends AquaticBlock {
 
 
     public BlockAquaTorch() {
-        super("diving.aquatorch");
+        super(REGISTRY_NAME);
 
         setTickRandomly(false);
         setCreativeTab(CreativeTabs.MISC);

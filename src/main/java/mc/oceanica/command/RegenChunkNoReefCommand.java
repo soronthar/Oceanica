@@ -16,8 +16,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.gen.IChunkGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class RegenChunkNoReefCommand extends CommandBase {
         }
 
         List<EntityPlayerMP> oldWatchers = new ArrayList<>();
-        WorldServer server = minecraftServer.worldServerForDimension(0);
+        WorldServer server = minecraftServer.getWorld(0);
         ChunkProviderServer provider = server.getChunkProvider();
         PlayerChunkMap playerManager = server.getPlayerChunkMap();
         ChunkProviderServer chunkServer = (ChunkProviderServer) provider;
@@ -89,11 +89,11 @@ public class RegenChunkNoReefCommand extends CommandBase {
 
     private void regenChunk(List<EntityPlayerMP> oldWatchers, PlayerChunkMap playerManager, ChunkProviderServer chunkServer, int chunkXPos, int chunkZPos) {
         IChunkGenerator gen = chunkServer.chunkGenerator;
-        Chunk mcChunk = gen.provideChunk(chunkXPos, chunkZPos);
+        Chunk mcChunk = gen.generateChunk(chunkXPos, chunkZPos);
         long pos = ChunkPos.asLong(chunkXPos, chunkZPos);
         chunkServer.id2ChunkMap.put(pos, mcChunk);
-        mcChunk.onChunkLoad();
-        mcChunk.populateChunk(chunkServer, chunkServer.chunkGenerator);
+        mcChunk.onLoad();
+        mcChunk.populate(chunkServer, chunkServer.chunkGenerator);
 
         // We don't need to recreate the ChunkMapEntry unless there are players
         // but addPlayer handles that for us
@@ -110,7 +110,7 @@ public class RegenChunkNoReefCommand extends CommandBase {
             mcChunk = chunkServer.loadChunk(chunkXPos, chunkZPos);
             if (mcChunk!=null) {
                 saveWatcherPlayers(oldWatchers, playerManager, world.playerEntities, chunkXPos, chunkZPos);
-                chunkServer.unload(mcChunk);
+                chunkServer.queueUnload(mcChunk);
                 chunkServer.tick();
             }
         }

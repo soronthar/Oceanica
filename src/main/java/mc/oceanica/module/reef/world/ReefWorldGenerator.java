@@ -12,8 +12,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
@@ -31,11 +31,13 @@ public class ReefWorldGenerator implements IWorldGenerator {
     private static final double SEED_DENSITY = 0.55;
     private static final double DENSITY_DECREASE = 0.25;
     private static final double BASE_DECREASE_FACTOR = 1.15;
+    private static final double CORAL_DENSITY = 0.7;
 
     private static final double MAX_LEVEL = 60;
     private static final double MIN_LEVEL = 30;
 
     private static List SPAWNABLE_BLOCKS=Arrays.asList(Blocks.DIRT,Blocks.GRAVEL, Blocks.SAND);
+
 
     //TODO: tweak generation
     //TODO: Density Bias according to the depth
@@ -83,8 +85,8 @@ public class ReefWorldGenerator implements IWorldGenerator {
                     BlockPos topBlock = world.getTopSolidOrLiquidBlock(getPosByFacing(x+xOffset, z, EnumFacing.WEST, zOffset)).down();
                     if (canSpawnInBlock(world,topBlock) && getReefStone() !=null) {
                         world.setBlockState(topBlock, getReefStone().getDefaultState(), 2 | 16);
-                        if (random.nextDouble()<.7d) {
-                            IBlockState state = CORAL.getDefaultState().withProperty(BlockCoral.CORAL_TYPE, EnumDyeColor.byMetadata(random.nextInt(15)));
+                        if (random.nextDouble()<CORAL_DENSITY) {
+                            IBlockState state = CORAL.getDefaultState().withProperty(BlockCoral.CORAL_TYPE, EnumDyeColor.byMetadata(random.nextInt(16)));
                             world.setBlockState(topBlock.up(),state, 2 | 16);
                         }
                     }
@@ -159,8 +161,8 @@ public class ReefWorldGenerator implements IWorldGenerator {
         if (world.isChunkGeneratedAt((chunkX +chunkXOffset), (chunkZ+chunkZOffset))) {
             Chunk chunk = world.getChunkFromChunkCoords(chunkX +chunkXOffset, chunkZ+chunkZOffset);
 
-            int x = (chunk.xPosition << 4) + xOffset;
-            int z = (chunk.zPosition << 4) + zOffset;
+            int x = (chunk.x << 4) + xOffset;
+            int z = (chunk.z << 4) + zOffset;
             for (int offset=0;offset<16 && !hasReef;offset++) {
                 BlockPos pos = getPosByFacing(x, z, facing, offset);
                 BlockPos blockToCheck = world.getTopSolidOrLiquidBlock(pos).down();
