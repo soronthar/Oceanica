@@ -67,6 +67,11 @@ public class BlockCoral extends AquaticBlock implements IPlantable {
     }
 
     @Override
+    public int damageDropped(IBlockState state) {
+        return state.getValue(CORAL_TYPE).getMetadata();
+    }
+
+    @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
         return getDefaultState().withProperty(CORAL_TYPE,EnumDyeColor.byMetadata(meta));
     }
