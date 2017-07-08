@@ -1,6 +1,7 @@
 package mc.oceanica.module.reef.world;
 
 import mc.oceanica.Oceanica;
+import mc.oceanica.OceanicaStats;
 import mc.oceanica.module.reef.ReefModule;
 import mc.oceanica.module.reef.block.BlockCoral;
 import mc.oceanica.module.reef.block.BlockReefStone;
@@ -15,6 +16,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Arrays;
@@ -22,12 +24,13 @@ import java.util.List;
 import java.util.Random;
 
 import static mc.oceanica.module.reef.ReefModule.CORAL;
+import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
 
 
 public class ReefWorldGenerator implements IWorldGenerator {
 //TODO: Warning for the c0nfiguration
 
-    private static final double REEF_SEED_FREQUENCY=.05;
+    private static final double REEF_SEED_FREQUENCY=0.01d;
     private static final double SEED_DENSITY = 0.55;
     private static final double DENSITY_DECREASE = 0.25;
     private static final double BASE_DECREASE_FACTOR = 1.15;
@@ -45,12 +48,27 @@ public class ReefWorldGenerator implements IWorldGenerator {
     //TODO: Reduce spread of secondary.
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-
+        OceanicaStats.INSTANCE.addChunkProcessed();
         if (Oceanica.GENERATE_REEF) {
             Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
 
             if (isSeedChunk(random,world,chunkX,chunkZ)) {
-                Oceanica.logger.info("Generating Seed Chunk at: " +chunkX + " " + chunkZ);
+                OceanicaStats.INSTANCE.addPrimarySeed();
+
+//                Oceanica.logger.info("Generating Seed Chunk at: " +chunkX + " " + chunkZ);
+                if (Oceanica.proxy.config.getBoolean("debug",CATEGORY_GENERAL,false,"") ) {
+                    int x = chunkX << 4;
+                    int z = chunkZ << 4;
+                    int y=world.getSeaLevel() + 2;
+                    world.setBlockState(new BlockPos(x,y,z), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
+                    for (int i=1;i<16;i++) {
+                        world.setBlockState(new BlockPos(x+i,y,z), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
+                        world.setBlockState(new BlockPos(x,y,z+i), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
+                        world.setBlockState(new BlockPos(x+i,y,z+15), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
+                        world.setBlockState(new BlockPos(x+15,y,z+i), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
+                    }
+                }
+
                 generateReefInChunk(random, world, chunkX, chunkZ, SEED_DENSITY);
                 generateReefInChunk(random, world, chunkX, chunkZ+1, SEED_DENSITY-DENSITY_DECREASE);
                 generateReefInChunk(random, world, chunkX, chunkZ-1, SEED_DENSITY-DENSITY_DECREASE);
@@ -60,13 +78,14 @@ public class ReefWorldGenerator implements IWorldGenerator {
                 generateReefInChunk(random, world, chunkX-1, chunkZ, SEED_DENSITY-DENSITY_DECREASE);
                 generateReefInChunk(random, world, chunkX-1, chunkZ+1, SEED_DENSITY-DENSITY_DECREASE);
                 generateReefInChunk(random, world, chunkX-1, chunkZ-1, SEED_DENSITY-DENSITY_DECREASE);
-                Oceanica.logger.info("End Generating Seed Chunk at: " +chunkX + " " + chunkZ);
+//                Oceanica.logger.info("End Generating Seed Chunk at: " +chunkX + " " + chunkZ);
             } else if (isSecondaryChunk(world, chunkX, chunkZ)) {
                 double decreaseFactor= BASE_DECREASE_FACTOR +random.nextDouble();
                 double density=decreaseFactor * DENSITY_DECREASE;
-//                Oceanica.logger.info("\t\tDecrease Factor: " +decreaseFactor + " Density Decrease" + density);
 
                 if (SEED_DENSITY > density) {
+                    OceanicaStats.INSTANCE.addSecondaryCount();
+                    OceanicaStats.INSTANCE.addSecondaryDensity(SEED_DENSITY - density);
                     generateReefInChunk(random, world, chunkX, chunkZ, SEED_DENSITY - density);
                 }
             }
@@ -74,7 +93,7 @@ public class ReefWorldGenerator implements IWorldGenerator {
     }
 
     private void generateReefInChunk(Random random, World world, int chunkX, int chunkZ, double density) {
-        Oceanica.logger.debug("\t\tGenerating at: " +chunkX + " " + chunkZ + " density " + density);
+//        Oceanica.logger.debug("\t\tGenerating at: " +chunkX + " " + chunkZ + " density " + density);
 
         int x = chunkX << 4;
         int z = chunkZ << 4;
@@ -125,7 +144,6 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
     private boolean isSeedChunk(Random random, World world, int chunkX, int chunkZ) {
         return random.nextDouble() <=REEF_SEED_FREQUENCY;
-//        return (chunkX%100==0 && chunkZ%20==0);
     }
 
     private boolean isSecondaryChunk(World world, int chunkX, int chunkZ) {

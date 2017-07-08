@@ -1,12 +1,17 @@
 package mc.oceanica.proxy;
 
+import mc.oceanica.Oceanica;
 import mc.oceanica.OceanicaConfig;
 import mc.oceanica.OceanicaInfo;
 import mc.oceanica.module.diving.DivingModule;
 import mc.oceanica.module.reef.ReefModule;
 import mc.oceanica.module.reef.world.ReefWorldGenerator;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,12 +19,13 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = OceanicaInfo.MODID)
 public class CommonProxy {
 
     public static Configuration config;
@@ -37,6 +43,25 @@ public class CommonProxy {
     }
 
 
+    @SubscribeEvent
+    public void playerSpawnEvent(PlayerEvent.PlayerLoggedInEvent event) {
+
+        Oceanica.logger.info("Hey!");
+        EntityLivingBase player=event.player;
+        if (player.getEntityWorld()!=null && !player.getEntityWorld().isRemote) {
+            PotionEffect effect = player.getActivePotionEffect(MobEffects.WATER_BREATHING);
+            if (effect == null) {
+                PotionEffect neweffect = new PotionEffect(MobEffects.WATER_BREATHING, Integer.MAX_VALUE, -42, true, false);
+                player.addPotionEffect(neweffect);
+            }
+            effect = player.getActivePotionEffect(MobEffects.NIGHT_VISION);
+            if (effect == null) {
+                PotionEffect neweffect = new PotionEffect(MobEffects.NIGHT_VISION, Integer.MAX_VALUE, -42, true, false);
+                player.addPotionEffect(neweffect);
+            }
+        }
+    }
+
     public void preInit(FMLPreInitializationEvent e) {
         File directory = e.getModConfigurationDirectory();
         config = new Configuration(new File(directory.getPath(), OceanicaInfo.MODID+".cfg"),OceanicaInfo.MODVERSION,true);
@@ -47,6 +72,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent e) {
 //        NetworkRegistry.INSTANCE.registerGuiHandler(ModTut.instance, new GuiProxy());
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public void postInit(FMLPostInitializationEvent e) {
@@ -54,4 +80,6 @@ public class CommonProxy {
             config.save();
         }
     }
+
+
 }
