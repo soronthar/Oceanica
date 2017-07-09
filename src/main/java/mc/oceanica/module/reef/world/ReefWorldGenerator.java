@@ -1,10 +1,10 @@
 package mc.oceanica.module.reef.world;
 
 import mc.oceanica.Oceanica;
+import mc.oceanica.OceanicaConfig;
 import mc.oceanica.OceanicaStats;
 import mc.oceanica.module.reef.ReefModule;
 import mc.oceanica.module.reef.block.BlockCoral;
-import mc.oceanica.module.reef.block.BlockReefStone;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -16,7 +16,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Arrays;
@@ -24,17 +23,10 @@ import java.util.List;
 import java.util.Random;
 
 import static mc.oceanica.module.reef.ReefModule.CORAL;
-import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
 
 
 public class ReefWorldGenerator implements IWorldGenerator {
 //TODO: Warning for the c0nfiguration
-
-    private static final double REEF_SEED_FREQUENCY=0.01d;
-    private static final double SEED_DENSITY = 0.55;
-    private static final double DENSITY_DECREASE = 0.25;
-    private static final double BASE_DECREASE_FACTOR = 1.15;
-    private static final double CORAL_DENSITY = 0.7;
 
     private static final double MAX_LEVEL = 60;
     private static final double MIN_LEVEL = 30;
@@ -56,37 +48,40 @@ public class ReefWorldGenerator implements IWorldGenerator {
                 OceanicaStats.INSTANCE.addPrimarySeed();
 
 //                Oceanica.logger.info("Generating Seed Chunk at: " +chunkX + " " + chunkZ);
-                if (Oceanica.proxy.config.getBoolean("debug",CATEGORY_GENERAL,false,"") ) {
+                if (OceanicaConfig.isDebug) {
                     int x = chunkX << 4;
                     int z = chunkZ << 4;
                     int y=world.getSeaLevel() + 2;
-                    world.setBlockState(new BlockPos(x,y,z), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
+                    world.setBlockState(new BlockPos(x,y,z), ReefModule.REEF_STONE.getDefaultState(), 2 | 16);
                     for (int i=1;i<16;i++) {
-                        world.setBlockState(new BlockPos(x+i,y,z), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
-                        world.setBlockState(new BlockPos(x,y,z+i), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
-                        world.setBlockState(new BlockPos(x+i,y,z+15), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
-                        world.setBlockState(new BlockPos(x+15,y,z+i), Blocks.EMERALD_BLOCK.getDefaultState(), 2 | 16);
+                        IBlockState markerBlock = ReefModule.REEF_STONE.getDefaultState();
+                        world.setBlockState(new BlockPos(x+i,y,z), markerBlock, 2 | 16);
+                        world.setBlockState(new BlockPos(x,y,z+i), markerBlock, 2 | 16);
+                        world.setBlockState(new BlockPos(x+i,y,z+15), markerBlock, 2 | 16);
+                        world.setBlockState(new BlockPos(x+15,y,z+i), markerBlock, 2 | 16);
                     }
                 }
 
-                generateReefInChunk(random, world, chunkX, chunkZ, SEED_DENSITY);
-                generateReefInChunk(random, world, chunkX, chunkZ+1, SEED_DENSITY-DENSITY_DECREASE);
-                generateReefInChunk(random, world, chunkX, chunkZ-1, SEED_DENSITY-DENSITY_DECREASE);
-                generateReefInChunk(random, world, chunkX+1, chunkZ, SEED_DENSITY-DENSITY_DECREASE);
-                generateReefInChunk(random, world, chunkX+1, chunkZ+1, SEED_DENSITY-DENSITY_DECREASE);
-                generateReefInChunk(random, world, chunkX+1, chunkZ-1, SEED_DENSITY-DENSITY_DECREASE);
-                generateReefInChunk(random, world, chunkX-1, chunkZ, SEED_DENSITY-DENSITY_DECREASE);
-                generateReefInChunk(random, world, chunkX-1, chunkZ+1, SEED_DENSITY-DENSITY_DECREASE);
-                generateReefInChunk(random, world, chunkX-1, chunkZ-1, SEED_DENSITY-DENSITY_DECREASE);
-//                Oceanica.logger.info("End Generating Seed Chunk at: " +chunkX + " " + chunkZ);
-            } else if (isSecondaryChunk(world, chunkX, chunkZ)) {
-                double decreaseFactor= BASE_DECREASE_FACTOR +random.nextDouble();
-                double density=decreaseFactor * DENSITY_DECREASE;
+                generateReefInChunk(random, world, chunkX, chunkZ, OceanicaConfig.reefStoneDensity);
 
-                if (SEED_DENSITY > density) {
+                double reducedDensity = OceanicaConfig.reefStoneDensity - OceanicaConfig.densityDecrease;
+                generateReefInChunk(random, world, chunkX, chunkZ+1, reducedDensity);
+                generateReefInChunk(random, world, chunkX, chunkZ-1, reducedDensity);
+                generateReefInChunk(random, world, chunkX+1, chunkZ, reducedDensity);
+                generateReefInChunk(random, world, chunkX+1, chunkZ+1, reducedDensity);
+                generateReefInChunk(random, world, chunkX+1, chunkZ-1, reducedDensity);
+                generateReefInChunk(random, world, chunkX-1, chunkZ, reducedDensity);
+                generateReefInChunk(random, world, chunkX-1, chunkZ+1, reducedDensity);
+                generateReefInChunk(random, world, chunkX-1, chunkZ-1, reducedDensity);
+            } else if (isSecondaryChunk(world, chunkX, chunkZ)) {
+                double decreaseFactor= OceanicaConfig.baseDecreaseFactor +random.nextDouble();
+                double density=decreaseFactor * OceanicaConfig.densityDecrease;
+                double secondaryDensity = OceanicaConfig.reefStoneDensity - density;
+
+                if (secondaryDensity>0) {
                     OceanicaStats.INSTANCE.addSecondaryCount();
-                    OceanicaStats.INSTANCE.addSecondaryDensity(SEED_DENSITY - density);
-                    generateReefInChunk(random, world, chunkX, chunkZ, SEED_DENSITY - density);
+                    OceanicaStats.INSTANCE.addSecondaryDensity(secondaryDensity);
+                    generateReefInChunk(random, world, chunkX, chunkZ, secondaryDensity);
                 }
             }
         }
@@ -102,9 +97,9 @@ public class ReefWorldGenerator implements IWorldGenerator {
             for(int zOffset=0; zOffset<16; zOffset++) {
                 if (random.nextDouble() < density) {
                     BlockPos topBlock = world.getTopSolidOrLiquidBlock(getPosByFacing(x+xOffset, z, EnumFacing.WEST, zOffset)).down();
-                    if (canSpawnInBlock(world,topBlock) && getReefStone() !=null) {
-                        world.setBlockState(topBlock, getReefStone().getDefaultState(), 2 | 16);
-                        if (random.nextDouble()<CORAL_DENSITY) {
+                    if (canSpawnInBlock(world,topBlock) && ReefModule.REEF_STONE !=null) {
+                        world.setBlockState(topBlock, ReefModule.REEF_STONE.getDefaultState(), 2 | 16);
+                        if (random.nextDouble()< OceanicaConfig.coralDensity) {
                             IBlockState state = CORAL.getDefaultState().withProperty(BlockCoral.CORAL_TYPE, EnumDyeColor.byMetadata(random.nextInt(16)));
                             world.setBlockState(topBlock.up(),state, 2 | 16);
                         }
@@ -112,10 +107,6 @@ public class ReefWorldGenerator implements IWorldGenerator {
                 }
             }
         }
-    }
-
-    private BlockReefStone getReefStone() {
-        return ReefModule.REEF_STONE;
     }
 
     private boolean canSpawnInBlock(World world, BlockPos pos) {
@@ -143,7 +134,7 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
 
     private boolean isSeedChunk(Random random, World world, int chunkX, int chunkZ) {
-        return random.nextDouble() <=REEF_SEED_FREQUENCY;
+        return random.nextDouble() <= OceanicaConfig.seedChunkFrequency;
     }
 
     private boolean isSecondaryChunk(World world, int chunkX, int chunkZ) {
@@ -184,7 +175,7 @@ public class ReefWorldGenerator implements IWorldGenerator {
             for (int offset=0;offset<16 && !hasReef;offset++) {
                 BlockPos pos = getPosByFacing(x, z, facing, offset);
                 BlockPos blockToCheck = world.getTopSolidOrLiquidBlock(pos).down();
-                hasReef = hasReef || world.getBlockState(blockToCheck).getBlock().equals(getReefStone());
+                hasReef = hasReef || world.getBlockState(blockToCheck).getBlock().equals(ReefModule.REEF_STONE);
             }
         }
 
