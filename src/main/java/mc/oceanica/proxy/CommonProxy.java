@@ -40,7 +40,6 @@ public class CommonProxy {
     @SubscribeEvent
     public void playerSpawnEvent(PlayerEvent.PlayerLoggedInEvent event) {
 
-        Oceanica.logger.info("Hey!");
         EntityLivingBase player=event.player;
         if (player.getEntityWorld()!=null && !player.getEntityWorld().isRemote) {
             PotionEffect effect = player.getActivePotionEffect(MobEffects.WATER_BREATHING);
