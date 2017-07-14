@@ -26,18 +26,15 @@ import static mc.oceanica.module.reef.ReefModule.CORAL;
 
 
 public class ReefWorldGenerator implements IWorldGenerator {
-//TODO: Warning for the c0nfiguration
-
-    private static final double MAX_LEVEL = 60;
-    private static final double MIN_LEVEL = 30;
+    private static final double MIN_LEVEL = 5;
 
     private static List SPAWNABLE_BLOCKS=Arrays.asList(Blocks.DIRT,Blocks.GRAVEL, Blocks.SAND);
 
 
     //TODO: tweak generation
     //TODO: Density Bias according to the depth
-    //TODO: Type Bias according to the depth and biome
-    //TODO: Reduce spread of secondary.
+    //TODO: Type Bias according to the depth
+    
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         OceanicaStats.INSTANCE.addChunkProcessed();
@@ -111,7 +108,8 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
     private boolean canSpawnInBlock(World world, BlockPos pos) {
         IBlockState topBlock = world.getBlockState(pos);
-        boolean isLevel=checkLevel(pos.getY());
+        int y = pos.getY();
+        boolean isLevel= y >= MIN_LEVEL && y <= world.getSeaLevel()-2;
         boolean isBlock=checkBlockType(topBlock);
         boolean isTopBlock=checkTopBlockType(world.getBlockState(pos.up()));
         boolean isBiome= BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.OCEAN) ||
@@ -126,10 +124,6 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
     private boolean checkBlockType(IBlockState block) {
         return block.getMaterial().equals(Material.SAND) || SPAWNABLE_BLOCKS.contains(block.getBlock());
-    }
-
-    private boolean checkLevel(int y) {
-        return y>=MIN_LEVEL && y<=MAX_LEVEL;
     }
 
 

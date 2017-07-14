@@ -25,6 +25,7 @@ public class TrenchGenerator extends MapGenRavine {
     private static final double DEEP_SEA_DEPTH = 3.25D;
     private static final IBlockState OCEAN_SURFACE = Blocks.GRAVEL.getDefaultState();
     private static final IBlockState OCEAN_FILLER = Blocks.STONE.getDefaultState();
+    public static final int MIN_DEPTH = 5;
 
     @Override
     public void generate(World worldIn, int x, int z, ChunkPrimer primer) {
@@ -42,7 +43,6 @@ public class TrenchGenerator extends MapGenRavine {
                 int rand = this.rand.nextInt(DEEP_SEA_RARITY);
 
                 if (rand == 0) {
-
                     recursiveGenerate(worldIn, l, i1, x, z, primer);
                 }
             }
@@ -71,7 +71,7 @@ public class TrenchGenerator extends MapGenRavine {
 
     @Override
     protected void digBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop) {
-        if (y<5 || y > this.world.getSeaLevel()) return;
+        if (y < MIN_DEPTH || y > this.world.getSeaLevel()) return;
 
         Biome biome = this.world.getBiome(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
         if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN) {

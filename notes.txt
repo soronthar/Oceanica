@@ -1,5 +1,8 @@
 Test Workd settings
 3;minecraft:bedrock,5*minecraft:stone,5*minecraft:dirt,15*minecraft:sandstone,5*minecraft:sand,33*minecraft:water;24;oceanmonument,biome_1
-
+------
+NEw world settings:
+-2866287944852109430
+6008688381330691059
 ------
 Move all materials, properties, etc, out to util/common package
