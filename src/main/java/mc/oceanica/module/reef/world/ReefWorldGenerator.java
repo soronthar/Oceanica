@@ -34,7 +34,7 @@ public class ReefWorldGenerator implements IWorldGenerator {
     //TODO: tweak generation
     //TODO: Density Bias according to the depth
     //TODO: Type Bias according to the depth
-    
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         OceanicaStats.INSTANCE.addChunkProcessed();

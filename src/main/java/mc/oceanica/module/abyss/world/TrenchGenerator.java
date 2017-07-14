@@ -1,6 +1,6 @@
 package mc.oceanica.module.abyss.world;
 
-import mc.oceanica.Oceanica;
+import mc.oceanica.OceanicaConfig;
 import mc.oceanica.module.reef.ReefModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,15 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TrenchGenerator extends MapGenRavine {
-    private static final int DEEP_SEA_LENGTH = 12;
-    private static final int DEEP_SEA_RARITY = 10;
-    private static final float DEEP_SEA_WIDTH = 5f;
-    private static final float DEEP_SEA_WIDTH_2 = DEEP_SEA_WIDTH * 2F;
-    private static final float DEEP_SEA_WIDTH_3 = DEEP_SEA_WIDTH / 4F;
-    private static final double DEEP_SEA_DEPTH = 3.25D;
-    private static final IBlockState OCEAN_SURFACE = Blocks.GRAVEL.getDefaultState();
-    private static final IBlockState OCEAN_FILLER = Blocks.STONE.getDefaultState();
-    public static final int MIN_DEPTH = 5;
+    private static final int MIN_DEPTH = 5;
 
     @Override
     public void generate(World worldIn, int x, int z, ChunkPrimer primer) {
@@ -35,12 +27,17 @@ public class TrenchGenerator extends MapGenRavine {
         long j = rand.nextLong();
         long k = rand.nextLong();
 
-        for (int l = x - DEEP_SEA_LENGTH; l <= x + DEEP_SEA_LENGTH; ++l) {
-            for (int i1 = z - DEEP_SEA_LENGTH; i1 <= z + DEEP_SEA_LENGTH; ++i1) {
+        int xStart = x - OceanicaConfig.trenchLength;
+        int xEnd = x + OceanicaConfig.trenchLength;
+
+        for (int l = xStart; l <= xEnd; ++l) {
+            int zStart = z - OceanicaConfig.trenchLength;
+            int zEnd = z + OceanicaConfig.trenchLength;
+            for (int i1 = zStart; i1 <= zEnd; ++i1) {
                 long j1 = (long) l * j;
                 long k1 = (long) i1 * k;
                 rand.setSeed(j1 ^ k1 ^ worldIn.getSeed());
-                int rand = this.rand.nextInt(DEEP_SEA_RARITY);
+                int rand = this.rand.nextInt(OceanicaConfig.trenchRarity);
 
                 if (rand == 0) {
                     recursiveGenerate(worldIn, l, i1, x, z, primer);
@@ -49,6 +46,7 @@ public class TrenchGenerator extends MapGenRavine {
         }
     }
 
+    //This is a hack to force addTunnel to dig even in the ocean.
     @Override
     protected boolean isOceanBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ) {
         return false;
@@ -59,10 +57,10 @@ public class TrenchGenerator extends MapGenRavine {
         double d1 = findFirstSolidBlock(primer, rand.nextInt(16), rand.nextInt(16));
         double d0 = (double) (chunkX * 16 + rand.nextInt(16));
         double d2 = (double) (chunkZ * 16 + rand.nextInt(16));
-        float f = rand.nextFloat() * ((float) Math.PI * DEEP_SEA_WIDTH);
-        float f1 = (rand.nextFloat() - DEEP_SEA_WIDTH_3) * DEEP_SEA_WIDTH / DEEP_SEA_WIDTH_2;
-        float f2 = (rand.nextFloat() * DEEP_SEA_WIDTH + rand.nextFloat()) * DEEP_SEA_WIDTH;
-        addTunnel(rand.nextLong(), int1, in2, primer, d0, d1, d2, f2, f, f1, 0, 0, d2 / DEEP_SEA_DEPTH);
+        float f = rand.nextFloat() * ((float) Math.PI * OceanicaConfig.trenchWidth);
+        float f1 = (rand.nextFloat() - OceanicaConfig.trenchWidthLower) * OceanicaConfig.trenchWidth / OceanicaConfig.trenchWidthUpper;
+        float f2 = (rand.nextFloat() * OceanicaConfig.trenchWidth + rand.nextFloat()) * OceanicaConfig.trenchWidth;
+        addTunnel(rand.nextLong(), int1, in2, primer, d0, d1, d2, f2, f, f1, 0, 0, d2 / OceanicaConfig.trenchDepth);
     }
 
 
@@ -72,6 +70,10 @@ public class TrenchGenerator extends MapGenRavine {
     @Override
     protected void digBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop) {
         if (y < MIN_DEPTH || y > this.world.getSeaLevel()) return;
+        Block oceanFloorBlock = Block.getBlockFromName(OceanicaConfig.oceanFloorBlock);
+        if (oceanFloorBlock==null) return;
+
+        IBlockState oceanFloor = oceanFloorBlock.getDefaultState();
 
         Biome biome = this.world.getBiome(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
         if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN) {
@@ -79,12 +81,10 @@ public class TrenchGenerator extends MapGenRavine {
             Block block = state.getBlock();
             if (state.getBlock() == Blocks.STONE || SPAWNABLE_BLOCKS.contains(state.getBlock()) || state.getMaterial().equals(Material.SAND) || (state == Blocks.BEDROCK.getDefaultState())) {
                 if (y == 5) {
-                    data.setBlockState(x, y, z, OCEAN_SURFACE);
+                    data.setBlockState(x, y, z, oceanFloor);
                 } else {
                     if (y < this.world.getSeaLevel()) {
                         data.setBlockState(x, y, z, Blocks.WATER.getDefaultState());
-                    } else {
-                        data.setBlockState(x, y, z, AIR);
                     }
                 }
             }
