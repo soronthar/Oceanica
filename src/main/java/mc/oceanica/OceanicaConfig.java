@@ -18,8 +18,9 @@ public class OceanicaConfig {
     public static double seedChunkFrequency =0.012d;
     public static double reefStoneDensity =0.55d;
     public static double densityDecrease = 0.25d;
-    public static double coralDensity = 0.7d;
+    public static boolean enableSecondarySeedChunk=false;
 
+    public static double coralDensity = 0.7d;
     //Abyss
     public static boolean enableTrenches=true;
     public static int trenchLength =12;
@@ -40,6 +41,7 @@ public class OceanicaConfig {
             densityDecrease = config.get(CATEGORY_REEF.label, "densityDecrease", densityDecrease, "Reef stone density decrease for secondary seed chunk. Higher means more coral stone in the chunk(0-1)").getDouble();
             baseDecreaseFactor = config.get(CATEGORY_REEF.label, "baseDecreaseFactor", baseDecreaseFactor, "Reef stone density decrease for secondary seed chunk. Secondary chunk density is reefStoneDensity - ((baseDecreaseFactor + rand()) * densityDecrease)").getDouble();
             coralDensity = config.get(CATEGORY_REEF.label, "coralDensity", coralDensity, "The chance a Coral will spawn on top of a reef stone. Higher means more frequent (0-1)").getDouble();
+            enableSecondarySeedChunk = config.get(CATEGORY_REEF.label, "enableSecondarySeedChunk", enableSecondarySeedChunk, "When enabled, a 3x3 area around the seed chunk will be also seeded with reduced density").getBoolean();
 
             enableTrenches =config.get(CATEGORY_ABYSS.label, "enableTrenches", enableTrenches, "Enable Ocean Trenches").getBoolean();
             trenchRarity = config.get(CATEGORY_ABYSS.label, "trenchRarity", trenchRarity, "Rarity of the trenches. Higher means rarer trenches").getInt();

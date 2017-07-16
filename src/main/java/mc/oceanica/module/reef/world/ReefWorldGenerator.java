@@ -61,15 +61,19 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
                 generateReefInChunk(random, world, chunkX, chunkZ, OceanicaConfig.reefStoneDensity);
 
-                double reducedDensity = OceanicaConfig.reefStoneDensity - OceanicaConfig.densityDecrease;
-                generateReefInChunk(random, world, chunkX, chunkZ+1, reducedDensity);
-                generateReefInChunk(random, world, chunkX, chunkZ-1, reducedDensity);
-                generateReefInChunk(random, world, chunkX+1, chunkZ, reducedDensity);
-                generateReefInChunk(random, world, chunkX+1, chunkZ+1, reducedDensity);
-                generateReefInChunk(random, world, chunkX+1, chunkZ-1, reducedDensity);
-                generateReefInChunk(random, world, chunkX-1, chunkZ, reducedDensity);
-                generateReefInChunk(random, world, chunkX-1, chunkZ+1, reducedDensity);
-                generateReefInChunk(random, world, chunkX-1, chunkZ-1, reducedDensity);
+                if (OceanicaConfig.enableSecondarySeedChunk) {
+                    double reducedDensity = OceanicaConfig.reefStoneDensity - OceanicaConfig.densityDecrease;
+                    generateReefInChunk(random, world, chunkX, chunkZ+1, reducedDensity);
+                    generateReefInChunk(random, world, chunkX, chunkZ-1, reducedDensity);
+                    generateReefInChunk(random, world, chunkX+1, chunkZ, reducedDensity);
+                    generateReefInChunk(random, world, chunkX+1, chunkZ+1, reducedDensity);
+                    generateReefInChunk(random, world, chunkX+1, chunkZ-1, reducedDensity);
+                    generateReefInChunk(random, world, chunkX-1, chunkZ, reducedDensity);
+                    generateReefInChunk(random, world, chunkX-1, chunkZ+1, reducedDensity);
+                    generateReefInChunk(random, world, chunkX-1, chunkZ-1, reducedDensity);
+                }
+
+
             } else if (isSecondaryChunk(world, chunkX, chunkZ)) {
                 double decreaseFactor= OceanicaConfig.baseDecreaseFactor +random.nextDouble();
                 double density=decreaseFactor * OceanicaConfig.densityDecrease;
