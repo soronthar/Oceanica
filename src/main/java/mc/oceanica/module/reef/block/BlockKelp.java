@@ -49,29 +49,29 @@ public class BlockKelp extends AquaticBlock implements net.minecraftforge.common
 
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        if (worldIn.getBlockState(pos.down()).getBlock() == ReefModule.KELP || this.checkForDrop(worldIn, pos, state)) {
-            if (worldIn.isAirBlock(pos.up())) {
-                int i;
-
-                for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) {
-                    ;
-                }
-
-                if (i < 3) {
-                    int j = ((Integer) state.getValue(AGE)).intValue();
-
-                    if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true)) {
-                        if (j == 15) {
-                            worldIn.setBlockState(pos.up(), this.getDefaultState());
-                            worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(0)), 4);
-                        } else {
-                            worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(j + 1)), 4);
-                        }
-                        net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
-                    }
-                }
-            }
-        }
+//        if (worldIn.getBlockState(pos.down()).getBlock() == ReefModule.KELP || this.checkForDrop(worldIn, pos, state)) {
+//            if (worldIn.isAirBlock(pos.up())) {
+//                int i;
+//
+//                for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i) {
+//                    ;
+//                }
+//
+//                if (i < 3) {
+//                    int j = ((Integer) state.getValue(AGE)).intValue();
+//
+//                    if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true)) {
+//                        if (j == 15) {
+//                            worldIn.setBlockState(pos.up(), this.getDefaultState());
+//                            worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(0)), 4);
+//                        } else {
+//                            worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(j + 1)), 4);
+//                        }
+//                        net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+//                    }
+//                }
+//            }
+//        }
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -84,14 +84,27 @@ public class BlockKelp extends AquaticBlock implements net.minecraftforge.common
         IBlockState targetBlock = world.getBlockState(pos);
 
         return isWaterBlock(targetBlock)
-                && (baseBlock.getBlock() == Blocks.SAND || baseBlock.getBlock() == Blocks.GRAVEL)
+                && canSustainKelp(baseBlock)
                 && pos.getY() < (world.getSeaLevel() - 5);
+    }
+
+    private boolean canSustainKelp(IBlockState baseBlock) {
+        return baseBlock.getBlock() == Blocks.SAND || baseBlock.getBlock() == Blocks.GRAVEL|| baseBlock.getBlock() == this;
     }
 
     private boolean isWaterBlock(IBlockState baseBlock) {
         return baseBlock.getBlock() == Blocks.WATER || baseBlock.getBlock() == Blocks.FLOWING_WATER;
     }
 
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!this.canSustainKelp(worldIn.getBlockState(pos.down()))) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockState(pos, Blocks.WATER.getDefaultState());
+        }
+
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+    }
 
     private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
         if (this.canBlockStay(worldIn, pos)) {
