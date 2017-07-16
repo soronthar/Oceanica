@@ -2,6 +2,7 @@ package mc.oceanica.module.reef;
 
 import mc.oceanica.Oceanica;
 import mc.oceanica.module.reef.block.BlockCoral;
+import mc.oceanica.module.reef.block.BlockKelp;
 import mc.oceanica.module.reef.block.BlockReefStone;
 import mc.oceanica.module.reef.world.LeavesMarkWorldGenerator;
 import mc.oceanica.module.reef.world.ReefWorldGenerator;
@@ -26,6 +27,11 @@ public class ReefModule {
     @GameRegistry.ObjectHolder(BlockCoral.MOD_CONTEXT)
     public static BlockCoral CORAL;
 
+    @GameRegistry.ObjectHolder(BlockKelp.MOD_CONTEXT)
+    public static BlockKelp KELP;
+
+    @GameRegistry.ObjectHolder(BlockKelp.MOD_CONTEXT)
+    public static Item KELP_ITEM;
 
     public static void preInit(FMLPreInitializationEvent e) {
         GameRegistry.registerWorldGenerator(new ReefWorldGenerator(), 1);
@@ -35,17 +41,20 @@ public class ReefModule {
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(new BlockReefStone());
         event.getRegistry().register(new BlockCoral());
+        event.getRegistry().register(new BlockKelp());
     }
 
     public static void registerItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
         registry.register(REEF_STONE.getItem());
         registry.register(CORAL.getItem());
+        registry.register(KELP.getItem());
     }
 
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(REEF_STONE), 0, new ModelResourceLocation(REEF_STONE.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(KELP), 0, new ModelResourceLocation(KELP.getRegistryName(), "inventory"));
 
         String registryName = CORAL.getRegistryName().toString();
         Item itemFromBlock = Item.getItemFromBlock(CORAL);

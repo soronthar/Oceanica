@@ -14,6 +14,10 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import static mc.oceanica.core.BlockProperties.LEVEL;
 
+/**
+ *
+ * must call super.createBlockState(properties)
+ */
 public abstract class AquaticBlock extends Block {
 
     public AquaticBlock(String registryName) {
