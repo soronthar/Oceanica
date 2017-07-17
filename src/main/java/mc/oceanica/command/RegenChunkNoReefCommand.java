@@ -1,6 +1,7 @@
 package mc.oceanica.command;
 
 import mc.oceanica.Oceanica;
+import mc.oceanica.OceanicaConfig;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -37,8 +38,8 @@ public class RegenChunkNoReefCommand extends CommandBase {
     //TODO: make this work with other dimensions
     @Override
     public void execute(MinecraftServer minecraftServer, ICommandSender sender, String[] strings) throws CommandException {
-        Oceanica.GENERATE_REEF=false;
-
+        boolean originalGenerateReef = OceanicaConfig.generateReef;
+        OceanicaConfig.generateReef = false;
         World world = sender.getEntityWorld();
         if (world.isRemote) return;
 
@@ -80,7 +81,7 @@ public class RegenChunkNoReefCommand extends CommandBase {
                 }
             }
             sender.sendMessage(new TextComponentString("Chunks Regenerated"));
-            Oceanica.GENERATE_REEF=true;
+            OceanicaConfig.generateReef = originalGenerateReef;
         } catch (Exception e) {
             Oceanica.logger.warn("Failed to generate chunk", e);
             sender.sendMessage(new TextComponentString("Failed to generate chunk"));

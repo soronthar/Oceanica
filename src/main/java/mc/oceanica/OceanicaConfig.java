@@ -14,17 +14,19 @@ public class OceanicaConfig {
     public static boolean isDebug=false;
 
     //Reef
+    public static boolean generateReef=true;
     public static double baseDecreaseFactor =1.25d;
     public static double seedChunkFrequency =0.012d;
     public static double reefStoneDensity =0.55d;
     public static double densityDecrease = 0.25d;
     public static boolean enableSecondarySeedChunk=false;
-
     public static double coralDensity = 0.7d;
+
+
     //Abyss
     public static boolean enableTrenches=true;
     public static int trenchLength =12;
-    public static int trenchRarity=10;
+    public static int trenchRarity=100;
     public static float trenchWidth=5f;
     public static float trenchWidthLower=trenchWidth/4f;
     public static float trenchWidthUpper=trenchWidth*2f;
@@ -36,6 +38,7 @@ public class OceanicaConfig {
 
         try {
             config.load();
+            generateReef = config.get(CATEGORY_REEF.label, "generateReef", generateReef, "Generate Coral Reef chunks").getBoolean();
             seedChunkFrequency = config.get(CATEGORY_REEF.label, "seedChunkFrequency", seedChunkFrequency, "Coral Reef seed chunk frequency. Higher means more frequent (0-1)", 0, 1).getDouble();
             reefStoneDensity = config.get(CATEGORY_REEF.label, "reefStoneDensity", reefStoneDensity, "Reef stone density on the main seed chunk. Higher means more coral stone in the chunk (0-1)").getDouble();
             densityDecrease = config.get(CATEGORY_REEF.label, "densityDecrease", densityDecrease, "Reef stone density decrease for secondary seed chunk. Higher means more coral stone in the chunk(0-1)").getDouble();

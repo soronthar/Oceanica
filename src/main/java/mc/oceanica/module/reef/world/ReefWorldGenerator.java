@@ -38,25 +38,14 @@ public class ReefWorldGenerator implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         OceanicaStats.INSTANCE.addChunkProcessed();
-        if (Oceanica.GENERATE_REEF) {
+        if (OceanicaConfig.generateReef) {
             Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
 
             if (isSeedChunk(random,world,chunkX,chunkZ)) {
                 OceanicaStats.INSTANCE.addPrimarySeed();
 
-//                Oceanica.logger.info("Generating Seed Chunk at: " +chunkX + " " + chunkZ);
                 if (OceanicaConfig.isDebug) {
-                    int x = chunkX << 4;
-                    int z = chunkZ << 4;
-                    int y=world.getSeaLevel() + 2;
-                    world.setBlockState(new BlockPos(x,y,z), ReefModule.REEF_STONE.getDefaultState(), 2 | 16);
-                    for (int i=1;i<16;i++) {
-                        IBlockState markerBlock = ReefModule.REEF_STONE.getDefaultState();
-                        world.setBlockState(new BlockPos(x+i,y,z), markerBlock, 2 | 16);
-                        world.setBlockState(new BlockPos(x,y,z+i), markerBlock, 2 | 16);
-                        world.setBlockState(new BlockPos(x+i,y,z+15), markerBlock, 2 | 16);
-                        world.setBlockState(new BlockPos(x+15,y,z+i), markerBlock, 2 | 16);
-                    }
+                    generateDebugRing(chunkX, chunkZ, world);
                 }
 
                 generateReefInChunk(random, world, chunkX, chunkZ, OceanicaConfig.reefStoneDensity);
@@ -85,6 +74,20 @@ public class ReefWorldGenerator implements IWorldGenerator {
                     generateReefInChunk(random, world, chunkX, chunkZ, secondaryDensity);
                 }
             }
+        }
+    }
+
+    private void generateDebugRing(int chunkX, int chunkZ, World world) {
+        int x = chunkX << 4;
+        int z = chunkZ << 4;
+        int y=world.getSeaLevel() + 2;
+        world.setBlockState(new BlockPos(x,y,z), ReefModule.REEF_STONE.getDefaultState(), 2 | 16);
+        for (int i=1;i<16;i++) {
+            IBlockState markerBlock = ReefModule.REEF_STONE.getDefaultState();
+            world.setBlockState(new BlockPos(x+i,y,z), markerBlock, 2 | 16);
+            world.setBlockState(new BlockPos(x,y,z+i), markerBlock, 2 | 16);
+            world.setBlockState(new BlockPos(x+i,y,z+15), markerBlock, 2 | 16);
+            world.setBlockState(new BlockPos(x+15,y,z+i), markerBlock, 2 | 16);
         }
     }
 
