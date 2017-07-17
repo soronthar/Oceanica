@@ -30,8 +30,6 @@ public class Oceanica {
 
     public static Logger logger;
 
-    public static boolean GENERATE_REEF =true;
-
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
         logger = event.getModLog();
