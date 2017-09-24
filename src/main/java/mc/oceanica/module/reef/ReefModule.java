@@ -5,6 +5,7 @@ import mc.oceanica.module.reef.block.BlockCoral;
 import mc.oceanica.module.reef.block.BlockKelp;
 import mc.oceanica.module.reef.block.BlockReefStone;
 import mc.oceanica.module.reef.world.LeavesMarkWorldGenerator;
+import mc.oceanica.module.reef.world.ReefPerlinWorldGenerator;
 import mc.oceanica.module.reef.world.ReefWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -35,6 +36,7 @@ public class ReefModule {
 
     public static void preInit(FMLPreInitializationEvent e) {
         GameRegistry.registerWorldGenerator(new ReefWorldGenerator(), 1);
+//        GameRegistry.registerWorldGenerator(new ReefPerlinWorldGenerator(), 1);
 //        GameRegistry.registerWorldGenerator(new LeavesMarkWorldGenerator(), 2);
     }
 
