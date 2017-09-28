@@ -70,7 +70,6 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
                 if (secondaryDensity>0) {
                     OceanicaStats.INSTANCE.addSecondaryCount();
-                    OceanicaStats.INSTANCE.addSecondaryDensity(secondaryDensity);
                     generateReefInChunk(random, world, chunkX, chunkZ, secondaryDensity);
                 }
             }

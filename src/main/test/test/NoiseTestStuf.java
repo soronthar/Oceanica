@@ -1,6 +1,8 @@
 package test;
 
 import mc.util.PerlinNoiseGen;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,6 +22,7 @@ public class NoiseTestStuf {
 
             PerlinNoiseGen noise = new PerlinNoiseGen(1);
             imageGeneration(noise);
+
         }
 
     private static void imageGeneration(PerlinNoiseGen noise) throws IOException {

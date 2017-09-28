@@ -4,6 +4,7 @@ import mc.oceanica.Oceanica;
 import mc.oceanica.module.reef.block.BlockCoral;
 import mc.oceanica.module.reef.block.BlockKelp;
 import mc.oceanica.module.reef.block.BlockReefStone;
+import mc.oceanica.module.reef.world.ExperimentalWorldGen;
 import mc.oceanica.module.reef.world.LeavesMarkWorldGenerator;
 import mc.oceanica.module.reef.world.ReefPerlinWorldGenerator;
 import mc.oceanica.module.reef.world.ReefWorldGenerator;
@@ -35,6 +36,7 @@ public class ReefModule {
     public static Item KELP_ITEM;
 
     public static void preInit(FMLPreInitializationEvent e) {
+//        GameRegistry.registerWorldGenerator(new ExperimentalWorldGen(), 1);
 //        GameRegistry.registerWorldGenerator(new ReefWorldGenerator(), 1);
         GameRegistry.registerWorldGenerator(new ReefPerlinWorldGenerator(), 1);
 //        GameRegistry.registerWorldGenerator(new LeavesMarkWorldGenerator(), 2);

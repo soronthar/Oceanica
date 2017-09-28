@@ -12,7 +12,6 @@ public class OceanicaStats {
     private int chunksProcessed;
     private int primarySeedCount;
     private int secondaryCount;
-    private double acumSecondaryDensity;
 
     public void addPrimarySeed() {
         this.primarySeedCount++;
@@ -26,10 +25,6 @@ public class OceanicaStats {
         this.secondaryCount++;
     }
 
-    public void addSecondaryDensity(double density) {
-        this.acumSecondaryDensity+=density;
-    }
-
     public int getChunksProcessed() {
         return chunksProcessed;
     }
@@ -40,14 +35,6 @@ public class OceanicaStats {
 
     public int getSecondaryCount() {
         return secondaryCount;
-    }
-
-    public double getAcumSecondaryDensity() {
-        return acumSecondaryDensity;
-    }
-
-    public double avgSecondaryDensirt() {
-        return acumSecondaryDensity/(double) secondaryCount;
     }
 
 }
