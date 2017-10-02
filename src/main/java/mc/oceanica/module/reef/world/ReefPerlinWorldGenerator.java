@@ -1,6 +1,5 @@
     package mc.oceanica.module.reef.world;
 
-    import mc.oceanica.Oceanica;
     import mc.oceanica.OceanicaConfig;
     import mc.oceanica.OceanicaStats;
     import mc.oceanica.module.reef.ReefModule;
@@ -10,8 +9,8 @@
     import net.minecraft.block.state.IBlockState;
     import net.minecraft.init.Blocks;
     import net.minecraft.item.EnumDyeColor;
-    import net.minecraft.util.EnumFacing;
     import net.minecraft.util.math.BlockPos;
+    import net.minecraft.util.math.MathHelper;
     import net.minecraft.world.World;
     import net.minecraft.world.chunk.IChunkProvider;
     import net.minecraft.world.gen.IChunkGenerator;
@@ -30,12 +29,18 @@ public class ReefPerlinWorldGenerator implements IWorldGenerator {
     private static final int MAX_LEVEL_OFFSET = 5;
     public static final int REEF_NOISE_LAYER = 0;
     public static final int CORAL_NOISE_LAYER = 2;
+    public static final double KELP_NOISE_LAYER = 4;
+    public static final double KELP_HEIGHT_LAYER = 5;
 
-    public static final double KELP_THRESHOLD = -0.65;
+
+    public static final double KELP_CHUNK_THRESHOLD = -0.65;
     public static final double SEED_CHUNK_THRESHOLD = 0.1;
+
     public static final int REEF_NOISE_SCALE = 2;
-    public static final double SECONDARY_REEF_THRESHOLD = 0.5;
-    public static final double PRIMARY_REEF_THRESHOLD = 0.2;
+    public static final double PRIMARY_REEF_DENSITY_THRESHOLD = 0.2;
+    public static final double SECONDARY_REEF_DENSITY_THRESHOLD = 0.5;
+    public static final double KELP_DENSITY_THRESHOLD = -0.2;
+
 
     private static List SPAWNABLE_BLOCKS=Arrays.asList(Blocks.DIRT,Blocks.GRAVEL, Blocks.SAND);
     private PerlinNoiseGen noiseGen;
@@ -60,15 +65,28 @@ public class ReefPerlinWorldGenerator implements IWorldGenerator {
 
         double value = getNoiseForChunk(chunkX, chunkZ);
 
-        if (value < KELP_THRESHOLD) {
-            int y=world.getSeaLevel()+3;
-            world.setBlockState(new BlockPos(x,y,z), Blocks.DIRT.getDefaultState(), 2 | 16);
-            for (int i=1;i<16;i++) {
-                IBlockState markerBlock = Blocks.LEAVES.getDefaultState();
-                world.setBlockState(new BlockPos(x+i,y,z), markerBlock, 2 | 16);
-                world.setBlockState(new BlockPos(x,y,z+i), markerBlock, 2 | 16);
-                world.setBlockState(new BlockPos(x+i,y,z+15), markerBlock, 2 | 16);
-                world.setBlockState(new BlockPos(x+15,y,z+i), markerBlock, 2 | 16);
+        if (value < KELP_CHUNK_THRESHOLD) {
+
+            for(int xOffset=0; xOffset<16; xOffset++) {
+                for(int zOffset=0; zOffset<16; zOffset++) {
+                    double density = noiseGen.getValue(x + xOffset, KELP_NOISE_LAYER, z + zOffset);
+                    if (density > KELP_DENSITY_THRESHOLD) {
+                        BlockPos blockPos  = new BlockPos(x+xOffset, 1, z+zOffset);
+                        BlockPos topBlock = world.getTopSolidOrLiquidBlock(blockPos).down();
+
+                        if (canSpawnInBlock(world,topBlock) && ReefModule.KELP !=null) {
+                            double heightFactor = noiseGen.getValue(x + xOffset, KELP_HEIGHT_LAYER, z + zOffset);
+                            int height= MathHelper.floor((world.getSeaLevel() - 1 - topBlock.getY()) * heightFactor);
+                            if (height > 0) {
+                                for(int i=1;i<=height;i++) {
+                                    world.setBlockState(topBlock.up(i), ReefModule.KELP.getDefaultState(), 2 | 16);
+                                }
+                            }
+//TODO: change the state when the growth mechanism is implemented
+//TODO: smooth edges of kelp chunks
+                        }
+                    }
+                }
             }
 
         } else if (value<= SEED_CHUNK_THRESHOLD){
@@ -84,7 +102,7 @@ public class ReefPerlinWorldGenerator implements IWorldGenerator {
                 for(int xOffset=0; xOffset<16; xOffset++) {
                     for(int zOffset=0; zOffset<16; zOffset++) {
                         double density = noiseGen.getValue(x + xOffset, 2, z + zOffset);
-                        if (density > SECONDARY_REEF_THRESHOLD) {
+                        if (density > SECONDARY_REEF_DENSITY_THRESHOLD) {
                             addCoral(random, world, x + xOffset, z + zOffset);
                         }
                     }
@@ -95,7 +113,7 @@ public class ReefPerlinWorldGenerator implements IWorldGenerator {
             for(int xOffset=0; xOffset<16; xOffset++) {
                 for(int zOffset=0; zOffset<16; zOffset++) {
                     double density = noiseGen.getValue(x + xOffset, CORAL_NOISE_LAYER, z + zOffset);
-                    if (density > PRIMARY_REEF_THRESHOLD) {
+                    if (density > PRIMARY_REEF_DENSITY_THRESHOLD) {
                         addCoral(random, world, x + xOffset, z + zOffset);
                     }
                 }
@@ -108,6 +126,18 @@ public class ReefPerlinWorldGenerator implements IWorldGenerator {
     }
 
     private void addCoral(Random random, World world, int x, int z) {
+        BlockPos blockPos  = new BlockPos(x, 1, z);
+        BlockPos topBlock = world.getTopSolidOrLiquidBlock(blockPos).down();
+        if (canSpawnInBlock(world,topBlock) && ReefModule.REEF_STONE !=null) {
+            world.setBlockState(topBlock, ReefModule.REEF_STONE.getDefaultState(), 2 | 16);
+            if (random.nextDouble()<OceanicaConfig.coralDensity ) {
+                IBlockState state = CORAL.getDefaultState().withProperty(BlockCoral.CORAL_TYPE, EnumDyeColor.byMetadata(random.nextInt(16)));
+                world.setBlockState(topBlock.up(),state, 2 | 16);
+            }
+        }
+    }
+
+    private void addKelp(Random random, World world, int x, int z) {
         BlockPos blockPos  = new BlockPos(x, 1, z);
         BlockPos topBlock = world.getTopSolidOrLiquidBlock(blockPos).down();
         if (canSpawnInBlock(world,topBlock) && ReefModule.REEF_STONE !=null) {

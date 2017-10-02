@@ -85,11 +85,11 @@ public class BlockKelp extends AquaticBlock implements net.minecraftforge.common
 
         return isWaterBlock(targetBlock)
                 && canSustainKelp(baseBlock)
-                && pos.getY() < (world.getSeaLevel() - 5);
+                && pos.getY() < (world.getSeaLevel() - 1);
     }
 
     private boolean canSustainKelp(IBlockState baseBlock) {
-        return baseBlock.getBlock() == Blocks.SAND || baseBlock.getBlock() == Blocks.GRAVEL|| baseBlock.getBlock() == this;
+        return baseBlock.getBlock() == Blocks.SAND || baseBlock.getBlock() == Blocks.GRAVEL|| baseBlock.getBlock() == Blocks.DIRT|| baseBlock.getBlock() == this;
     }
 
     private boolean isWaterBlock(IBlockState baseBlock) {

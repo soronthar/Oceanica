@@ -34,7 +34,6 @@ public class BlockCoral extends AquaticBlock implements IPlantable {
     public static final String REGISTRY_NAME = "reef.coral";
     public static final String MOD_CONTEXT =  OceanicaInfo.MODID + ":"+ REGISTRY_NAME;
 
-    //TODO drop if the supporting block is destroyed
     static final EnumPlantType CORAL = EnumPlantType.getPlantType("Coral");
     public static final PropertyEnum<EnumDyeColor> CORAL_TYPE = PropertyEnum.create("coraltype", EnumDyeColor.class);
 

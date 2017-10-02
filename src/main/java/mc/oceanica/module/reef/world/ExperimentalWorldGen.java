@@ -24,9 +24,6 @@ public class ExperimentalWorldGen implements IWorldGenerator {
 
 
     private PerlinNoiseGen noiseGen;
-    //TODO: tweak generation
-    //TODO: Type Bias according to the depth
-
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         OceanicaStats.INSTANCE.addChunkProcessed();

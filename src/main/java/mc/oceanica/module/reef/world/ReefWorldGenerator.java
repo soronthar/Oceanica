@@ -30,7 +30,6 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
     private static List SPAWNABLE_BLOCKS=Arrays.asList(Blocks.DIRT,Blocks.GRAVEL, Blocks.SAND);
 
-
     //TODO: tweak generation
     //TODO: Density Bias according to the depth
     //TODO: Type Bias according to the depth
