@@ -36,9 +36,9 @@ public class ReefModule {
     public static Item KELP_ITEM;
 
     public static void preInit(FMLPreInitializationEvent e) {
-//        GameRegistry.registerWorldGenerator(new ExperimentalWorldGen(), 1);
+        GameRegistry.registerWorldGenerator(new ExperimentalWorldGen(), 1);
 //        GameRegistry.registerWorldGenerator(new ReefWorldGenerator(), 1);
-        GameRegistry.registerWorldGenerator(new ReefPerlinWorldGenerator(), 1);
+//        GameRegistry.registerWorldGenerator(new ReefPerlinWorldGenerator(), 1);
 //        GameRegistry.registerWorldGenerator(new LeavesMarkWorldGenerator(), 2);
     }
 

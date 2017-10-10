@@ -33,7 +33,7 @@ public class ReefPerlinWorldGenerator implements IWorldGenerator {
     public static final double KELP_HEIGHT_LAYER = 5;
 
 
-    public static final double KELP_CHUNK_THRESHOLD = -0.65;
+    public static final double KELP_CHUNK_THRESHOLD = -0.55;
     public static final double SEED_CHUNK_THRESHOLD = 0.1;
 
     public static final int REEF_NOISE_SCALE = 2;
