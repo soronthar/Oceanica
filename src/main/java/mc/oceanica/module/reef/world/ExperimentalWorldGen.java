@@ -35,6 +35,7 @@ public class ExperimentalWorldGen implements IWorldGenerator {
         ChunkPos referenceChunk=new ChunkPos(spawnPoint);
         if (chunkMap==null || !OceanicaConfig.generateReef)  {
             Vec3i facing = addVec3i(EnumFacing.SOUTH.getDirectionVec(),EnumFacing.EAST.getDirectionVec());
+//            Vec3i facing = addVec3i(EnumFacing.NORTH.getDirectionVec(),EnumFacing.WEST.getDirectionVec());
             chunkMap=new DungeonMap(referenceChunk, RADIUS,facing);
             chunkMap.generateMap(RADIUS,random);
             OceanicaConfig.generateReef =true;
@@ -43,18 +44,17 @@ public class ExperimentalWorldGen implements IWorldGenerator {
         ChunkPos currentChunk=new ChunkPos(chunkX,chunkZ);
 
 
-        if (chunkMap.contains(currentChunk) && chunkZ!=referenceChunk.z) {
-            DebugRing.generateSmallDebugRing(currentChunk.x, currentChunk.z, Y_LEVEL, world, Blocks.WOOL.getStateFromMeta(EnumDyeColor.WHITE.getMetadata()));
+        if (chunkMap.contains(currentChunk) ) {
+            if (chunkZ!=referenceChunk.z) {
+                DebugRing.generateSmallDebugRing(currentChunk.x, currentChunk.z, Y_LEVEL, world, Blocks.WOOL.getStateFromMeta(EnumDyeColor.WHITE.getMetadata()));
+            }
+            chunkMap.drawRoomAt(chunkX,Y_LEVEL+1,chunkZ,world);
         }
 
 
-        DungeonRoom room=chunkMap.getRoomFor(chunkX,chunkZ);
-        if (room!=null) {
-            DebugRing.generateSmallDebugRing(chunkX,chunkZ,Y_LEVEL+1,world, Blocks.WOOL.getStateFromMeta(EnumDyeColor.BLUE.getMetadata()) );
-        }
 
         if (chunkX==referenceChunk.x && chunkZ==referenceChunk.z) {
-            DebugRing.generateDebugRing(currentChunk.x,currentChunk.z, Y_LEVEL, world, Blocks.COAL_BLOCK);
+            DebugRing.generateDebugRing(currentChunk.x,currentChunk.z, Y_LEVEL, world, Blocks.COAL_BLOCK.getDefaultState());
         }
 
     }

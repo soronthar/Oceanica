@@ -6,8 +6,8 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
  * Created by H440 on 18/10/2017.
  */
 public class MapCell {
-    int x;
-    int z;
+    public int x;
+    public int z;
 
     public MapCell(int x, int z) {
         this.x=x;

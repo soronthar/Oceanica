@@ -1,6 +1,5 @@
 package mc.debug;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -41,10 +40,9 @@ public class DebugRing {
         }
     }
 
-    public static  void generateDebugRing(int chunkX, int chunkZ, int y, World world, Block block) {
+    public static  void generateDebugRing(int chunkX, int chunkZ, int y, World world, IBlockState markerBlock) {
         int x = chunkX << 4;
         int z = chunkZ << 4;
-        IBlockState markerBlock = block.getDefaultState();
         IBlockState state = Blocks.BONE_BLOCK.getDefaultState();
         world.setBlockState(new BlockPos(x,y,z), state, 2 | 16);
 

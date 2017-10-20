@@ -1,12 +1,16 @@
 package mc.oceanica.module.abyss.world.dungeon.map;
 
+import mc.debug.DebugRing;
+import mc.oceanica.module.abyss.world.dungeon.rooms.BossRoom;
 import mc.oceanica.module.abyss.world.dungeon.rooms.DungeonRoom;
 import mc.oceanica.module.abyss.world.dungeon.rooms.SimpleRoom;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -17,6 +21,7 @@ public class DungeonMap {
     private final int radius;
     private final Vec3i facing;
     private final StructureBoundingBox boundingBox;
+
     private Map<MapCell,DungeonRoom> rooms = new HashMap<>();
 
     public DungeonMap(ChunkPos referenceChunk, int radius, Vec3i facing) {
@@ -34,16 +39,49 @@ public class DungeonMap {
         return boundingBox.intersectsWith(currentChunk.x, currentChunk.z, currentChunk.x, currentChunk.z);
     }
 
-    private int getNormalizedZCoord(int z) {
+
+    public int chunkToMapZ(int z) {
         return (z - referenceChunk.z) * facing.getZ();
     }
 
-    private int getNormalizedXCoord(int x) {
+    public int chunkToMapX(int x) {
         return ((x - referenceChunk.x) * facing.getX()) + 1;  //TODO: Assumes reference chunk is outside, in a corner
     }
 
+    public int mapToChunkZ(int z) {
+        return (z + referenceChunk.z) * facing.getZ();
+    }
+
+    public int mapToChunkX(int x) {
+        return ((x + referenceChunk.x) * facing.getX()) - 1;  //TODO: Assumes reference chunk is outside, in a corner
+    }
+
     public void generateMap(int radius,Random rand) {
-        Random random = new Random(System.currentTimeMillis());
+
+        addRooms(radius, rand);
+    }
+
+    private void addRooms(int radius, Random rand) {
+        addSimpleRoom(rand,radius);
+        addSimpleRoom(rand,radius);
+        addSimpleRoom(rand,radius);
+        addSimpleRoom(rand,radius);
+        addBossRoom(rand,radius);
+    }
+
+    private void addSimpleRoom(Random rand, int radius) {
+        MapCell mapCell;
+        do {
+            int cellX = rand.nextInt(radius) + 1;
+            int cellZ = rand.nextInt(radius ) + 1;
+            mapCell=new MapCell(cellX,cellZ);
+        } while (this.rooms.containsKey(mapCell));
+
+        addRoom(mapCell,new SimpleRoom(this));
+
+    }
+
+    private void addBossRoom(Random random, int radius) {
 
         int middle = radius / 2;
         int cellX = random.nextInt(radius) + 1;
@@ -63,15 +101,17 @@ public class DungeonMap {
             altZ = cellY + 1;
         }
 
+        MapCell[] bossRoomCells = {new MapCell(cellX, cellY),
+                new MapCell(altX, cellY),
+                new MapCell(cellX, altZ),
+                new MapCell(altX, altZ)
+        };
 
-        addRoom(new MapCell(cellX, cellY),new SimpleRoom());
-        addRoom(new MapCell(altX, cellY), new SimpleRoom());
-        addRoom(new MapCell(cellX, altZ), new SimpleRoom());
-        addRoom(new MapCell(altX, altZ), new SimpleRoom());
-        System.out.println("cellX = " + cellX);
-        System.out.println("cellY = " + cellY);
-        System.out.println("altX = " + altX);
-        System.out.println("altZ = " + altZ);
+        BossRoom bossRoom=new BossRoom(this,bossRoomCells);
+
+        for (MapCell bossRoomCell : bossRoomCells) {
+            addRoom(bossRoomCell, bossRoom);
+        }
     }
 
     public void addRoom(MapCell mapCell, DungeonRoom dungeonRoom) {
@@ -79,10 +119,18 @@ public class DungeonMap {
     }
 
     public DungeonRoom getRoomFor(int chunkX, int chunkZ) {
-        int x = getNormalizedXCoord(chunkX);
-        int z = getNormalizedZCoord(chunkZ);
+        int x = chunkToMapX(chunkX);
+        int z = chunkToMapZ(chunkZ);
 
         return this.rooms.get(new MapCell(x,z));
     }
 
+    public void drawRoomAt(int chunkX, int y, int chunkZ, World world) {
+        DungeonRoom room=this.getRoomFor(chunkX,chunkZ);
+        if (room!=null) {
+            room.draw(chunkX, y, chunkZ, world);
+//            DebugRing.generateSmallDebugRing(chunkX,chunkZ,y,world, Blocks.WOOL.getStateFromMeta(EnumDyeColor.BLUE.getMetadata()) );
+        }
+
+    }
 }
