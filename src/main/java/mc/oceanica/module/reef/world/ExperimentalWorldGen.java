@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
+import static mc.util.Utils.addVec3i;
+
 public class ExperimentalWorldGen implements IWorldGenerator {
 
 
@@ -33,10 +35,12 @@ public class ExperimentalWorldGen implements IWorldGenerator {
         BlockPos spawnPoint = world.getSpawnPoint();
         ChunkPos referenceChunk = new ChunkPos(spawnPoint);
         if (dungeonMap == null || !OceanicaConfig.generateReef) {
-            Vec3i facing = addVec3i(EnumFacing.SOUTH.getDirectionVec(), EnumFacing.WEST.getDirectionVec());
+            Random rand=new Random();
+            Vec3i facing = addVec3i(EnumFacing.SOUTH.getDirectionVec(), EnumFacing.EAST.getDirectionVec());
+//            Vec3i facing = addVec3i(EnumFacing.NORTH.getDirectionVec(), EnumFacing.WEST.getDirectionVec());
             dungeonMap = new DungeonMap(referenceChunk, RADIUS, facing);
 
-            dungeonMap.generateMap(RADIUS, random);
+            dungeonMap.generateMap(rand);
 
             OceanicaConfig.generateReef = true;
         }
@@ -45,14 +49,11 @@ public class ExperimentalWorldGen implements IWorldGenerator {
 
         if (dungeonMap.contains(currentChunk)) {
             DebugRing.generateSmallDebugRing(currentChunk.x, currentChunk.z, Y_LEVEL, world, Blocks.WOOL.getStateFromMeta(EnumDyeColor.WHITE.getMetadata()));
-            dungeonMap.drawRoomAt(chunkX, Y_LEVEL + 1, chunkZ, world);
+            dungeonMap.drawRoomAt(currentChunk, Y_LEVEL + 1, world);
         }
     }
 
 
-    private Vec3i addVec3i(Vec3i v, Vec3i u) {
-        return new Vec3i(v.getX() + u.getX(), v.getY() + u.getY(), v.getZ() + u.getZ());
-    }
 
 
 }

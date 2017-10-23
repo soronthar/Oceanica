@@ -2,34 +2,19 @@ package mc.oceanica.module.abyss.world.dungeon.rooms;
 
 import mc.debug.DebugRing;
 import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
-import mc.oceanica.module.abyss.world.dungeon.map.MapCell;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-
-import java.util.Arrays;
 
 public class BossRoom extends DungeonRoom{
 
-    private final MapCell[] bossRoomCells;
     private final ChunkPos[] chunks;
 
-    public BossRoom(DungeonMap dungeonMap, MapCell[] bossRoomCells) {
+    public BossRoom(DungeonMap dungeonMap, ChunkPos[] bossRoomChunks) {
         super(dungeonMap);
-        this.bossRoomCells=bossRoomCells;
-        chunks=new ChunkPos[bossRoomCells.length];
+        this.chunks=bossRoomChunks;
 
-        for (int i = 0; i < bossRoomCells.length; i++) {
-            MapCell bossRoomCell = bossRoomCells[i];
-            chunks[i]=new ChunkPos(dungeonMap.mapToChunkX(bossRoomCell.x),dungeonMap.mapToChunkZ(bossRoomCell.z));
-        }
-    }
-
-
-    public MapCell[] getBossRoomCells() {
-        return bossRoomCells;
     }
 
     @Override
