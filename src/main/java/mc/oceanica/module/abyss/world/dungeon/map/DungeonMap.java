@@ -37,13 +37,11 @@ public class DungeonMap {
 
     public void generateMap(Random rand) {
         addRooms(rand);
-//        generateCorridors(rand);
+        generateCorridors(rand);
     }
 
     private void generateCorridors(Random rand) {
-        carvePassageFrom(0,0,rand);
-
-
+        carvePassageFrom(startChunk.x,startChunk.z,rand);
     }
 
     private void carvePassageFrom(int x, int z, Random rand) {
@@ -56,21 +54,17 @@ public class DungeonMap {
             Vec3i vec = facing.getDirectionVec();
             int newX=x+vec.getX();
             int newZ=z+vec.getZ();
-            if (isInRange(newX) && isInRange(newZ) && !this.rooms.containsKey(new ChunkPos(newX,newZ))) {
-                Corridor corridor = new Corridor(this);
+            if (boundingBox.intersectsWith(newX,newZ,newX,newZ) && !this.rooms.containsKey(new ChunkPos(newX,newZ))) {
                 room.addExit(facing);
+                Corridor corridor = new Corridor(this);
                 corridor.addExit(facing.getOpposite());
+                addRoom(new ChunkPos(newX,newZ),corridor);
                 carvePassageFrom(newX,newZ,rand);
             }
         }
 
 
     }
-
-    private boolean isInRange(int newX) {
-        return newX>=0 && newX<this.radius;
-    }
-
 
     private void addRooms(Random rand) {
         addRoom(startChunk, new EntryRoom(this));
@@ -122,11 +116,14 @@ public class DungeonMap {
 
     private int calculateAltCoord(int coord, int facing, int max, int min, Random random) {
         int altX;
+
         if (coord+ facing > max || coord+ facing < min) {
+            //if going with the facing take us outside the bound, go against it.
             altX = coord - facing;
         } else if (coord- facing > max || coord- facing < min) {
+            //if going against the facing take us outside the bound, go with it.
             altX = coord + facing;
-        } else if (random.nextInt() % 2 == 0) {
+        } else if (random.nextInt() % 2 == 0) { //randombly choose which way to go.
             altX = coord + facing;
         } else {
             altX = coord - facing;
@@ -150,7 +147,7 @@ public class DungeonMap {
     public void drawRoomAt(ChunkPos chunkPos, int y, World world) {
         DungeonRoom room=this.getRoomFor(chunkPos);
         if (room!=null) {
-            room.draw(chunkPos.x, y, chunkPos.z, world);
+            room.draw(chunkPos, y, world);
 //            DebugRing.generateSmallDebugRing(chunkX,chunkZ,y,world, Blocks.WOOL.getStateFromMeta(EnumDyeColor.BLUE.getMetadata()) );
         }
 

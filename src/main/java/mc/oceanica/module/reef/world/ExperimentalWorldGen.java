@@ -23,7 +23,7 @@ public class ExperimentalWorldGen implements IWorldGenerator {
 
 
     private PerlinNoiseGen noiseGen;
-    private static final int RADIUS = 5;
+    private static final int RADIUS = 8;
     private DungeonMap dungeonMap;
     public static final int Y_LEVEL = 63;
 
@@ -36,8 +36,8 @@ public class ExperimentalWorldGen implements IWorldGenerator {
         ChunkPos referenceChunk = new ChunkPos(spawnPoint);
         if (dungeonMap == null || !OceanicaConfig.generateReef) {
             Random rand=new Random();
-            Vec3i facing = addVec3i(EnumFacing.SOUTH.getDirectionVec(), EnumFacing.EAST.getDirectionVec());
-//            Vec3i facing = addVec3i(EnumFacing.NORTH.getDirectionVec(), EnumFacing.WEST.getDirectionVec());
+//            Vec3i facing = addVec3i(EnumFacing.SOUTH.getDirectionVec(), EnumFacing.EAST.getDirectionVec());
+            Vec3i facing = addVec3i(EnumFacing.NORTH.getDirectionVec(), EnumFacing.WEST.getDirectionVec());
             dungeonMap = new DungeonMap(referenceChunk, RADIUS, facing);
 
             dungeonMap.generateMap(rand);

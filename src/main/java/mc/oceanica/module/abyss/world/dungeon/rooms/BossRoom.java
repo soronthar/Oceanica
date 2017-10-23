@@ -9,38 +9,37 @@ import net.minecraft.world.World;
 
 public class BossRoom extends DungeonRoom{
 
-    private final ChunkPos[] chunks;
+    private final ChunkPos[] bossRoomChunks;
 
     public BossRoom(DungeonMap dungeonMap, ChunkPos[] bossRoomChunks) {
         super(dungeonMap);
-        this.chunks=bossRoomChunks;
+        this.bossRoomChunks =bossRoomChunks;
 
     }
 
     @Override
-    public void draw(int chunkX, int y, int chunkZ, World world) {
+    public void draw(ChunkPos chunkPos, int y, World world) {
         int minX=Integer.MAX_VALUE;
         int minZ=Integer.MAX_VALUE;
         int maxX=Integer.MIN_VALUE;
         int maxZ=Integer.MIN_VALUE;
-        for (ChunkPos chunkPos : chunks) {
-            minX=Math.min(minX,chunkPos.getXStart());
-            minZ=Math.min(minZ,chunkPos.getZStart());
-            maxX=Math.max(maxX,chunkPos.getXEnd());
-            maxZ=Math.max(maxZ,chunkPos.getZEnd());
-        }
-        ChunkPos pos=new ChunkPos(chunkX,chunkZ);
-
-        if (pos.getXEnd()==maxX) {
-            DebugRing.drawZAxis(world,pos.getXEnd(),y,pos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-        } else if (pos.getXStart()==minX) {
-            DebugRing.drawZAxis(world,pos.getXStart(),y,pos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+        for (ChunkPos bossRoomChunk : bossRoomChunks) {
+            minX=Math.min(minX,bossRoomChunk.getXStart());
+            minZ=Math.min(minZ,bossRoomChunk.getZStart());
+            maxX=Math.max(maxX,bossRoomChunk.getXEnd());
+            maxZ=Math.max(maxZ,bossRoomChunk.getZEnd());
         }
 
-        if (pos.getZEnd()==maxZ) {
-            DebugRing.drawXAxis(world,pos.getXStart(),y,pos.getZEnd(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-        } else if (pos.getZStart()==minZ) {
-            DebugRing.drawXAxis(world,pos.getXStart(),y,pos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+        if (chunkPos.getXEnd()==maxX) {
+            DebugRing.drawZAxis(world,chunkPos.getXEnd(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+        } else if (chunkPos.getXStart()==minX) {
+            DebugRing.drawZAxis(world,chunkPos.getXStart(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+        }
+
+        if (chunkPos.getZEnd()==maxZ) {
+            DebugRing.drawXAxis(world,chunkPos.getXStart(),y,chunkPos.getZEnd(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+        } else if (chunkPos.getZStart()==minZ) {
+            DebugRing.drawXAxis(world,chunkPos.getXStart(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
         }
 
     }

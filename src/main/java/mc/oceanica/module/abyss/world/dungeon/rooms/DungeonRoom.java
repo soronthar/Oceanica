@@ -2,6 +2,7 @@ package mc.oceanica.module.abyss.world.dungeon.rooms;
 
 import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -15,15 +16,20 @@ public abstract class DungeonRoom {
         this.dungeonMap=dungeonMap;
     }
 
-
     public DungeonMap getDungeonMap() {
         return dungeonMap;
     }
 
+    public abstract void draw(ChunkPos chunkPos, int y, World world);
 
-    public abstract void draw(int chunkX, int y, int chunkZ, World world);
 
     public void addExit(EnumFacing facing) {
         this.exits.add(facing);
     }
+
+    public List<EnumFacing> getExits() {
+        return this.exits;
+    }
+
+
 }
