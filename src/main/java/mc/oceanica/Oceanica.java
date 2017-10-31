@@ -4,6 +4,7 @@ import mc.oceanica.command.RegenChunkCommand;
 import mc.oceanica.command.RegenChunkNoReefCommand;
 import mc.oceanica.command.StatCommand;
 import mc.oceanica.proxy.CommonProxy;
+import mc.structure.command.SpawnStructureCommand;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -48,6 +49,7 @@ public class Oceanica {
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new RegenChunkCommand());
         event.registerServerCommand(new RegenChunkNoReefCommand());
+        event.registerServerCommand(new SpawnStructureCommand());
         event.registerServerCommand(new StatCommand(OceanicaStats.INSTANCE));
     }
 }

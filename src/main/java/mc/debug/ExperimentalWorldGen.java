@@ -1,4 +1,4 @@
-package mc.oceanica.module.reef.world;
+package mc.debug;
 
 import mc.debug.DebugRing;
 import mc.oceanica.OceanicaConfig;
