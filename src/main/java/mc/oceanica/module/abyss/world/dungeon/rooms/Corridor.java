@@ -25,8 +25,8 @@ public class Corridor extends DungeonRoom {
 
     @Override
     public void draw(ChunkPos chunkPos, int y,  World world) {
-        int x = (chunkPos.x << 4) +1;
-        int z = (chunkPos.z << 4) +1;
+        int x = (chunkPos.x << 4);
+        int z = (chunkPos.z << 4);
 
         StructGen.generateStructure(world, new BlockPos(x,y,z), new ResourceLocation("structgen", "debug/smallhollowring"));
 
