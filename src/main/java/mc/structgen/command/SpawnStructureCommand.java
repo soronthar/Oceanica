@@ -1,4 +1,4 @@
-package mc.structure.command;
+package mc.structgen.command;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
@@ -21,8 +21,6 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import javax.annotation.Nullable;
-
-import static mc.oceanica.OceanicaInfo.MODID;
 
 /**
  * Created by H440 on 29/10/2017.
@@ -52,7 +50,8 @@ public class SpawnStructureCommand extends CommandBase {
         WorldServer world = server.getWorld(dimension);
 
         TemplateManager templatemanager = world.getStructureTemplateManager();
-        ResourceLocation loc = new ResourceLocation(MODID, "teststructure");
+        ResourceLocation loc = new ResourceLocation("structgen", "debug/smallring");
+//        ResourceLocation loc = new ResourceLocation(MODID, "teststructure");
         Template template = templatemanager.getTemplate(server, loc);
 
         Mirror mirror = Mirror.NONE;

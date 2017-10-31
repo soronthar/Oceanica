@@ -1,4 +1,4 @@
-package mc.structure;
+package mc.structgen;
 
 
 import org.testng.annotations.Test;

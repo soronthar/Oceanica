@@ -4,7 +4,7 @@ import mc.oceanica.command.RegenChunkCommand;
 import mc.oceanica.command.RegenChunkNoReefCommand;
 import mc.oceanica.command.StatCommand;
 import mc.oceanica.proxy.CommonProxy;
-import mc.structure.command.SpawnStructureCommand;
+import mc.structgen.command.SpawnStructureCommand;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

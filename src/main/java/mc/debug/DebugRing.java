@@ -1,7 +1,9 @@
 package mc.debug;
 
+import mc.structgen.StructGen;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -47,31 +49,14 @@ public class DebugRing {
     public static  void generateDebugRing(int chunkX, int chunkZ, int y, World world, IBlockState markerBlock) {
         int x = chunkX << 4;
         int z = chunkZ << 4;
-        IBlockState state = Blocks.BONE_BLOCK.getDefaultState();
-        world.setBlockState(new BlockPos(x,y,z), state, 2 | 16);
+        StructGen.generateStructure(world, new BlockPos(x,y,z), new ResourceLocation("structgen", "debug/bighollowring"));
 
-        for(int j=y;j<y+16;j++) {
-            for (int i = 1; i < 16; i++) {
-                world.setBlockState(new BlockPos(x + i, j, z), state, 2 | 16);
-                world.setBlockState(new BlockPos(x, j, z + i), markerBlock, 2 | 16);
-                world.setBlockState(new BlockPos(x + i, j, z + 15), markerBlock, 2 | 16);
-                world.setBlockState(new BlockPos(x + 15, j, z + i), markerBlock, 2 | 16);
-            }
-        }
     }
 
     public static void generateSmallDebugRing(int chunkX, int chunkZ, int y, World world, IBlockState markerBlock) {
         int x = (chunkX << 4) +1;
         int z = (chunkZ << 4) +1;
-        world.setBlockState(new BlockPos(x,y,z), Blocks.DIAMOND_BLOCK.getDefaultState(), 2 | 16);
 
-        for(int j=y;j<y+8;j++) {
-            for (int i=1;i<14;i++) {
-                world.setBlockState(new BlockPos(x+i,j,z), markerBlock, 2 | 16);
-                world.setBlockState(new BlockPos(x,j,z+i), markerBlock, 2 | 16);
-                world.setBlockState(new BlockPos(x+i,j,z+13), markerBlock, 2 | 16);
-                world.setBlockState(new BlockPos(x+13,j,z+i), markerBlock, 2 | 16);
-            }
-        }
+        StructGen.generateStructure(world, new BlockPos(x,y,z), new ResourceLocation("structgen", "debug/smallring"));
     }
 }

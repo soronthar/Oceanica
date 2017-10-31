@@ -2,9 +2,11 @@ package mc.oceanica.module.abyss.world.dungeon.rooms;
 
 import mc.debug.DebugRing;
 import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
+import mc.structgen.StructGen;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
@@ -23,7 +25,10 @@ public class Corridor extends DungeonRoom {
 
     @Override
     public void draw(ChunkPos chunkPos, int y,  World world) {
-        DebugRing.generateSmallDebugRing(chunkPos.x,chunkPos.z, y, world, Blocks.WOOL.getStateFromMeta(EnumDyeColor.GRAY.getMetadata()));
+        int x = (chunkPos.x << 4) +1;
+        int z = (chunkPos.z << 4) +1;
+
+        StructGen.generateStructure(world, new BlockPos(x,y,z), new ResourceLocation("structgen", "debug/smallhollowring"));
 
         for (EnumFacing facing : this.getExits()) {
             int xPos=0;
