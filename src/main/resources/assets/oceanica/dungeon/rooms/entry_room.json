@@ -1,7 +1,7 @@
 {
   "name":"entry_room",
-  "structure": [ "structgen:debug/bighollowring"],
+  "structure": [ "oceanica:entry_room"],
   "palette": {
-    "minecraft:wool@11":"minecraft:coal_block"
+    "minecraft:wool@0":"minecraft:wool@15"
   }
 }

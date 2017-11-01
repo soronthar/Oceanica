@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class DungeonRoom {
     private DungeonMap dungeonMap;
-    private List<EnumFacing> exits=new ArrayList<>();
+    private List<EnumFacing> exits=new ArrayList<>();//TODO: change this to Map<EnumFacing,Boolean>, maybe?
 
     public DungeonRoom(DungeonMap dungeonMap) {
         this.dungeonMap=dungeonMap;
