@@ -29,14 +29,18 @@ public class EntryRoom extends SimpleRoom {
     public void draw(ChunkPos chunkPos, int y, World world) {
         int x = (chunkPos.x << 4);
         int z = (chunkPos.z << 4);
-        BlockPalette palette = new BlockPalette();
-        palette.addTransform(Blocks.WOOL.getStateFromMeta(EnumDyeColor.BLUE.getMetadata()), Blocks.COAL_BLOCK.getDefaultState());
-        //TODO: weighted palette
-        StructureInfo info = new StructureInfo(new ResourceLocation("structgen", "debug/bighollowring"), palette);
-        StructureInfo info2 = new StructureInfo(new ResourceLocation("structgen", "debug/smallhollowring"), palette);
+
+        StructureInfo info=StructGen.loadStructureInfo("/oceanica/dungeon/rooms/entry_room");
+
 
         List<EnumFacing> exits = this.getExits();
         EnumFacing facing = exits.get(0);
+        Rotation rotation = getRotationForFacing(facing);
+        StructGen.generateStructure(world, new BlockPos(x, y, z), info,rotation);
+
+    }
+
+    private Rotation getRotationForFacing(EnumFacing facing) {
         Rotation rotation;
         switch (facing) {
             case EAST:
@@ -53,10 +57,6 @@ public class EntryRoom extends SimpleRoom {
                 rotation=Rotation.NONE;
                 break;
         }
-
-        StructGen.generateStructure(world, new BlockPos(x, y, z), info2,rotation);
-        StructGen.generateStructure(world, new BlockPos(x, y, z), info,rotation);
-
-//        DebugRing.generateDebugRing(chunkPos.x,chunkPos.z,y,world,Blocks.COAL_BLOCK.getDefaultState());
+        return rotation;
     }
 }

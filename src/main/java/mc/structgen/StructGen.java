@@ -1,9 +1,14 @@
 package mc.structgen;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import mc.structgen.command.SpawnStructureCommand;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +23,13 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import javax.annotation.Nullable;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by H440 on 30/10/2017.
@@ -69,6 +81,63 @@ public class StructGen {
 
     }
 
+    public static StructureInfo loadStructureInfo(String structureName) {
+        BlockPalette palette = new BlockPalette();
+        StructureInfo info=null;
+
+        try {
+            InputStream inputstream = StructGen.class.getResourceAsStream("/assets"+structureName + ".json"); //todo:add/remove slash
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"));
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(br);
+            JsonObject asJsonObject = element.getAsJsonObject();
+            String name = asJsonObject.get("name").getAsString();
+            JsonArray structure = asJsonObject.get("structure").getAsJsonArray();
+            String structurePath = structure.get(0).getAsString();
+
+            //TODO: weighted palette
+            JsonObject jsonObject = asJsonObject.get("palette").getAsJsonObject();
+            for (Map.Entry<String, JsonElement> next : jsonObject.entrySet()) {
+                String originalBlock=next.getKey();
+                String transformedBlock=next.getValue().getAsString();
+
+                IBlockState originalState = getBlockState(originalBlock);
+                IBlockState transformedState = getBlockState(transformedBlock);
+
+                if (originalState==null) { //TODO: Proper logging
+                    System.out.printf("Error reading structure %s palette: Unrecognized Block %s", structureName,originalBlock );
+                }
+                if (transformedState==null) { //TODO: Proper logging
+                    System.out.printf("Error reading structure %s palette: Unrecognized Block %s", structureName,transformedBlock );
+                }
+
+                palette.addTransform(originalState,transformedState);
+            }
+            info = new StructureInfo(new ResourceLocation(structurePath), palette);
+
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+        return info;
+    }
+
+    private static IBlockState getBlockState(String blockName) {
+        String[] split = blockName.split("@");
+        Block block = Block.getBlockFromName(split[0]);
+        if (block==null) return null;
+
+        IBlockState state;
+        if (split.length>1) {
+            state=block.getStateFromMeta(Integer.parseInt(split[1]));
+        } else {
+            state=block.getDefaultState();
+        }
+        return state;
+    }
+
     private static class BlockPaletteTemplateProcessor implements ITemplateProcessor {
         BlockPalette palette;
 
@@ -80,11 +149,11 @@ public class StructGen {
         @Override
         public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn) {
             IBlockState newBlockState;
-            if (blockInfoIn.blockState.getBlock().equals(Blocks.AIR)) { //Make this block configurable
-                newBlockState = worldIn.getBlockState(pos);
-            } else {
+//            if (blockInfoIn.blockState.getBlock().equals(Blocks.AIR)) { //Make this block configurable
+//                newBlockState = worldIn.getBlockState(pos);
+//            } else {
                 newBlockState = palette.transform(blockInfoIn.blockState);
-            }
+//            }
             return new Template.BlockInfo(blockInfoIn.pos,newBlockState,blockInfoIn.tileentityData);
         }
     }

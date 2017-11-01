@@ -1,5 +1,7 @@
 {
-  "name":"Entry Room",
-  "structure": [ ""]
-
+  "name":"entry_room",
+  "structure": [ "structgen:debug/bighollowring"],
+  "palette": {
+    "minecraft:wool@11":"minecraft:coal_block"
+  }
 }
