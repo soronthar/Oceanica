@@ -1,0 +1,7 @@
+{
+  "name":"corridor_three_exits",
+  "structure": [ "oceanica:corridor_threeexits"],
+  "palette": {
+    "minecraft:wool@0":"minecraft:gold_block"
+  }
+}
