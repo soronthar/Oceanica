@@ -32,7 +32,6 @@ public class ExperimentalWorldGen implements IWorldGenerator {
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (noiseGen == null) noiseGen = new PerlinNoiseGen(world.getSeed());
 
-//TODO: Command to generate the dungeon
 //TODO: Hook up the dungeon generation with the Stucture Generation
         BlockPos spawnPoint = world.getSpawnPoint();
         ChunkPos referenceChunk = new ChunkPos(spawnPoint);

@@ -1,5 +1,6 @@
 package mc.oceanica;
 
+import mc.oceanica.command.GenerateDungeonCommand;
 import mc.oceanica.command.RegenChunkCommand;
 import mc.oceanica.command.RegenChunkNoReefCommand;
 import mc.oceanica.command.StatCommand;
@@ -49,7 +50,9 @@ public class Oceanica {
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new RegenChunkCommand());
         event.registerServerCommand(new RegenChunkNoReefCommand());
-        event.registerServerCommand(new SpawnStructureCommand());
         event.registerServerCommand(new StatCommand(OceanicaStats.INSTANCE));
+        //These do not belong to Oceanica
+        event.registerServerCommand(new SpawnStructureCommand());
+        event.registerServerCommand(new GenerateDungeonCommand());
     }
 }
