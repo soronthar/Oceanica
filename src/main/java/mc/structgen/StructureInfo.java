@@ -2,21 +2,23 @@ package mc.structgen;
 
 import net.minecraft.util.ResourceLocation;
 
-/**
- * Created by H440 on 31/10/2017.
- */
 public class StructureInfo {
+    private String name;
     private BlockPalette palette;
     private ResourceLocation resourceLocation;
 
-    public StructureInfo(ResourceLocation resourceLocation) {
-        this.resourceLocation=resourceLocation;
-        this.palette=BlockPalette.DEFAULT;
+    public StructureInfo(String name, ResourceLocation resourceLocation) {
+        this(name, resourceLocation, BlockPalette.DEFAULT);
     }
 
-    public StructureInfo(ResourceLocation resourceLocation, BlockPalette palette) {
-        this.resourceLocation=resourceLocation;
-        this.palette=palette;
+    public StructureInfo(String name, ResourceLocation resourceLocation, BlockPalette palette) {
+        this.resourceLocation = resourceLocation;
+        this.palette = palette;
+        this.name = name;
+    }
+
+    public StructureInfo(ResourceLocation resourceLocation) {
+        this(resourceLocation.getResourcePath(),resourceLocation,BlockPalette.DEFAULT);
     }
 
     public ResourceLocation getResourceLocation() {
@@ -25,5 +27,9 @@ public class StructureInfo {
 
     public BlockPalette getPalette() {
         return palette;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -31,32 +31,10 @@ public class EntryRoom extends SimpleRoom {
         int z = (chunkPos.z << 4);
 
         StructureInfo info=StructGen.loadStructureInfo("oceanica/dungeon/rooms/entry_room");
-
-
-        List<EnumFacing> exits = this.getExits();
-        EnumFacing facing = exits.get(0);
-        Rotation rotation = getRotationForFacing(facing);
+        Rotation rotation = getRotationForExits();
         StructGen.generateStructure(world, new BlockPos(x, y, z), info,rotation);
 
     }
 
-    private Rotation getRotationForFacing(EnumFacing facing) {
-        Rotation rotation;
-        switch (facing) {
-            case EAST:
-                rotation=Rotation.CLOCKWISE_90;
-                break;
-            case WEST:
-                rotation=Rotation.COUNTERCLOCKWISE_90;
-                break;
-            case SOUTH:
-                rotation=Rotation.CLOCKWISE_180;
-                break;
-            case NORTH: //Entry room Exits are always modeled North
-            default:
-                rotation=Rotation.NONE;
-                break;
-        }
-        return rotation;
-    }
+
 }

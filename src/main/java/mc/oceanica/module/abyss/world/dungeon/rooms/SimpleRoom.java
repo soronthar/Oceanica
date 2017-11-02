@@ -6,7 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-
+//TODO: add doors when generating
 public class SimpleRoom extends DungeonRoom {
     public SimpleRoom(DungeonMap dungeonMap) {
         super(dungeonMap);

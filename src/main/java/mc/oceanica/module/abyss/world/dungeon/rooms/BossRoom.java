@@ -8,7 +8,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 public class BossRoom extends DungeonRoom{
-
+//TODO: render this as a structure
     private final ChunkPos[] bossRoomChunks;
 
     public BossRoom(DungeonMap dungeonMap, ChunkPos[] bossRoomChunks) {

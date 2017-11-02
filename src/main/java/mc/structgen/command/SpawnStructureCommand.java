@@ -85,7 +85,6 @@ public class SpawnStructureCommand extends CommandBase {
                 break;
         }
 
-        //TODO: play with rotation
         template.addBlocksToWorld(world, spawnPosition.up(3), new SomeProcessing(), placementsettings, 2);
 
     }
