@@ -86,7 +86,7 @@ public class StructGen {
         StructureInfo info=null;
 //TODO: cache this info
         try { //TODO consider empty tags and errors in the file.
-            InputStream inputstream = StructGen.class.getResourceAsStream("/assets"+structureName + ".json"); //todo:add/remove slash
+            InputStream inputstream = StructGen.class.getResourceAsStream("/assets/"+structureName + ".json"); //todo:add/remove slash
             BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"));
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(br);

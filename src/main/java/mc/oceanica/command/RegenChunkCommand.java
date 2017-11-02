@@ -33,8 +33,6 @@ public class RegenChunkCommand extends CommandBase {
         return "regen";
     }
 
-
-    //TODO: make this work with other dimensions
     @Override
     public void execute(MinecraftServer minecraftServer, ICommandSender sender, String[] strings) throws CommandException {
 
@@ -56,7 +54,7 @@ public class RegenChunkCommand extends CommandBase {
         }
 
         List<EntityPlayerMP> oldWatchers = new ArrayList<>();
-        WorldServer server = minecraftServer.getWorld(0);
+        WorldServer server = minecraftServer.getWorld(world.provider.getDimension());
         ChunkProviderServer provider = server.getChunkProvider();
         PlayerChunkMap playerManager = server.getPlayerChunkMap();
         ChunkProviderServer chunkServer = (ChunkProviderServer) provider;

@@ -31,7 +31,7 @@ public class Corridor extends DungeonRoom {
 
 
         if (this.getExits().size() == 1) {
-            StructureInfo info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_one_exit");
+            StructureInfo info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_one_exit");
 
             List<EnumFacing> exits = this.getExits();
             EnumFacing facing = exits.get(0);
@@ -43,20 +43,20 @@ public class Corridor extends DungeonRoom {
             StructureInfo info=null;
             Rotation rotation=Rotation.NONE;
             if (exitFacings.north && exitFacings.south ) {
-                info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_two_opposite_exits");
+                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_opposite_exits");
             } else if (exitFacings.east && exitFacings.west) {
-                info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_two_opposite_exits");
+                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_opposite_exits");
                 rotation=Rotation.CLOCKWISE_90;
             } else if (exitFacings.north && exitFacings.east) {
-                info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_two_adjacent_exits");
+                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_adjacent_exits");
             }else if (exitFacings.north && exitFacings.west) {
-                info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_two_adjacent_exits");
+                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_adjacent_exits");
                 rotation=Rotation.COUNTERCLOCKWISE_90;
             }else if (exitFacings.south && exitFacings.east) {
-                info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_two_adjacent_exits");
+                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_adjacent_exits");
                 rotation=Rotation.CLOCKWISE_90;
             }else if (exitFacings.south && exitFacings.west) {
-                info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_two_adjacent_exits");
+                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_adjacent_exits");
                 rotation=Rotation.CLOCKWISE_180;
             }
 
@@ -67,7 +67,7 @@ public class Corridor extends DungeonRoom {
             }
 
         } else if (this.getExits().size() == 3) {
-            StructureInfo info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_three_exits");
+            StructureInfo info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_three_exits");
 
             ExitFacings exitFacings = getExitFacings();
 
@@ -85,7 +85,7 @@ public class Corridor extends DungeonRoom {
             StructGen.generateStructure(world, new BlockPos(x, y, z), info, rotation);
 
         } else if (this.getExits().size() == 4) {
-            StructureInfo info = StructGen.loadStructureInfo("/oceanica/dungeon/rooms/corridor_four_exits");
+            StructureInfo info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_four_exits");
             StructGen.generateStructure(world, new BlockPos(x, y, z), info, Rotation.NONE);
         }
 

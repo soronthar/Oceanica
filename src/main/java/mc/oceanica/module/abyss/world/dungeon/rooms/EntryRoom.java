@@ -30,7 +30,7 @@ public class EntryRoom extends SimpleRoom {
         int x = (chunkPos.x << 4);
         int z = (chunkPos.z << 4);
 
-        StructureInfo info=StructGen.loadStructureInfo("/oceanica/dungeon/rooms/entry_room");
+        StructureInfo info=StructGen.loadStructureInfo("oceanica/dungeon/rooms/entry_room");
 
 
         List<EnumFacing> exits = this.getExits();
