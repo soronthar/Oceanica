@@ -30,12 +30,12 @@ public class GenerateDungeonCommand extends CommandBase {
     public String getUsage(ICommandSender iCommandSender) {
         return "gendungeon radius NORT|SOUTH EAST|WEST";
     }
+    DungeonMap dungeonMap;
 
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         //TODO update when dungeon-generating code is hooked to the structure generation
-        DungeonMap dungeonMap;
         int radius=8;
         EnumFacing zAxis=EnumFacing.NORTH;
         EnumFacing xAxis=EnumFacing.EAST;
@@ -54,10 +54,16 @@ public class GenerateDungeonCommand extends CommandBase {
         ChunkPos referenceChunk = new ChunkPos(position);
         Random rand=new Random();
         Vec3i facing = addVec3i(zAxis.getDirectionVec(), xAxis.getDirectionVec());
-        dungeonMap = new DungeonMap(referenceChunk, radius, facing);
-        dungeonMap.generateMap(rand);
+        if (dungeonMap==null ||
+                radius!=dungeonMap.getRadius() ||
+                !facing.equals(dungeonMap.getFacing())){
+//                ||
+//                !referenceChunk.equals(dungeonMap.getStartChunk())) {
+            dungeonMap = new DungeonMap(referenceChunk, radius, facing);
+            dungeonMap.generateMap(rand);
+        }
 
-        ChunkPos spawnChunk = new ChunkPos(position);
+        ChunkPos spawnChunk = dungeonMap.getStartChunk();
         ChunkPos cornerChunk = new ChunkPos(spawnChunk.x + (radius * facing.getX()), spawnChunk.z + (radius * facing.getZ()));
         int minX=Math.min(spawnChunk.x,cornerChunk.x);
         int minZ=Math.min(spawnChunk.z,cornerChunk.z);
@@ -68,7 +74,8 @@ public class GenerateDungeonCommand extends CommandBase {
             for(int z=minZ;z<=maxZ;z++) {
                 ChunkPos currentChunk = new ChunkPos(x,z);
                 if (dungeonMap.contains(currentChunk)) {
-                    dungeonMap.drawRoomAt(currentChunk, position.getY(), sender.getEntityWorld());
+                    dungeonMap.drawRoomAt(currentChunk, 64, sender.getEntityWorld());
+//                    dungeonMap.drawRoomAt(currentChunk, position.getY(), sender.getEntityWorld());
                 }
             }
         }

@@ -1,6 +1,6 @@
 {
   "name":"corridor_four_exits",
-  "structure": [ "oceanica:corridor_dour_exits"],
+  "structure": [ "oceanica:corridor_four_exits"],
   "palette": {
     "minecraft:wool@0":"minecraft:diamond_block"
   }

@@ -20,6 +20,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class StructGen {
@@ -86,6 +87,7 @@ public class StructGen {
     }
 
     public static StructureInfo loadStructureInfo(String structureName) {
+//        return StructGen.createStructureInfo(structureName);
         return structureCache.computeIfAbsent(structureName, StructGen::createStructureInfo);
     }
 
@@ -109,9 +111,11 @@ public class StructGen {
 
     private static BlockPalette createPalette(String structureName, JsonObject structureInfoJson) {
         //TODO: weighted palette
-        JsonObject paletteJson = structureInfoJson.get("palette").getAsJsonObject();
+        //RANT: This does not look like the proper use for Optional
+        Optional<JsonElement> paletteJsonElement = Optional.ofNullable(structureInfoJson.get("palette"));
         BlockPalette palette;
-        if (paletteJson != null) {
+        if (paletteJsonElement.isPresent()) {
+            JsonObject paletteJson = paletteJsonElement.get().getAsJsonObject();
             palette = new BlockPalette();
 
             for (Map.Entry<String, JsonElement> next : paletteJson.entrySet()) {
@@ -131,7 +135,7 @@ public class StructGen {
                 palette.addTransform(originalState, transformedState);
             }
         } else {
-            palette = BlockPalette.DEFAULT;
+            palette =null;
         }
         return palette;
     }

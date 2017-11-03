@@ -2,8 +2,12 @@ package mc.oceanica.module.abyss.world.dungeon.rooms;
 
 import mc.debug.DebugRing;
 import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
+import mc.structgen.StructGen;
+import mc.structgen.StructureInfo;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
@@ -30,17 +34,36 @@ public class BossRoom extends DungeonRoom{
             maxZ=Math.max(maxZ,bossRoomChunk.getZEnd());
         }
 
-        if (chunkPos.getXEnd()==maxX) {
-            DebugRing.drawZAxis(world,chunkPos.getXEnd(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-        } else if (chunkPos.getXStart()==minX) {
-            DebugRing.drawZAxis(world,chunkPos.getXStart(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+
+
+//        if (chunkPos.getXEnd()==maxX) {
+//            DebugRing.drawZAxis(world,chunkPos.getXEnd(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+//        } else if (chunkPos.getXStart()==minX) {
+//            DebugRing.drawZAxis(world,chunkPos.getXStart(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+//        }
+//
+//        if (chunkPos.getZEnd()==maxZ) {
+//            DebugRing.drawXAxis(world,chunkPos.getXStart(),y,chunkPos.getZEnd(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+//        } else if (chunkPos.getZStart()==minZ) {
+//            DebugRing.drawXAxis(world,chunkPos.getXStart(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
+//        }
+
+        int x = (chunkPos.x << 4);
+        int z = (chunkPos.z << 4);
+
+        Rotation rotation=Rotation.NONE;
+        if (chunkPos.getZStart()==minZ && chunkPos.getXEnd()==maxX) {
+            rotation=Rotation.NONE;
+        } else if (chunkPos.getZStart()==minZ && chunkPos.getXStart()==minX) {
+            rotation=Rotation.COUNTERCLOCKWISE_90;
+        } else if (chunkPos.getZEnd()==maxZ && chunkPos.getXEnd()==maxX) {
+            rotation=Rotation.CLOCKWISE_90;
+        } else if (chunkPos.getZEnd()==maxZ && chunkPos.getXStart()==minX) {
+            rotation=Rotation.CLOCKWISE_180;
         }
 
-        if (chunkPos.getZEnd()==maxZ) {
-            DebugRing.drawXAxis(world,chunkPos.getXStart(),y,chunkPos.getZEnd(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-        } else if (chunkPos.getZStart()==minZ) {
-            DebugRing.drawXAxis(world,chunkPos.getXStart(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-        }
+        StructureInfo info= StructGen.loadStructureInfo("oceanica/dungeon/rooms/boss_room");
+        StructGen.generateStructure(world, new BlockPos(x, y, z), info, rotation);
 
     }
 }

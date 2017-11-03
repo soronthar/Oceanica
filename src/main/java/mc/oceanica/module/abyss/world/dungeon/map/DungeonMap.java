@@ -31,6 +31,18 @@ public class DungeonMap {
         boundingBox = StructureBoundingBox.createProper(startChunk.x, 0, startChunk.z, startChunk.x + xOffset, 0, startChunk.z + zOffset);
     }
 
+    public int getRadius() {
+        return radius;
+    }
+
+    public Vec3i getFacing() {
+        return facing;
+    }
+
+    public ChunkPos getStartChunk() {
+        return startChunk;
+    }
+
     public boolean contains(ChunkPos currentChunk) {
         return boundingBox.intersectsWith(currentChunk.x, currentChunk.z, currentChunk.x, currentChunk.z);
     }

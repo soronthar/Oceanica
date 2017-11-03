@@ -31,19 +31,15 @@ public class DebugRing {
     }
 
     public static  void drawXAxis(World world, int x, int y, int z, IBlockState markerBlock) {
-        for(int j=y;j<y+16;j++) {
             for (int i = 0; i < 16; i++) {
-                world.setBlockState(new BlockPos(x + i, j, z), markerBlock, 2 | 16);
+                world.setBlockState(new BlockPos(x + i, y, z), markerBlock, 2 | 16);
             }
-        }
     }
 
     public static  void drawZAxis(World world, int x, int y, int z, IBlockState markerBlock) {
-        for(int j=y;j<y+16;j++) {
             for (int i = 0; i < 16; i++) {
-                world.setBlockState(new BlockPos(x,  j, z + i), markerBlock, 2 | 16);
+                world.setBlockState(new BlockPos(x,  y, z + i), markerBlock, 2 | 16);
             }
-        }
     }
 
     public static  void generateDebugRing(int chunkX, int chunkZ, int y, World world, IBlockState markerBlock) {
