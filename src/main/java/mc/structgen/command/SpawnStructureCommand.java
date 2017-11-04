@@ -22,9 +22,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by H440 on 29/10/2017.
- */
+//TODO: Redefine this command
 public class SpawnStructureCommand extends CommandBase {
     @Override
     public String getName() {

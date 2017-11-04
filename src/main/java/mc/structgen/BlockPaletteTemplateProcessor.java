@@ -15,6 +15,7 @@ class BlockPaletteTemplateProcessor implements ITemplateProcessor {
         this.palette = palette;
     }
 
+
     @Nullable
     @Override
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn) {

@@ -6,7 +6,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -16,9 +19,11 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
@@ -45,6 +50,7 @@ public class StructGen {
         PlacementSettings placementsettings = getPlacementSettings(rotation, Mirror.NONE);
         spawnPosition = rotateInPlace(spawnPosition, rotation);
         placeStructureInWorld(template, info.getPalette(), spawnPosition, placementsettings, world);
+
     }
 
     private static void placeStructureInWorld(Template template, BlockPalette palette, BlockPos spawnPosition, PlacementSettings placementsettings, World world) {
@@ -52,6 +58,18 @@ public class StructGen {
             template.addBlocksToWorld(world, spawnPosition, new BlockPaletteTemplateProcessor(palette), placementsettings, 2);
         } else {
             template.addBlocksToWorld(world, spawnPosition, placementsettings, 2);
+        }
+
+        Map<BlockPos, String> dataBlocks = template.getDataBlocks(spawnPosition, placementsettings);
+        for (Map.Entry<BlockPos, String> entry : dataBlocks.entrySet()) {
+            if ("chest".equals(entry.getValue())) {
+                BlockPos key = entry.getKey();
+                world.setBlockState(key,Blocks.CHEST.getDefaultState());
+                TileEntity tileEntity = world.getTileEntity(key);
+                if (tileEntity instanceof TileEntityChest) {
+                    ((TileEntityChest)tileEntity).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON,world.rand.nextLong());
+                }
+            }
         }
     }
 

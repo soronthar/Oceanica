@@ -34,20 +34,6 @@ public class BossRoom extends DungeonRoom{
             maxZ=Math.max(maxZ,bossRoomChunk.getZEnd());
         }
 
-
-
-//        if (chunkPos.getXEnd()==maxX) {
-//            DebugRing.drawZAxis(world,chunkPos.getXEnd(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-//        } else if (chunkPos.getXStart()==minX) {
-//            DebugRing.drawZAxis(world,chunkPos.getXStart(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-//        }
-//
-//        if (chunkPos.getZEnd()==maxZ) {
-//            DebugRing.drawXAxis(world,chunkPos.getXStart(),y,chunkPos.getZEnd(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-//        } else if (chunkPos.getZStart()==minZ) {
-//            DebugRing.drawXAxis(world,chunkPos.getXStart(),y,chunkPos.getZStart(),Blocks.WOOL.getStateFromMeta(EnumDyeColor.YELLOW.getMetadata()));
-//        }
-
         int x = (chunkPos.x << 4);
         int z = (chunkPos.z << 4);
 
@@ -62,6 +48,7 @@ public class BossRoom extends DungeonRoom{
             rotation=Rotation.CLOCKWISE_180;
         }
 
+        //TODO: add entrance
         StructureInfo info= StructGen.loadStructureInfo("oceanica/dungeon/rooms/boss_room");
         StructGen.generateStructure(world, new BlockPos(x, y, z), info, rotation);
 
