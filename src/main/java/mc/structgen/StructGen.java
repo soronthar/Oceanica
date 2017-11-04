@@ -76,7 +76,7 @@ public class StructGen {
         WorldServer worldserver = (WorldServer) world;
         MinecraftServer minecraftserver = world.getMinecraftServer();
         TemplateManager templatemanager = worldserver.getStructureTemplateManager();
-        return templatemanager.getTemplate(minecraftserver, info.getResourceLocation());
+        return templatemanager.get(minecraftserver, info.getResourceLocation());
     }
 
     private static PlacementSettings getPlacementSettings(Rotation rotation, Mirror mirror) {
@@ -144,10 +144,10 @@ public class StructGen {
                 IBlockState transformedState = getBlockState(transformedBlock);
 
                 if (originalState == null) { //TODO: Proper logging
-                    System.out.printf("Error reading structure %s palette: Unrecognized Block %s", structureName, originalBlock);
+                    StructGenLib.logger.error("Error reading structure %s palette: Unrecognized Block %s", structureName, originalBlock);
                 }
                 if (transformedState == null) { //TODO: Proper logging
-                    System.out.printf("Error reading structure %s palette: Unrecognized Block %s", structureName, transformedBlock);
+                    StructGenLib.logger.error("Error reading structure %s palette: Unrecognized Block %s", structureName, transformedBlock);
                 }
 
                 palette.addTransform(originalState, transformedState);

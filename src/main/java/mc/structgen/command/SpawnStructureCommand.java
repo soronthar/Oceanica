@@ -1,6 +1,7 @@
 package mc.structgen.command;
 
 import mc.structgen.StructGen;
+import mc.structgen.StructGenLibInfo;
 import mc.structgen.StructureInfo;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
@@ -44,29 +45,56 @@ public class SpawnStructureCommand extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        EntityPlayer commandSenderEntity = (EntityPlayer) sender.getCommandSenderEntity();
+            EntityPlayer commandSenderEntity = (EntityPlayer) sender.getCommandSenderEntity();
+            BlockPos senderPosition = sender.getPosition();
 
-        int dimension = sender.getEntityWorld().provider.getDimension();
-        WorldServer world = server.getWorld(dimension);
+            int dimension = sender.getEntityWorld().provider.getDimension();
+            WorldServer world = server.getWorld(dimension);
 
-        Mirror mirror = Mirror.NONE;
-        Rotation rotation = Rotation.NONE;
+            Mirror mirror = Mirror.NONE;
+            Rotation rotation = Rotation.NONE;
+            BlockPos spawnPos=senderPosition;
+            String structureName = null;
 
-        for (String arg : args) {
-            if (arg.startsWith("R:")) {
-                rotation = Rotation.valueOf(arg.substring(2));
-            } else if (arg.startsWith("M:")) {
-                mirror = Mirror.valueOf(arg.substring(2));
+            for (String arg : args) {
+                if (arg.startsWith("R:") || arg.startsWith("r:")) {
+                    rotation = Rotation.valueOf(arg.substring(2));
+                } else if (arg.startsWith("P:")|| arg.startsWith("p:")) {
+                    //TODO: specify palette
+
+                }else if (arg.startsWith("C:")|| arg.startsWith("c:")) {
+                    String[] posString = arg.substring(2).split(",");
+                    if (posString.length==3) {
+                        int x=getCoordFromParam(posString[0], spawnPos.getX());
+                        int y=getCoordFromParam(posString[1], spawnPos.getY());
+                        int z=getCoordFromParam(posString[2], spawnPos.getZ());
+                        spawnPos = new BlockPos(x, y,z);
+                    }
+                } else {
+                    if (arg.contains(":")) {
+                        structureName=arg;
+                    } else {
+                        structureName= StructGenLibInfo.MODID+":"+arg;
+                    }
+                }
             }
-        }
 
-        //TODO: parameter handling
-        StructureInfo structureInfo = StructGen.loadStructureInfo("structgen:bighollowring");
-        StructGen.generateStructure(world,sender.getPosition(),structureInfo,rotation);
+            if (structureName!=null) {
+                StructureInfo structureInfo = StructGen.loadStructureInfo(structureName);
+                StructGen.generateStructure(world, spawnPos,structureInfo,rotation);
 
-
+            }
     }
 
+    private int getCoordFromParam(String param, int defaultValue) {
+        if (param.equals("~")) {
+            return defaultValue;
+        } else if (param.startsWith("+")||param.startsWith("-")) {
+            return defaultValue +Integer.parseInt(param);
+        } else {
+            return Integer.parseInt(param);
+        }
+    }
 
 
 }
