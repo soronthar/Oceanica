@@ -40,7 +40,6 @@ public class StructGen {
     }
 
     public static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info, Rotation rotation) {
-        //TODO: Chests and trapped chests
         //TODO: Spawners
         //TODO: Spawn mobs.. bosses... etc
         if (world.isRemote) return;

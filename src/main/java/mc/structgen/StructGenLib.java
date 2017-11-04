@@ -1,5 +1,6 @@
-package mc.oceanica;
+package mc.structgen;
 
+import mc.oceanica.OceanicaStats;
 import mc.oceanica.command.GenerateDungeonCommand;
 import mc.structgen.command.RegenChunkCommand;
 import mc.oceanica.command.RegenChunkNoReefCommand;
@@ -12,46 +13,48 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-
 import org.apache.logging.log4j.Logger;
 
-import static mc.oceanica.OceanicaInfo.*;
+import static mc.structgen.StructGenLibInfo.MODID;
+import static mc.structgen.StructGenLibInfo.MODVERSION;
+import static mc.structgen.StructGenLibInfo.PACKAGE;
+
 
 @Mod(
         modid = MODID,
         version = MODVERSION,
-        dependencies = "required-after:Forge@[14.21.1.2387,)",
+//        dependencies = "required-after:Forge@[14.21.1.2387,)",
         useMetadata = true
 )
-public class Oceanica {
-    @SidedProxy(clientSide = PACKAGE+".proxy.ClientProxy", serverSide = PACKAGE+".proxy.CommonProxy")
-    public static CommonProxy proxy;
+public class StructGenLib {
+
+//        @SidedProxy(clientSide = PACKAGE+".proxy.ClientProxy", serverSide = PACKAGE+".proxy.CommonProxy")
+//        public static CommonProxy proxy;
 
     @Mod.Instance
-    public static Oceanica instance;
+    public static StructGenLib instance;
 
     public static Logger logger;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event){
+    public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        proxy.preInit(event);
+//            proxy.preInit(event);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-        proxy.init(e);
+//            proxy.init(e);
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent e) { proxy.postInit(e); }
+    public void postInit(FMLPostInitializationEvent e) {
+//        proxy.postInit(e);
+    }
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new RegenChunkCommand());
-        event.registerServerCommand(new RegenChunkNoReefCommand());
-        event.registerServerCommand(new StatCommand(OceanicaStats.INSTANCE));
-        //These do not belong to Oceanica
-        event.registerServerCommand(new GenerateDungeonCommand());
+        event.registerServerCommand(new SpawnStructureCommand());
     }
 }

@@ -1,6 +1,7 @@
-package mc.oceanica.command;
+package mc.structgen.command;
 
-import mc.oceanica.Oceanica;
+
+import mc.structgen.StructGenLib;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -79,7 +80,7 @@ public class RegenChunkCommand extends CommandBase {
             sender.sendMessage(new TextComponentString("Chunks Regenerated"));
 
         } catch (Exception e) {
-            Oceanica.logger.warn("Failed to generate chunk", e);
+            StructGenLib.logger.warn("Failed to generate chunk", e);
             sender.sendMessage(new TextComponentString("Failed to generate chunk"));
         }
     }
