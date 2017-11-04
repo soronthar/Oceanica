@@ -1,4 +1,4 @@
 {
   "name":"bighollowring",
-  "structure": [ "strucgen:debug/bighollowring"]
+  "structure": [ "structgen:debug/bighollowring"]
 }

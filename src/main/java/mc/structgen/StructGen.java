@@ -104,8 +104,9 @@ public class StructGen {
     }
 
     public static StructureInfo loadStructureInfo(String structureName) {
-//        return StructGen.createStructureInfo(structureName);
-        return structureCache.computeIfAbsent(structureName, StructGen::createStructureInfo);
+        structureName=structureName.replace(':','/');
+        return StructGen.createStructureInfo(structureName);
+//        return structureCache.computeIfAbsent(structureName, StructGen::createStructureInfo);
     }
 
     private static StructureInfo createStructureInfo(String structureName) {

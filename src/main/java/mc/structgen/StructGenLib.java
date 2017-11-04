@@ -27,6 +27,8 @@ import static mc.structgen.StructGenLibInfo.PACKAGE;
         useMetadata = true
 )
 public class StructGenLib {
+//TODO: multiple structure info in the same file, loaded on startup
+// TODO: reload structure info
 
 //        @SidedProxy(clientSide = PACKAGE+".proxy.ClientProxy", serverSide = PACKAGE+".proxy.CommonProxy")
 //        public static CommonProxy proxy;

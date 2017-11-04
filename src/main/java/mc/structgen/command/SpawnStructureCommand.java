@@ -1,5 +1,7 @@
 package mc.structgen.command;
 
+import mc.structgen.StructGen;
+import mc.structgen.StructureInfo;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -26,12 +28,12 @@ import javax.annotation.Nullable;
 public class SpawnStructureCommand extends CommandBase {
     @Override
     public String getName() {
-        return "spawn";
+        return "sgen:spawn";
     }
 
     @Override
     public String getUsage(ICommandSender iCommandSender) {
-        return "spawn";
+        return "sgen:spawn [modid:]structure-name [c:x,y,z] [p:palette] [r:rotation]";
     }
 
     @Override
@@ -47,11 +49,6 @@ public class SpawnStructureCommand extends CommandBase {
         int dimension = sender.getEntityWorld().provider.getDimension();
         WorldServer world = server.getWorld(dimension);
 
-        TemplateManager templatemanager = world.getStructureTemplateManager();
-        ResourceLocation loc = new ResourceLocation("structgen", "debug/smallring");
-//        ResourceLocation loc = new ResourceLocation(MODID, "teststructure");
-        Template template = templatemanager.getTemplate(server, loc);
-
         Mirror mirror = Mirror.NONE;
         Rotation rotation = Rotation.NONE;
 
@@ -63,40 +60,13 @@ public class SpawnStructureCommand extends CommandBase {
             }
         }
 
-        PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror)
-                .setRotation(rotation).setIgnoreEntities(false).setChunk((ChunkPos) null)
-                .setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
+        //TODO: parameter handling
+        StructureInfo structureInfo = StructGen.loadStructureInfo("structgen:bighollowring");
+        StructGen.generateStructure(world,sender.getPosition(),structureInfo,rotation);
 
-        BlockPos spawnPosition = commandSenderEntity.getPosition();
-        switch (rotation) {
-            case CLOCKWISE_90:
-                spawnPosition = spawnPosition.east(15);
-                break;
-            case CLOCKWISE_180:
-                spawnPosition = spawnPosition.east(15);
-                spawnPosition = spawnPosition.south(15);
-                break;
-            case COUNTERCLOCKWISE_90:
-                spawnPosition = spawnPosition.south(15);
-                break;
-            default:
-                break;
-        }
-
-        template.addBlocksToWorld(world, spawnPosition.up(3), new SomeProcessing(), placementsettings, 2);
 
     }
 
 
-    private class SomeProcessing implements ITemplateProcessor {
-        @Nullable
-        @Override
-        public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn) {
-            if (blockInfoIn.blockState.getBlock().equals(Blocks.WOOL)) {
-                return new Template.BlockInfo(blockInfoIn.pos, Blocks.WOOL.getStateFromMeta(EnumDyeColor.RED.getMetadata()), blockInfoIn.tileentityData);
-            } else {
-                return blockInfoIn;
-            }
-        }
-    }
+
 }
