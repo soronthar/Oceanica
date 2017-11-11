@@ -32,9 +32,14 @@ public class StructSpawn {
     }
 
 
+    public static void generateStructure(World world, BlockPos spawnPosition, String structureName, Rotation rotation, BlockPalette palette) {
+        StructureInfo structureInfo = StructSpawnLib.instance.getStructurePackManager().getStructureInfo(structureName);
+        generateStructure(world, spawnPosition, structureInfo , rotation, palette);
+    }
+
     public static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info, Rotation rotation, BlockPalette palette) {
-        //TODO: Spawners
         //TODO: Spawn mobs.. bosses... etc
+        //TODO: Spawners
         if (world.isRemote) return;
         if (info == null || spawnPosition == null) return;
 

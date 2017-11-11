@@ -64,9 +64,7 @@ public class SpawnStructureCommand extends CommandBase {
         }
 
         if (structureName != null) {
-            StructureInfo structureInfo = structurePackManager.getStructureInfo(structureName);
-            StructSpawn.generateStructure(world, spawnPos, structureInfo, rotation, palette);
-
+            StructSpawn.generateStructure(world, spawnPos, structureName, rotation, palette);
         }
     }
 
