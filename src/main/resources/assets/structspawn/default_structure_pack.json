@@ -3,14 +3,14 @@
     {
       "name": "bighollowring",
       "structure": [
-        "structgen:debug/bighollowring"
+        "structspawn:debug/bighollowring"
       ],
       "description": "16x16 hollow ring with a bone block north border"
     },
     {
       "name": "bighollowringwithcoal",
       "structure": [
-        "structgen:debug/bighollowring"
+        "structspawn:debug/bighollowring"
       ],
       "description": "16x16 hollow ring with coal a north border",
       "palette": [
@@ -25,14 +25,14 @@
     {
       "name": "smallhollowring",
       "structure": [
-        "structgen:debug/smallhollowring"
+        "structspawn:debug/smallhollowring"
       ],
       "description": "14x14 hollow white wool ring"
     },
     {
       "name": "smallhollowringpaletteref",
       "structure": [
-        "structgen:debug/smallhollowring"
+        "structspawn:debug/smallhollowring"
       ],
       "description": "14x14 hollow white wool ring"
       //      "palette": "test-palette"
@@ -40,14 +40,14 @@
     {
       "name": "smallring",
       "structure": [
-        "structgen:debug/smallring"
+        "structspawn:debug/smallring"
       ],
       "description": "14x14 solid ring"
     },
     {
       "name": "teststructure",
       "structure": [
-        "structgen:teststructure"
+        "structspawn:teststructure"
       ],
       "description": "Test Structure with lots of elements"
     }

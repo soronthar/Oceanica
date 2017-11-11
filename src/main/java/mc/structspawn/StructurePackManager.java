@@ -1,4 +1,4 @@
-package mc.structgen;
+package mc.structspawn;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -12,17 +12,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-public class StructureManager {
+public class StructurePackManager {
+    //TODO: register packs from config directory
+    private List<String> registeredStructurePacks = new ArrayList<>();
     private Map<String, StructureInfo> structureMap = new HashMap<>();
     private Map<String, BlockPalette> paletteMap = new HashMap<>();
 
+    public void addStructurePack(String structurePackName) {
+        registeredStructurePacks.add(structurePackName);
+    }
+
+    public void initRegisteredPacks() {
+        for (String registeredPack : registeredStructurePacks) {
+            loadStructurePack(registeredPack);
+        }
+    }
+
     public void loadStructurePack(String structurePack) {
-        //TODO: some magic to be able to read structure packs from other mods, easily
         JsonObject structurePackContent = readFile(structurePack);
         if (structurePackContent != null) {
             loadStructures(structurePackContent);
@@ -91,10 +99,10 @@ public class StructureManager {
             IBlockState transformedState = getBlockState(transformedBlock);
 
             if (originalState == null) {
-                StructGenLib.logger.error("Error reading palette %s:%s : Unrecognized Original Block %s", paletteSource,palette.getName(), originalBlock);
+                StructSpawnLib.logger.error("Error reading palette %s:%s : Unrecognized Original Block %s", paletteSource,palette.getName(), originalBlock);
             }
             if (transformedState == null) {
-                StructGenLib.logger.error("Error reading palette %s:%s palette: Unrecognized Transformed Block %s", paletteSource, palette.getName(), transformedBlock);
+                StructSpawnLib.logger.error("Error reading palette %s:%s palette: Unrecognized Transformed Block %s", paletteSource, palette.getName(), transformedBlock);
             }
 
             if (originalState !=null && transformedState != null) {
@@ -107,16 +115,16 @@ public class StructureManager {
 
 
     private JsonObject readFile(String structurePack) {
-        //TODO structurePack=structurePack.replace(':','/');
+        structurePack=structurePack.replace(':','/');
         try (
-                InputStream inputstream = StructGen.class.getResourceAsStream("/assets/" + structurePack + ".json"); //todo: multiple assets sources
+                InputStream inputstream = StructSpawn.class.getResourceAsStream("/assets/" + structurePack + ".json");
                 BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"));
         ) {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(br);
             return element.getAsJsonObject();
         } catch (IOException e) {
-            StructGenLib.logger.error("Error reading " + structurePack, e);
+            StructSpawnLib.logger.error("Error reading " + structurePack, e);
             return null;
         }
     }
@@ -142,4 +150,5 @@ public class StructureManager {
     public BlockPalette getBlockPalette(String paletteName) {
         return paletteMap.get(paletteName);
     }
+
 }

@@ -1,11 +1,10 @@
 package mc.oceanica;
 
 import mc.oceanica.command.GenerateDungeonCommand;
-import mc.structgen.command.RegenChunkCommand;
+import mc.structspawn.command.RegenChunkCommand;
 import mc.oceanica.command.RegenChunkNoReefCommand;
 import mc.oceanica.command.StatCommand;
 import mc.oceanica.proxy.CommonProxy;
-import mc.structgen.command.SpawnStructureCommand;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

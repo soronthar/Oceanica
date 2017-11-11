@@ -1,20 +1,9 @@
 package mc.oceanica.module.abyss.world.dungeon.rooms;
 
-import mc.debug.DebugRing;
 import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
-import mc.structgen.BlockPalette;
-import mc.structgen.StructGen;
-import mc.structgen.StructureInfo;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 /**
  * Created by H440 on 22/10/2017.
@@ -30,9 +19,9 @@ public class EntryRoom extends SimpleRoom {
         int x = (chunkPos.x << 4);
         int z = (chunkPos.z << 4);
 
-//        StructureInfo info=StructGen.loadStructureInfo("oceanica/dungeon/rooms/entry_room");
+//        StructureInfo info=StructSpawn.loadStructureInfo("oceanica/dungeon/rooms/entry_room");
         Rotation rotation = getRotationForExits();
-//        StructGen.generateStructure(world, new BlockPos(x, y, z), info,rotation);
+//        StructSpawn.generateStructure(world, new BlockPos(x, y, z), info,rotation);
 
     }
 

@@ -1,11 +1,5 @@
-package mc.structgen;
+package mc.structspawn;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -21,14 +15,10 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.loot.LootTableList;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 
 
-public class StructGen {
+public class StructSpawn {
     public static void generateStructure(World world, BlockPos spawnPosition, ResourceLocation resourceLocation) {
         generateStructure(world, spawnPosition, new StructureInfo(resourceLocation));
     }

@@ -1,7 +1,7 @@
-package mc.structgen.command;
+package mc.structspawn.command;
 
 
-import mc.structgen.StructGenLib;
+import mc.structspawn.StructSpawnLib;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -80,7 +80,7 @@ public class RegenChunkCommand extends CommandBase {
             sender.sendMessage(new TextComponentString("Chunks Regenerated"));
 
         } catch (Exception e) {
-            StructGenLib.logger.warn("Failed to generate chunk", e);
+            StructSpawnLib.logger.warn("Failed to generate chunk", e);
             sender.sendMessage(new TextComponentString("Failed to generate chunk"));
         }
     }

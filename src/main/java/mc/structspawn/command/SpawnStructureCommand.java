@@ -1,37 +1,27 @@
-package mc.structgen.command;
+package mc.structspawn.command;
 
-import mc.structgen.*;
-import net.minecraft.block.Block;
+import mc.structspawn.*;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.gen.structure.template.ITemplateProcessor;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
-
-import javax.annotation.Nullable;
 
 public class SpawnStructureCommand extends CommandBase {
+
+    //TODO: error message when the structure could not be spawned
     @Override
     public String getName() {
-        return "sgen:spawn";
+        return "sspawn:spawn";
     }
 
     @Override
     public String getUsage(ICommandSender iCommandSender) {
-        return "sgen:spawn [modid:]structure-name [c:x,y,z] [p:palette] [r:rotation]";
+        return "sspawn:spawn [modid:]structure-name [c:x,y,z] [p:palette] [r:rotation]";
     }
 
     @Override
@@ -42,7 +32,7 @@ public class SpawnStructureCommand extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        StructureManager structureManager = StructGenLib.instance.getStructureManager();
+        StructurePackManager structurePackManager = StructSpawnLib.instance.getStructurePackManager();
 
         EntityPlayer commandSenderEntity = (EntityPlayer) sender.getCommandSenderEntity();
         BlockPos senderPosition = sender.getPosition();
@@ -59,7 +49,7 @@ public class SpawnStructureCommand extends CommandBase {
             if (arg.startsWith("R:") || arg.startsWith("r:")) {
                 rotation = Rotation.valueOf(arg.substring(2));
             } else if (arg.startsWith("P:") || arg.startsWith("p:")) {
-                palette = structureManager.getBlockPalette(arg.substring(2));
+                palette = structurePackManager.getBlockPalette(arg.substring(2));
             } else if (arg.startsWith("C:") || arg.startsWith("c:")) {
                 String[] posString = arg.substring(2).split(",");
                 if (posString.length == 3) {
@@ -70,18 +60,12 @@ public class SpawnStructureCommand extends CommandBase {
                 }
             } else {
                 structureName = arg;
-
-//                    if (arg.contains(":")) {
-//                        structureName=arg;
-//                    } else {
-//                        structureName= StructGenLibInfo.MODID+":"+arg;
-//                    }
             }
         }
 
         if (structureName != null) {
-            StructureInfo structureInfo = structureManager.getStructureInfo(structureName);
-            StructGen.generateStructure(world, spawnPos, structureInfo, rotation, palette);
+            StructureInfo structureInfo = structurePackManager.getStructureInfo(structureName);
+            StructSpawn.generateStructure(world, spawnPos, structureInfo, rotation, palette);
 
         }
     }

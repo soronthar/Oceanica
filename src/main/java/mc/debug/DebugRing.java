@@ -1,8 +1,7 @@
 package mc.debug;
 
-import mc.structgen.StructGen;
+import mc.structspawn.StructSpawn;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -45,7 +44,7 @@ public class DebugRing {
     public static  void generateDebugRing(int chunkX, int chunkZ, int y, World world, IBlockState markerBlock) {
         int x = chunkX << 4;
         int z = chunkZ << 4;
-        StructGen.generateStructure(world, new BlockPos(x,y,z), new ResourceLocation("structgen", "debug/bighollowring"));
+        StructSpawn.generateStructure(world, new BlockPos(x,y,z), new ResourceLocation("structgen", "debug/bighollowring"));
 
     }
 
@@ -53,6 +52,6 @@ public class DebugRing {
         int x = (chunkX << 4) +1;
         int z = (chunkZ << 4) +1;
 
-        StructGen.generateStructure(world, new BlockPos(x,y,z), new ResourceLocation("structgen", "debug/smallring"));
+        StructSpawn.generateStructure(world, new BlockPos(x,y,z), new ResourceLocation("structgen", "debug/smallring"));
     }
 }

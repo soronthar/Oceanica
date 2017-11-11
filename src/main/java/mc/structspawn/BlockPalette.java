@@ -1,6 +1,5 @@
-package mc.structgen;
+package mc.structspawn;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 
 import java.util.HashMap;

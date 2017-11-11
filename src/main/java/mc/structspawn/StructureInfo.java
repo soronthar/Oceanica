@@ -1,4 +1,4 @@
-package mc.structgen;
+package mc.structspawn;
 
 import net.minecraft.util.ResourceLocation;
 

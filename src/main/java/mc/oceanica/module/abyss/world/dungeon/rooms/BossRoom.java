@@ -1,13 +1,7 @@
 package mc.oceanica.module.abyss.world.dungeon.rooms;
 
-import mc.debug.DebugRing;
 import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
-import mc.structgen.StructGen;
-import mc.structgen.StructureInfo;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
@@ -49,8 +43,8 @@ public class BossRoom extends DungeonRoom{
         }
 
         //TODO: add entrance
-//        StructureInfo info= StructGen.loadStructureInfo("oceanica/dungeon/rooms/boss_room");
-//        StructGen.generateStructure(world, new BlockPos(x, y, z), info, rotation);
+//        StructureInfo info= StructSpawn.loadStructureInfo("oceanica/dungeon/rooms/boss_room");
+//        StructSpawn.generateStructure(world, new BlockPos(x, y, z), info, rotation);
 
     }
 }

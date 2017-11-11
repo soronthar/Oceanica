@@ -1,7 +1,7 @@
 package mc.oceanica.command;
 
 import mc.oceanica.OceanicaConfig;
-import mc.structgen.command.RegenChunkCommand;
+import mc.structspawn.command.RegenChunkCommand;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
