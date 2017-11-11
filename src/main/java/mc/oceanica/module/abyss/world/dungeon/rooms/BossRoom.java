@@ -49,8 +49,8 @@ public class BossRoom extends DungeonRoom{
         }
 
         //TODO: add entrance
-        StructureInfo info= StructGen.loadStructureInfo("oceanica/dungeon/rooms/boss_room");
-        StructGen.generateStructure(world, new BlockPos(x, y, z), info, rotation);
+//        StructureInfo info= StructGen.loadStructureInfo("oceanica/dungeon/rooms/boss_room");
+//        StructGen.generateStructure(world, new BlockPos(x, y, z), info, rotation);
 
     }
 }

@@ -29,8 +29,6 @@ import java.util.Optional;
 
 
 public class StructGen {
-    private static Map<String, StructureInfo> structureCache = new HashMap<>();
-
     public static void generateStructure(World world, BlockPos spawnPosition, ResourceLocation resourceLocation) {
         generateStructure(world, spawnPosition, new StructureInfo(resourceLocation));
     }
@@ -40,6 +38,11 @@ public class StructGen {
     }
 
     public static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info, Rotation rotation) {
+        generateStructure(world, spawnPosition, info, rotation,null);
+    }
+
+
+    public static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info, Rotation rotation, BlockPalette palette) {
         //TODO: Spawners
         //TODO: Spawn mobs.. bosses... etc
         if (world.isRemote) return;
@@ -48,7 +51,8 @@ public class StructGen {
         Template template = getTemplate(world, info);
         PlacementSettings placementsettings = getPlacementSettings(rotation, Mirror.NONE);
         spawnPosition = rotateInPlace(spawnPosition, rotation);
-        placeStructureInWorld(template, info.getPalette(), spawnPosition, placementsettings, world);
+
+        placeStructureInWorld(template, palette==null?info.getPalette():palette, spawnPosition, placementsettings, world);
 
     }
 
@@ -59,6 +63,8 @@ public class StructGen {
             template.addBlocksToWorld(world, spawnPosition, placementsettings, 2);
         }
 
+        //TODO: define loot tables in the info
+        //TODO: load the template when loading the info?
         Map<BlockPos, String> dataBlocks = template.getDataBlocks(spawnPosition, placementsettings);
         for (Map.Entry<BlockPos, String> entry : dataBlocks.entrySet()) {
             if ("chest".equals(entry.getValue())) {
@@ -101,90 +107,6 @@ public class StructGen {
                 break;
         }
         return spawnPosition;
-    }
-
-    public static StructureInfo loadStructureInfo(String structureName) {
-        structureName=structureName.replace(':','/');
-        return StructGen.createStructureInfo(structureName);
-//        return structureCache.computeIfAbsent(structureName, StructGen::createStructureInfo);
-    }
-
-    private static StructureInfo createStructureInfo(String structureName) {
-        StructureInfo info = null;
-        JsonObject structureInfoJson = readStructureInfoFile(structureName);
-
-        if (structureInfoJson!=null) {
-            String name = structureInfoJson.get("name").getAsString();
-            //TODO: structure variations
-            //TODO: Additional structure configurations (like.. conditions)
-            JsonArray structure = structureInfoJson.get("structure").getAsJsonArray();
-            String structurePath = structure.get(0).getAsString();
-            BlockPalette palette = createPalette(structureName, structureInfoJson);
-
-            info = new StructureInfo(name,new ResourceLocation(structurePath), palette);
-        }
-
-        return info;
-    }
-
-    private static BlockPalette createPalette(String structureName, JsonObject structureInfoJson) {
-        //TODO: weighted palette
-        //RANT: This does not look like the proper use for Optional
-        Optional<JsonElement> paletteJsonElement = Optional.ofNullable(structureInfoJson.get("palette"));
-        BlockPalette palette;
-        if (paletteJsonElement.isPresent()) {
-            JsonObject paletteJson = paletteJsonElement.get().getAsJsonObject();
-            palette = new BlockPalette();
-
-            for (Map.Entry<String, JsonElement> next : paletteJson.entrySet()) {
-                String originalBlock = next.getKey();
-                String transformedBlock = next.getValue().getAsString();
-
-                IBlockState originalState = getBlockState(originalBlock);
-                IBlockState transformedState = getBlockState(transformedBlock);
-
-                if (originalState == null) { //TODO: Proper logging
-                    StructGenLib.logger.error("Error reading structure %s palette: Unrecognized Block %s", structureName, originalBlock);
-                }
-                if (transformedState == null) { //TODO: Proper logging
-                    StructGenLib.logger.error("Error reading structure %s palette: Unrecognized Block %s", structureName, transformedBlock);
-                }
-
-                palette.addTransform(originalState, transformedState);
-            }
-        } else {
-            palette =null;
-        }
-        return palette;
-    }
-
-    private static JsonObject readStructureInfoFile(String structureName) {
-        try (
-                InputStream inputstream = StructGen.class.getResourceAsStream("/assets/" + structureName + ".json"); //todo: multiple assets sources
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"));
-        ) {
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(br);
-            return element.getAsJsonObject();
-        } catch (IOException e) {
-            System.out.println("Error reading " + structureName);
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private static IBlockState getBlockState(String blockName) {
-        String[] split = blockName.split("@");
-        Block block = Block.getBlockFromName(split[0]);
-        if (block == null) return null;
-
-        IBlockState state;
-        if (split.length > 1) {
-            state = block.getStateFromMeta(Integer.parseInt(split[1]));
-        } else {
-            state = block.getDefaultState();
-        }
-        return state;
     }
 
 }

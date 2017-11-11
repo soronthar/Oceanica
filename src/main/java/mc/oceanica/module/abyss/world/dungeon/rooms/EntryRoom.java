@@ -30,9 +30,9 @@ public class EntryRoom extends SimpleRoom {
         int x = (chunkPos.x << 4);
         int z = (chunkPos.z << 4);
 
-        StructureInfo info=StructGen.loadStructureInfo("oceanica/dungeon/rooms/entry_room");
+//        StructureInfo info=StructGen.loadStructureInfo("oceanica/dungeon/rooms/entry_room");
         Rotation rotation = getRotationForExits();
-        StructGen.generateStructure(world, new BlockPos(x, y, z), info,rotation);
+//        StructGen.generateStructure(world, new BlockPos(x, y, z), info,rotation);
 
     }
 

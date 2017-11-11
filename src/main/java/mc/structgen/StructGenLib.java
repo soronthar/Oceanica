@@ -1,15 +1,10 @@
 package mc.structgen;
 
-import mc.oceanica.OceanicaStats;
-import mc.oceanica.command.GenerateDungeonCommand;
 import mc.structgen.command.RegenChunkCommand;
-import mc.oceanica.command.RegenChunkNoReefCommand;
-import mc.oceanica.command.StatCommand;
-import mc.oceanica.proxy.CommonProxy;
 import mc.structgen.command.SpawnStructureCommand;
+import mc.structgen.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -29,29 +24,31 @@ import static mc.structgen.StructGenLibInfo.PACKAGE;
 public class StructGenLib {
 //TODO: multiple structure info in the same file, loaded on startup
 // TODO: reload structure info
+//TODO: sgen:raw command, spawn local or mod structures without structureInfo
 
-//        @SidedProxy(clientSide = PACKAGE+".proxy.ClientProxy", serverSide = PACKAGE+".proxy.CommonProxy")
-//        public static CommonProxy proxy;
+    @SidedProxy(clientSide = PACKAGE + ".proxy.ClientProxy", serverSide = PACKAGE + ".proxy.ServerProxy")
+    public static CommonProxy proxy;
 
     @Mod.Instance
     public static StructGenLib instance;
 
     public static Logger logger;
 
+    private StructureManager structureManager=new StructureManager();
+
+    public StructureManager getStructureManager() {
+        return structureManager;
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-//            proxy.preInit(event);
     }
 
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent e) {
-//            proxy.init(e);
-    }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
-//        proxy.postInit(e);
+        proxy.postInit(e);
     }
 
     @Mod.EventHandler
@@ -59,4 +56,6 @@ public class StructGenLib {
         event.registerServerCommand(new RegenChunkCommand());
         event.registerServerCommand(new SpawnStructureCommand());
     }
+
+
 }

@@ -24,18 +24,18 @@ public class Corridor extends DungeonRoom {
         Rotation rotation = getRotationForExits();
         StructureInfo info=null;
         if (this.getNumberOfExits() == 1) {
-            info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_one_exit");
+//            info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_one_exit");
         } else if (this.getNumberOfExits() == 2) {
             if (hasExits(EnumFacing.NORTH, EnumFacing.SOUTH) ||
                     hasExits(EnumFacing.EAST, EnumFacing.WEST)) {
-                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_opposite_exits");
+//                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_opposite_exits");
             } else {
-                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_adjacent_exits");
+//                info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_two_adjacent_exits");
             }
         } else if (this.getNumberOfExits() == 3) {
-            info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_three_exits");
+//            info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_three_exits");
         } else if (this.getNumberOfExits() == 4) {
-            info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_four_exits");
+//            info = StructGen.loadStructureInfo("oceanica/dungeon/rooms/corridor_four_exits");
         }
 
         StructGen.generateStructure(world, new BlockPos(x, y, z), info, rotation);

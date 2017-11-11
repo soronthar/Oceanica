@@ -1,8 +1,6 @@
 package mc.structgen.command;
 
-import mc.structgen.StructGen;
-import mc.structgen.StructGenLibInfo;
-import mc.structgen.StructureInfo;
+import mc.structgen.*;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -25,7 +23,6 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import javax.annotation.Nullable;
 
-//TODO: Redefine this command
 public class SpawnStructureCommand extends CommandBase {
     @Override
     public String getName() {
@@ -45,52 +42,55 @@ public class SpawnStructureCommand extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-            EntityPlayer commandSenderEntity = (EntityPlayer) sender.getCommandSenderEntity();
-            BlockPos senderPosition = sender.getPosition();
+        StructureManager structureManager = StructGenLib.instance.getStructureManager();
 
-            int dimension = sender.getEntityWorld().provider.getDimension();
-            WorldServer world = server.getWorld(dimension);
+        EntityPlayer commandSenderEntity = (EntityPlayer) sender.getCommandSenderEntity();
+        BlockPos senderPosition = sender.getPosition();
 
-            Mirror mirror = Mirror.NONE;
-            Rotation rotation = Rotation.NONE;
-            BlockPos spawnPos=senderPosition;
-            String structureName = null;
+        int dimension = sender.getEntityWorld().provider.getDimension();
+        WorldServer world = server.getWorld(dimension);
 
-            for (String arg : args) {
-                if (arg.startsWith("R:") || arg.startsWith("r:")) {
-                    rotation = Rotation.valueOf(arg.substring(2));
-                } else if (arg.startsWith("P:")|| arg.startsWith("p:")) {
-                    //TODO: specify palette
-
-                }else if (arg.startsWith("C:")|| arg.startsWith("c:")) {
-                    String[] posString = arg.substring(2).split(",");
-                    if (posString.length==3) {
-                        int x=getCoordFromParam(posString[0], spawnPos.getX());
-                        int y=getCoordFromParam(posString[1], spawnPos.getY());
-                        int z=getCoordFromParam(posString[2], spawnPos.getZ());
-                        spawnPos = new BlockPos(x, y,z);
-                    }
-                } else {
-                    if (arg.contains(":")) {
-                        structureName=arg;
-                    } else {
-                        structureName= StructGenLibInfo.MODID+":"+arg;
-                    }
+        Mirror mirror = Mirror.NONE;
+        Rotation rotation = Rotation.NONE;
+        BlockPos spawnPos = senderPosition;
+        String structureName = null;
+        BlockPalette palette=null;
+        for (String arg : args) {
+            if (arg.startsWith("R:") || arg.startsWith("r:")) {
+                rotation = Rotation.valueOf(arg.substring(2));
+            } else if (arg.startsWith("P:") || arg.startsWith("p:")) {
+                palette = structureManager.getBlockPalette(arg.substring(2));
+            } else if (arg.startsWith("C:") || arg.startsWith("c:")) {
+                String[] posString = arg.substring(2).split(",");
+                if (posString.length == 3) {
+                    int x = getCoordFromParam(posString[0], spawnPos.getX());
+                    int y = getCoordFromParam(posString[1], spawnPos.getY());
+                    int z = getCoordFromParam(posString[2], spawnPos.getZ());
+                    spawnPos = new BlockPos(x, y, z);
                 }
-            }
+            } else {
+                structureName = arg;
 
-            if (structureName!=null) {
-                StructureInfo structureInfo = StructGen.loadStructureInfo(structureName);
-                StructGen.generateStructure(world, spawnPos,structureInfo,rotation);
-
+//                    if (arg.contains(":")) {
+//                        structureName=arg;
+//                    } else {
+//                        structureName= StructGenLibInfo.MODID+":"+arg;
+//                    }
             }
+        }
+
+        if (structureName != null) {
+            StructureInfo structureInfo = structureManager.getStructureInfo(structureName);
+            StructGen.generateStructure(world, spawnPos, structureInfo, rotation, palette);
+
+        }
     }
 
     private int getCoordFromParam(String param, int defaultValue) {
         if (param.equals("~")) {
             return defaultValue;
-        } else if (param.startsWith("+")||param.startsWith("-")) {
-            return defaultValue +Integer.parseInt(param);
+        } else if (param.startsWith("+") || param.startsWith("-")) {
+            return defaultValue + Integer.parseInt(param);
         } else {
             return Integer.parseInt(param);
         }
