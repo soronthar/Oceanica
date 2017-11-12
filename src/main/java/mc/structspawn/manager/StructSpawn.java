@@ -6,6 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,19 +16,22 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class StructSpawn {
     //TODO: remove sdtatic methods.. maybe?
     public static void generateStructure(World world, BlockPos spawnPosition, String structureName) {
-        generateStructure(world, spawnPosition, structureName,Rotation.NONE,null);
+        generateStructure(world, spawnPosition, structureName, Rotation.NONE, null);
     }
 
     public static void generateStructure(World world, BlockPos spawnPosition, String structureName, Rotation rotation, BlockPalette palette) {
         StructureInfo structureInfo = StructSpawnLib.instance.getStructurePackManager().getStructureInfo(structureName);
-        generateStructure(world, spawnPosition, structureInfo , rotation, palette);
+        generateStructure(world, spawnPosition, structureInfo, rotation, palette);
     }
 
     private static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info, Rotation rotation, BlockPalette palette) {
@@ -40,9 +44,11 @@ public class StructSpawn {
         PlacementSettings placementsettings = getPlacementSettings(rotation, Mirror.NONE);
         spawnPosition = rotateInPlace(spawnPosition, rotation);
 
-        placeStructureInWorld(template, palette==null?info.getPalette():palette, spawnPosition, placementsettings, world);
+        placeStructureInWorld(template, palette == null ? info.getPalette() : palette, spawnPosition, placementsettings, world);
 
     }
+
+    static Pattern chestPattern = Pattern.compile("chest\\s*(:?\\{(.*)\\})?\\s*");
 
     private static void placeStructureInWorld(Template template, BlockPalette palette, BlockPos spawnPosition, PlacementSettings placementsettings, World world) {
         if (palette != null) {
@@ -54,13 +60,21 @@ public class StructSpawn {
         //TODO: (NEXT) Define loot tables in the info
         Map<BlockPos, String> dataBlocks = template.getDataBlocks(spawnPosition, placementsettings);
         for (Map.Entry<BlockPos, String> entry : dataBlocks.entrySet()) {
-            if ("chest".equals(entry.getValue())) {
+            String dataValue = entry.getValue();
+            Matcher matcher = chestPattern.matcher(dataValue);
+            if (matcher.matches()) {
+                ResourceLocation lootTable;
+                if (matcher.group(1) != null) {
+                    lootTable = new ResourceLocation(matcher.group(1));
+                } else {
+                    lootTable = LootTableList.CHESTS_SIMPLE_DUNGEON;
+                }
+
                 BlockPos key = entry.getKey();
-                world.setBlockState(key,Blocks.CHEST.getDefaultState());
+                world.setBlockState(key, Blocks.CHEST.getDefaultState()); //TODO: Rotate the chest accordingly
                 TileEntity tileEntity = world.getTileEntity(key);
                 if (tileEntity instanceof TileEntityChest) {
-
-                    ((TileEntityChest)tileEntity).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON,world.rand.nextLong());
+                    ((TileEntityChest) tileEntity).setLootTable(lootTable, world.rand.nextLong());
                 }
             }
         }

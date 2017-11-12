@@ -7,8 +7,10 @@ import mc.structspawn.manager.StructurePackManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -29,8 +31,12 @@ public class SpawnStructureCommand extends CommandBase {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        EntityPlayer commandSenderEntity = (EntityPlayer) sender.getCommandSenderEntity();
-        return commandSenderEntity != null && commandSenderEntity.isCreative();
+        Entity commandSenderEntity = sender.getCommandSenderEntity();
+        if (commandSenderEntity instanceof EntityPlayer) {
+            return ((EntityPlayer)commandSenderEntity).isCreative();
+        } else {
+            return true;
+        }
     }
 
     @Override

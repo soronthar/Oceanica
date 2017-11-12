@@ -50,6 +50,13 @@
         "structspawn:teststructure"
       ],
       "description": "Test Structure with lots of elements"
+    },
+    {
+      "name": "debug:testchest",
+      "structure": [
+        "structspawn:debug/testchest"
+      ],
+      "description": "Test Structure with two chests"
     }
   ],
   "palettes": [
