@@ -13,6 +13,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 
 import java.util.Map;
@@ -50,8 +51,7 @@ public class StructSpawn {
             template.addBlocksToWorld(world, spawnPosition, placementsettings, 2);
         }
 
-        //TODO: define loot tables in the info
-        //TODO: load the template when loading the info?
+        //TODO: (NEXT) Define loot tables in the info
         Map<BlockPos, String> dataBlocks = template.getDataBlocks(spawnPosition, placementsettings);
         for (Map.Entry<BlockPos, String> entry : dataBlocks.entrySet()) {
             if ("chest".equals(entry.getValue())) {
@@ -59,6 +59,7 @@ public class StructSpawn {
                 world.setBlockState(key,Blocks.CHEST.getDefaultState());
                 TileEntity tileEntity = world.getTileEntity(key);
                 if (tileEntity instanceof TileEntityChest) {
+
                     ((TileEntityChest)tileEntity).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON,world.rand.nextLong());
                 }
             }

@@ -15,7 +15,9 @@ class BlockPaletteTemplateProcessor implements ITemplateProcessor {
         this.palette = palette;
     }
 
+//TODO: Replace blocks than can be rotated
 //TODO: Preserve some blocks
+
     @Nullable
     @Override
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn) {
