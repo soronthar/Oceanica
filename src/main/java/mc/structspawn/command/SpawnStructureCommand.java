@@ -1,6 +1,9 @@
 package mc.structspawn.command;
 
 import mc.structspawn.*;
+import mc.structspawn.manager.BlockPalette;
+import mc.structspawn.manager.StructSpawn;
+import mc.structspawn.manager.StructurePackManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

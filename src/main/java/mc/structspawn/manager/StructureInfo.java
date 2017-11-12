@@ -1,8 +1,8 @@
-package mc.structspawn;
+package mc.structspawn.manager;
 
 import net.minecraft.util.ResourceLocation;
 
-public class StructureInfo {
+class StructureInfo {
     private String name;
     private BlockPalette palette;
     private ResourceLocation resourceLocation;

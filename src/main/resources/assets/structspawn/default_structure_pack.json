@@ -1,14 +1,14 @@
 {
   "structures": [
     {
-      "name": "bighollowring",
+      "name": "debug:bighollowring",
       "structure": [
         "structspawn:debug/bighollowring"
       ],
       "description": "16x16 hollow ring with a bone block north border"
     },
     {
-      "name": "bighollowringwithcoal",
+      "name": "debug:bighollowringwithcoal",
       "structure": [
         "structspawn:debug/bighollowring"
       ],
@@ -23,14 +23,14 @@
       ]
     },
     {
-      "name": "smallhollowring",
+      "name": "debug:smallhollowring",
       "structure": [
         "structspawn:debug/smallhollowring"
       ],
       "description": "14x14 hollow white wool ring"
     },
     {
-      "name": "smallhollowringpaletteref",
+      "name": "debug:smallhollowringpaletteref",
       "structure": [
         "structspawn:debug/smallhollowring"
       ],
@@ -38,14 +38,14 @@
       //      "palette": "test-palette"
     },
     {
-      "name": "smallring",
+      "name": "debug:smallring",
       "structure": [
         "structspawn:debug/smallring"
       ],
       "description": "14x14 solid ring"
     },
     {
-      "name": "teststructure",
+      "name": "debug:teststructure",
       "structure": [
         "structspawn:teststructure"
       ],

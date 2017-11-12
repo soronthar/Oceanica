@@ -1,9 +1,10 @@
-package mc.structspawn;
+package mc.structspawn.manager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import mc.structspawn.StructSpawnLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;

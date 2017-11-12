@@ -1,11 +1,11 @@
-package mc.structspawn;
+package mc.structspawn.manager;
 
+import mc.structspawn.StructSpawnLib;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,25 +19,17 @@ import java.util.Map;
 
 
 public class StructSpawn {
-    public static void generateStructure(World world, BlockPos spawnPosition, ResourceLocation resourceLocation) {
-        generateStructure(world, spawnPosition, new StructureInfo(resourceLocation));
+    //TODO: remove sdtatic methods.. maybe?
+    public static void generateStructure(World world, BlockPos spawnPosition, String structureName) {
+        generateStructure(world, spawnPosition, structureName,Rotation.NONE,null);
     }
-
-    public static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info) {
-        generateStructure(world, spawnPosition, info, Rotation.NONE);
-    }
-
-    public static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info, Rotation rotation) {
-        generateStructure(world, spawnPosition, info, rotation,null);
-    }
-
 
     public static void generateStructure(World world, BlockPos spawnPosition, String structureName, Rotation rotation, BlockPalette palette) {
         StructureInfo structureInfo = StructSpawnLib.instance.getStructurePackManager().getStructureInfo(structureName);
         generateStructure(world, spawnPosition, structureInfo , rotation, palette);
     }
 
-    public static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info, Rotation rotation, BlockPalette palette) {
+    private static void generateStructure(World world, BlockPos spawnPosition, StructureInfo info, Rotation rotation, BlockPalette palette) {
         //TODO: Spawn mobs.. bosses... etc
         //TODO: Spawners
         if (world.isRemote) return;

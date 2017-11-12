@@ -3,6 +3,7 @@ package mc.structspawn;
 import com.google.common.collect.ImmutableList;
 import mc.structspawn.command.RegenChunkCommand;
 import mc.structspawn.command.SpawnStructureCommand;
+import mc.structspawn.manager.StructurePackManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;

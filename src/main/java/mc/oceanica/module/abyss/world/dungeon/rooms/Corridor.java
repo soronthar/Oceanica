@@ -1,11 +1,8 @@
 package mc.oceanica.module.abyss.world.dungeon.rooms;
 
 import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
-import mc.structspawn.StructSpawn;
-import mc.structspawn.StructureInfo;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
@@ -22,7 +19,6 @@ public class Corridor extends DungeonRoom {
         int z = (chunkPos.z << 4);
 
         Rotation rotation = getRotationForExits();
-        StructureInfo info=null;
         if (this.getNumberOfExits() == 1) {
 //            info = StructSpawn.loadStructureInfo("oceanica/dungeon/rooms/corridor_one_exit");
         } else if (this.getNumberOfExits() == 2) {
@@ -38,7 +34,7 @@ public class Corridor extends DungeonRoom {
 //            info = StructSpawn.loadStructureInfo("oceanica/dungeon/rooms/corridor_four_exits");
         }
 
-        StructSpawn.generateStructure(world, new BlockPos(x, y, z), info, rotation);
+//        StructSpawn.generateStructure(world, new BlockPos(x, y, z), info, rotation);
 
 
     }

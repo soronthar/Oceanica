@@ -1,4 +1,4 @@
-package mc.structspawn;
+package mc.structspawn.manager;
 
 import net.minecraft.block.state.IBlockState;
 
