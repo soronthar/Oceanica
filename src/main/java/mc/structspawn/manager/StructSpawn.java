@@ -14,9 +14,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
-import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -24,6 +23,8 @@ import java.util.regex.Pattern;
 
 
 public class StructSpawn {
+    private static Pattern DATA_CHEST_PATTERN = Pattern.compile("chest\\s*(?:\\{(.*)\\})?\\s*");
+
     //TODO: remove sdtatic methods.. maybe?
     public static void generateStructure(World world, BlockPos spawnPosition, String structureName) {
         generateStructure(world, spawnPosition, structureName, Rotation.NONE, null);
@@ -44,24 +45,18 @@ public class StructSpawn {
         PlacementSettings placementsettings = getPlacementSettings(rotation, Mirror.NONE);
         spawnPosition = rotateInPlace(spawnPosition, rotation);
 
-        placeStructureInWorld(template, palette == null ? info.getPalette() : palette, spawnPosition, placementsettings, world);
-
-    }
-
-    static Pattern chestPattern = Pattern.compile("chest\\s*(:?\\{(.*)\\})?\\s*");
-
-    private static void placeStructureInWorld(Template template, BlockPalette palette, BlockPos spawnPosition, PlacementSettings placementsettings, World world) {
-        if (palette != null) {
-            template.addBlocksToWorld(world, spawnPosition, new BlockPaletteTemplateProcessor(palette), placementsettings, 2);
+        BlockPalette paletteToUse = ObjectUtils.defaultIfNull(palette,info.getPalette());
+        if (paletteToUse != null) {
+            template.addBlocksToWorld(world, spawnPosition, new BlockPaletteTemplateProcessor(paletteToUse), placementsettings, 2);
         } else {
             template.addBlocksToWorld(world, spawnPosition, placementsettings, 2);
         }
 
-        //TODO: (NEXT) Define loot tables in the info
+        //TODO: Define loot tables in the info
         Map<BlockPos, String> dataBlocks = template.getDataBlocks(spawnPosition, placementsettings);
         for (Map.Entry<BlockPos, String> entry : dataBlocks.entrySet()) {
             String dataValue = entry.getValue();
-            Matcher matcher = chestPattern.matcher(dataValue);
+            Matcher matcher = DATA_CHEST_PATTERN.matcher(dataValue);
             if (matcher.matches()) {
                 ResourceLocation lootTable;
                 if (matcher.group(1) != null) {
@@ -78,7 +73,9 @@ public class StructSpawn {
                 }
             }
         }
+
     }
+
 
     private static Template getTemplate(World world, StructureInfo info) {
         WorldServer worldserver = (WorldServer) world;

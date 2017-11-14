@@ -56,7 +56,10 @@
       "structure": [
         "structspawn:debug/testchest"
       ],
-      "description": "Test Structure with two chests"
+      "description": "Test Structure with two chests",
+      "lootTables": [
+
+      ]
     }
   ],
   "palettes": [
