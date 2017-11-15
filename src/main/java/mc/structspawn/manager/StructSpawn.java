@@ -62,7 +62,7 @@ public class StructSpawn {
                 if (matcher.group(1) != null) {
                     lootTable = new ResourceLocation(matcher.group(1));
                 } else {
-                    lootTable = LootTableList.CHESTS_SIMPLE_DUNGEON;
+                    lootTable = info.getLootTable().orElse(LootTableList.CHESTS_SIMPLE_DUNGEON); //TODO: make default configurable
                 }
 
                 BlockPos key = entry.getKey();
@@ -81,7 +81,7 @@ public class StructSpawn {
         WorldServer worldserver = (WorldServer) world;
         MinecraftServer minecraftserver = world.getMinecraftServer();
         TemplateManager templatemanager = worldserver.getStructureTemplateManager();
-        return templatemanager.get(minecraftserver, info.getResourceLocation());
+        return templatemanager.get(minecraftserver, info.getStructureLocation());
     }
 
     private static PlacementSettings getPlacementSettings(Rotation rotation, Mirror mirror) {

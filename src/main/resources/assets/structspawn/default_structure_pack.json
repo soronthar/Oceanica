@@ -56,11 +56,19 @@
       "structure": [
         "structspawn:debug/testchest"
       ],
+      "description": "Test Structure with two chests"
+    },
+    {
+      "name": "debug:testlootchest",
+      "structure": [
+        "structspawn:debug/testchest"
+      ],
       "description": "Test Structure with two chests",
       "lootTables": [
-
+        "minecraft:entities/sheep/orange"
       ]
     }
+
   ],
   "palettes": [
     {

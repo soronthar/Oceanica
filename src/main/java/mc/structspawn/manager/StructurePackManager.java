@@ -8,6 +8,7 @@ import mc.structspawn.StructSpawnLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,8 +56,15 @@ public class StructurePackManager {
         String name = structureObject.get("name").getAsString(); //TODO: Null name is an error
         //TODO: structure variations
         //TODO: Additional structure configurations (like.. conditions)
-        JsonArray structure = structureObject.get("structure").getAsJsonArray();
+        JsonArray structure = structureObject.get("structure").getAsJsonArray(); //TODO: structure == null is an error
         String structurePath = structure.get(0).getAsString();
+
+        JsonElement lootTablesElement = structureObject.get("lootTables");
+        String lootTableName=null; //TODO: nultiple loot tables, with weights
+        if (lootTablesElement!=null) {
+            lootTableName = lootTablesElement.getAsJsonArray().get(0).getAsString();
+
+        }
 
         //TODO: Palette Reference
         //TODO: weighted palette
@@ -70,7 +78,7 @@ public class StructurePackManager {
             }
         }
 
-        return new StructureInfo(name, new ResourceLocation(structurePath), palette);
+        return new StructureInfo(name, new ResourceLocation(structurePath), palette, lootTableName!=null?new ResourceLocation(lootTableName):null);
     }
 
 

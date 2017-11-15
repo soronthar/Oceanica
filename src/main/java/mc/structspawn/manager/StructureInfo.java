@@ -2,31 +2,39 @@ package mc.structspawn.manager;
 
 import net.minecraft.util.ResourceLocation;
 
+import java.util.Optional;
+
 class StructureInfo {
     private String name;
     private BlockPalette palette;
-    private ResourceLocation resourceLocation;
+    private ResourceLocation structureLocation;
+    private ResourceLocation lootTable;
 
-    public StructureInfo(String name, ResourceLocation resourceLocation) {
-        this(name, resourceLocation, BlockPalette.DEFAULT);
+    public StructureInfo(String name, ResourceLocation structureLocation) {
+        this(name, structureLocation, BlockPalette.DEFAULT,null);
     }
 
-    public StructureInfo(String name, ResourceLocation resourceLocation, BlockPalette palette) {
-        this.resourceLocation = resourceLocation;
+    public StructureInfo(String name, ResourceLocation structureLocation, BlockPalette palette, ResourceLocation lootTable) {
+        this.structureLocation = structureLocation;
         this.palette = palette;
         this.name = name;
+        this.lootTable = lootTable;
     }
 
-    public StructureInfo(ResourceLocation resourceLocation) {
-        this(resourceLocation.getResourcePath(),resourceLocation,BlockPalette.DEFAULT);
+    public StructureInfo(ResourceLocation structureLocation) {
+        this(structureLocation.getResourcePath(), structureLocation,BlockPalette.DEFAULT,null);
     }
 
-    public ResourceLocation getResourceLocation() {
-        return resourceLocation;
+    public ResourceLocation getStructureLocation() {
+        return structureLocation;
     }
 
     public BlockPalette getPalette() {
         return palette;
+    }
+
+    public Optional<ResourceLocation> getLootTable() {
+        return Optional.ofNullable(lootTable);
     }
 
     public String getName() {
