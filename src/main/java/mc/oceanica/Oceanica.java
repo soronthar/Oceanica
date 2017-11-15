@@ -1,16 +1,15 @@
 package mc.oceanica;
 
 import mc.oceanica.command.GenerateDungeonCommand;
+import mc.structspawn.StructSpawnLib;
+import mc.structspawn.StructSpawnLibInfo;
 import mc.structspawn.command.RegenChunkCommand;
 import mc.oceanica.command.RegenChunkNoReefCommand;
 import mc.oceanica.command.StatCommand;
 import mc.oceanica.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
 
 import org.apache.logging.log4j.Logger;
 
@@ -33,6 +32,7 @@ public class Oceanica {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
+        FMLInterModComms.sendMessage(StructSpawnLibInfo.MODID,"registerStructurePack","dungeon/dungeon_parts");
         logger = event.getModLog();
         proxy.preInit(event);
     }
