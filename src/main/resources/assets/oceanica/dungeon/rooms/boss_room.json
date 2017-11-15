@@ -1,7 +1,0 @@
-{
-  "name":"boss_room",
-  "structure": [ "oceanica:boss_room_quarter"],
-  "palette": {
-    "minecraft:wool@0":"minecraft:wool@13"
-  }
-}

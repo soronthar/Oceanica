@@ -1,7 +1,0 @@
-{
-  "name":"entry_room",
-  "structure": [ "oceanica:entry_room"],
-  "palette": {
-    "minecraft:wool@0":"minecraft:wool@15"
-  }
-}

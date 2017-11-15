@@ -1,7 +1,9 @@
 package mc.oceanica.module.abyss.world.dungeon.rooms;
 
 import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
+import mc.structspawn.manager.StructSpawn;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
@@ -19,9 +21,7 @@ public class EntryRoom extends SimpleRoom {
         int x = (chunkPos.x << 4);
         int z = (chunkPos.z << 4);
 
-//        StructureInfo info=StructSpawn.loadStructureInfo("oceanica/dungeon/rooms/entry_room");
-        Rotation rotation = getRotationForExits();
-//        StructSpawn.generateStructure(world, new BlockPos(x, y, z), info,rotation);
+        StructSpawn.generateStructure(world, new BlockPos(x, y, z), "entry_room", getRotationForExits());
 
     }
 

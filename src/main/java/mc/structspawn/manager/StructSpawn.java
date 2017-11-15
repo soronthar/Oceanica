@@ -30,6 +30,10 @@ public class StructSpawn {
         generateStructure(world, spawnPosition, structureName, Rotation.NONE, null);
     }
 
+    public static void generateStructure(World world, BlockPos spawnPosition, String structureName, Rotation rotation) {
+        generateStructure(world, spawnPosition, structureName, rotation,null);
+    }
+
     public static void generateStructure(World world, BlockPos spawnPosition, String structureName, Rotation rotation, BlockPalette palette) {
         StructureInfo structureInfo = StructSpawnLib.instance.getStructurePackManager().getStructureInfo(structureName);
         generateStructure(world, spawnPosition, structureInfo, rotation, palette);
