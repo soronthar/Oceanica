@@ -132,7 +132,7 @@ public class StructurePackManager {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(br);
             return element.getAsJsonObject();
-        } catch (IOException e) {
+        } catch (IOException|NullPointerException e) {
             StructSpawnLib.logger.error("Error reading " + structurePack, e);
             return null;
         }

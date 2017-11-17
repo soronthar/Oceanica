@@ -1,7 +1,7 @@
-package mc.oceanica.module.abyss.world.dungeon.rooms;
+package mc.structgen.dungeon.rooms;
 
 import mc.debug.DebugRing;
-import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
+import mc.structgen.dungeon.map.DungeonMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.ChunkPos;

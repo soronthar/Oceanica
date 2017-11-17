@@ -1,10 +1,8 @@
-package mc.oceanica.module.abyss.world.dungeon.map;
+package mc.structgen.dungeon.map;
 
-import mc.oceanica.module.abyss.world.dungeon.rooms.*;
-import mc.util.Utils;
+import mc.structgen.dungeon.rooms.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;

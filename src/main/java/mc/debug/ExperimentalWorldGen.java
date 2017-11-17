@@ -1,11 +1,8 @@
 package mc.debug;
 
-import mc.debug.DebugRing;
 import mc.oceanica.OceanicaConfig;
-import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
+import mc.structgen.dungeon.map.DungeonMap;
 import mc.util.PerlinNoiseGen;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;

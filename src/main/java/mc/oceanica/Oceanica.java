@@ -1,7 +1,6 @@
 package mc.oceanica;
 
-import mc.oceanica.command.GenerateDungeonCommand;
-import mc.structspawn.StructSpawnLib;
+import mc.structgen.command.GenerateDungeonCommand;
 import mc.structspawn.StructSpawnLibInfo;
 import mc.structspawn.command.RegenChunkCommand;
 import mc.oceanica.command.RegenChunkNoReefCommand;
@@ -32,7 +31,6 @@ public class Oceanica {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
-        FMLInterModComms.sendMessage(StructSpawnLibInfo.MODID,"registerStructurePack","dungeon/dungeon_parts");
         logger = event.getModLog();
         proxy.preInit(event);
     }
@@ -47,10 +45,7 @@ public class Oceanica {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
-        event.registerServerCommand(new RegenChunkCommand());
         event.registerServerCommand(new RegenChunkNoReefCommand());
         event.registerServerCommand(new StatCommand(OceanicaStats.INSTANCE));
-        //These do not belong to Oceanica
-        event.registerServerCommand(new GenerateDungeonCommand());
     }
 }

@@ -1,6 +1,6 @@
-package mc.oceanica.module.abyss.world.dungeon.rooms;
+package mc.structgen.dungeon.rooms;
 
-import mc.oceanica.module.abyss.world.dungeon.map.DungeonMap;
+import mc.structgen.dungeon.map.DungeonMap;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
