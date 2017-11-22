@@ -4,6 +4,7 @@ import mc.oceanica.module.reef.block.BlockCoral;
 import mc.oceanica.module.reef.block.BlockKelp;
 import mc.oceanica.module.reef.block.BlockReefStone;
 import mc.debug.ExperimentalWorldGen;
+import mc.oceanica.module.reef.world.ReefPerlinWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.EnumDyeColor;
@@ -32,10 +33,8 @@ public class ReefModule {
     public static Item KELP_ITEM;
 
     public static void preInit(FMLPreInitializationEvent e) {
-//        GameRegistry.registerWorldGenerator(new ExperimentalWorldGen(), 1);
 //        GameRegistry.registerWorldGenerator(new ReefWorldGenerator(), 1);
-//        GameRegistry.registerWorldGenerator(new ReefPerlinWorldGenerator(), 1);
-//        GameRegistry.registerWorldGenerator(new LeavesMarkWorldGenerator(), 2);
+        GameRegistry.registerWorldGenerator(new ReefPerlinWorldGenerator(), 1);
     }
 
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

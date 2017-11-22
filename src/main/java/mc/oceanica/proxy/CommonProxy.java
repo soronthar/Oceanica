@@ -39,20 +39,21 @@ public class CommonProxy {
 
     @SubscribeEvent
     public void playerSpawnEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!OceanicaConfig.isDebug) return;
 
-        EntityLivingBase player=event.player;
-        if (player.getEntityWorld()!=null && !player.getEntityWorld().isRemote) {
-            PotionEffect effect = player.getActivePotionEffect(MobEffects.WATER_BREATHING);
-            if (effect == null) {
-                PotionEffect neweffect = new PotionEffect(MobEffects.WATER_BREATHING, Integer.MAX_VALUE, -42, true, false);
-                player.addPotionEffect(neweffect);
-            }
-            effect = player.getActivePotionEffect(MobEffects.NIGHT_VISION);
-            if (effect == null) {
-                PotionEffect neweffect = new PotionEffect(MobEffects.NIGHT_VISION, Integer.MAX_VALUE, -42, true, false);
-                player.addPotionEffect(neweffect);
-            }
-        }
+//        EntityLivingBase player=event.player;
+//        if (player.getEntityWorld()!=null && !player.getEntityWorld().isRemote) {
+//            PotionEffect effect = player.getActivePotionEffect(MobEffects.WATER_BREATHING);
+//            if (effect == null) {
+//                PotionEffect neweffect = new PotionEffect(MobEffects.WATER_BREATHING, Integer.MAX_VALUE, -42, true, false);
+//                player.addPotionEffect(neweffect);
+//            }
+//            effect = player.getActivePotionEffect(MobEffects.NIGHT_VISION);
+//            if (effect == null) {
+//                PotionEffect neweffect = new PotionEffect(MobEffects.NIGHT_VISION, Integer.MAX_VALUE, -42, true, false);
+//                player.addPotionEffect(neweffect);
+//            }
+//        }
     }
 
     public void preInit(FMLPreInitializationEvent e) {

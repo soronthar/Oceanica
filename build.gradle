@@ -18,6 +18,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
+    maven { url 'https://jitpack.io' }
     maven { url "http://dvs1.progwml6.com/files/maven" }
     maven { url "http://tehnut.info/maven" }
     ivy {
@@ -60,6 +61,7 @@ minecraft {
 
 dependencies {
     runtime "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    deobfCompile "com.github.azanor:Baubles:7035b13"
     testCompile group: 'org.testng', name: 'testng', version: '6.8.+'
 }
 

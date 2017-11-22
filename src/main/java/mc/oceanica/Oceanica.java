@@ -1,6 +1,5 @@
 package mc.oceanica;
 
-import mc.oceanica.command.RegenChunkNoReefCommand;
 import mc.oceanica.command.StatCommand;
 import mc.oceanica.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
@@ -44,7 +43,6 @@ public class Oceanica {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
-        event.registerServerCommand(new RegenChunkNoReefCommand());
         event.registerServerCommand(new StatCommand(OceanicaStats.INSTANCE));
     }
 }

@@ -1,11 +1,16 @@
 package mc.oceanica.module.diving.gear;
 
+import baubles.api.BaubleType;
+import baubles.api.BaublesApi;
+import baubles.api.IBauble;
+import baubles.api.cap.IBaublesItemHandler;
 import mc.oceanica.OceanicaInfo;
 import mc.oceanica.module.diving.DivingModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,46 +23,61 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static mc.oceanica.OceanicaInfo.MODID;
 
 @Mod.EventBusSubscriber
-public class ItemMask extends ItemArmor {
+public class ItemMask extends Item implements IBauble{ //extends ItemArmor {
     public static final String REGISTRY_NAME = "diving.mask";
     public static final String MOD_CONTEXT = OceanicaInfo.MODID + ":"+ REGISTRY_NAME;
 
-    //TODO: head model
     public ItemMask() {
-        super(ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.HEAD);
+//        super(ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.HEAD);
         this.setUnlocalizedName(OceanicaInfo.MODID + "."+ REGISTRY_NAME);
         this.setRegistryName(new ResourceLocation(MODID, REGISTRY_NAME));
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @SubscribeEvent
-    public void onEquipmentChange(LivingEquipmentChangeEvent event) {
-        if (event.getSlot() == EntityEquipmentSlot.HEAD) {
-            EntityLivingBase player = event.getEntityLiving();
-            if (event.getTo().getItem().equals(DivingModule.ITEM_MASK)) {
-                PotionEffect effect = player.getActivePotionEffect(MobEffects.WATER_BREATHING);
-                if (effect == null) {
-                    PotionEffect neweffect = new PotionEffect(MobEffects.WATER_BREATHING, Integer.MAX_VALUE, -42, true, false);
-                    player.addPotionEffect(neweffect);
-                }
-            } else if (event.getFrom().getItem().equals(DivingModule.ITEM_MASK)) {
-                PotionEffect effect = player.getActivePotionEffect(MobEffects.WATER_BREATHING);
-                if (effect != null) {
-                    player.removePotionEffect(MobEffects.WATER_BREATHING);
-                }
-            }
+    @Override
+    public BaubleType getBaubleType(ItemStack itemstack) {
+        return BaubleType.HEAD;
+    }
 
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onFogRender(EntityViewRenderEvent.FogDensity event) {
+
+        EntityPlayer player =  Minecraft.getMinecraft().player;
+
+        BaubleType baubleType = BaubleType.HEAD;
+        ItemMask item = this;
+        boolean equals = hasBaubleInSlot(player, baubleType, item);
+        if (event.getEntity() == player && equals) {
+            if (isInWater(player)) {
+                event.setDensity(0F);
+                event.setCanceled(true);
+            }
         }
+    }
+
+    private boolean hasBaubleInSlot(EntityPlayer player, BaubleType baubleType, ItemMask item) {
+        IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
+        int[] validSlots = baubleType.getValidSlots();
+        for (int validSlot : validSlots) {
+            if (baubles.getStackInSlot(validSlot).getItem().equals(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -91,11 +111,6 @@ public class ItemMask extends ItemArmor {
                 return eyes < pos.getY() + 1 + filled;
             }
         } else return false;
-    }
-
-    public static boolean hasArmor(EntityPlayer player, EntityEquipmentSlot slot, Item item) {
-        ItemStack stack = player.getItemStackFromSlot(slot);
-        return !stack.isEmpty() && stack.getItem() == item;
     }
 
 }

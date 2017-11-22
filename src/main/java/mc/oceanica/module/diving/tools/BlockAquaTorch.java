@@ -1,6 +1,5 @@
 package mc.oceanica.module.diving.tools;
 
-import mc.oceanica.Oceanica;
 import mc.oceanica.OceanicaInfo;
 import mc.oceanica.core.AquaticBlock;
 import net.minecraft.block.Block;
@@ -20,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 import static net.minecraft.block.BlockTorch.FACING;
-
+//TODO: only place under water
 public class BlockAquaTorch extends AquaticBlock {
     public static final String REGISTRY_NAME = "diving.aquatorch";
     public static final String MOD_CONTEXT =  OceanicaInfo.MODID + ":"+ REGISTRY_NAME;
