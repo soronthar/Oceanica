@@ -15,12 +15,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -35,15 +37,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static mc.oceanica.OceanicaInfo.MODID;
 
+//TODO: have two different masks, one with Snorkel and one without it
 @Mod.EventBusSubscriber
-public class ItemMask extends Item implements IBauble{ //extends ItemArmor {
+public class ItemMask extends Item implements IBauble{
     public static final String REGISTRY_NAME = "diving.mask";
     public static final String MOD_CONTEXT = OceanicaInfo.MODID + ":"+ REGISTRY_NAME;
 
     public ItemMask() {
-//        super(ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.HEAD);
         this.setUnlocalizedName(OceanicaInfo.MODID + "."+ REGISTRY_NAME);
         this.setRegistryName(new ResourceLocation(MODID, REGISTRY_NAME));
+        this.setMaxStackSize(1);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -51,6 +54,18 @@ public class ItemMask extends Item implements IBauble{ //extends ItemArmor {
     public BaubleType getBaubleType(ItemStack itemstack) {
         return BaubleType.HEAD;
     }
+
+    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+        if (isInWater(player)) {
+            if (player.getEntityWorld().getSeaLevel() - player.getPosition().getY() < 6 && player.getAir() < 300) {
+                if (player.getAir() < 200) {
+                    player.playSound(SoundEvents.ENTITY_SQUID_AMBIENT, 0.4F, 1.2F);
+                }
+                player.setAir(300);
+            }
+        }
+    }
+
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -87,6 +102,8 @@ public class ItemMask extends Item implements IBauble{ //extends ItemArmor {
      * @return if it's considered as in water
      */
     public static boolean isInWater(Entity entity) {
+        if (entity.isInsideOfMaterial(Material.WATER)) return true;
+
         double eyes = entity.posY + (double) entity.getEyeHeight() - 0.65;
         int i = MathHelper.floor(entity.posX);
         int j = MathHelper.floor(MathHelper.floor(eyes));

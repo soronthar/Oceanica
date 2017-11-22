@@ -1,6 +1,7 @@
 package mc.oceanica.module.diving;
 
 import mc.oceanica.Oceanica;
+import mc.oceanica.module.diving.gear.ItemBuoyancyBelt;
 import mc.oceanica.module.diving.gear.ItemMask;
 import mc.oceanica.module.diving.tools.BlockAquaTorch;
 import mc.oceanica.module.reef.block.BlockReefStone;
@@ -23,6 +24,9 @@ public class DivingModule {
     @GameRegistry.ObjectHolder(ItemMask.MOD_CONTEXT)
     public static Item ITEM_MASK;
 
+    @GameRegistry.ObjectHolder(ItemBuoyancyBelt.MOD_CONTEXT)
+    public static Item ITEM_BUOYANCY_BELT;
+
     public static void preInit(FMLPreInitializationEvent e) { }
 
 
@@ -33,11 +37,14 @@ public class DivingModule {
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(AQUA_TORCH.getItem());
         event.getRegistry().register(new ItemMask());
+        event.getRegistry().register(new ItemBuoyancyBelt());
     }
 
+    //TODO: fix bauble rendering. Make new textures
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
         ModelLoader.setCustomModelResourceLocation(ITEM_MASK,0,new ModelResourceLocation(ITEM_MASK.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ITEM_BUOYANCY_BELT,0,new ModelResourceLocation(ITEM_BUOYANCY_BELT.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(AQUA_TORCH),0,new ModelResourceLocation(AQUA_TORCH.getRegistryName(), "inventory"));
     }
 }
