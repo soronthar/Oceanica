@@ -29,7 +29,9 @@ public class StatCommand extends CommandBase {
         sender.sendMessage(new TextComponentString("Processed Chunks: " + stats.getChunksProcessed()));
         sender.sendMessage(new TextComponentString("Primary Seed Count: " + stats.getPrimarySeedCount()));
         sender.sendMessage(new TextComponentString("Secondary Seed Count: " + stats.getPrimarySeedCount()));
+        sender.sendMessage(new TextComponentString("Kelp Count: " + stats.getKelpCount()));
         sender.sendMessage(new TextComponentString("Effective Primary Seed Density: " + ((double)stats.getPrimarySeedCount() / (double)stats.getChunksProcessed())));
         sender.sendMessage(new TextComponentString("Effective Seconday Seed Density: " + ((double)stats.getSecondaryCount() / (double)stats.getChunksProcessed())));
+        sender.sendMessage(new TextComponentString("Effective Kelp Density: " + ((double)stats.getKelpCount() / (double)stats.getChunksProcessed())));
     }
 }

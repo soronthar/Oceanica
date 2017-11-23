@@ -23,8 +23,24 @@ import java.util.Random;
 
 import static mc.oceanica.module.reef.ReefModule.CORAL;
 
+/**
+ * This World Generator was replaced by ReefPerlinWorldGenerator.
+ * This generator defines some chunks as "Seed Chunks", where coral densirt is at its maximun. Surrounding them
+ * you may find secondary seed chunks with random reduced density. After than the coral density of a chunk
+ * is determined by the surrounding chunks.
+ * This causes the generation to be dependent of the direction the player is traveling and the order the chunks are created.
+ * More so, it strains the world generation as a lot of queries on adjacent chunks are required (plus some chunks may be
+ * generated during population).
+ *
+ * @deprecated
+ */
 
 public class ReefWorldGenerator implements IWorldGenerator {
+    private static final double baseDecreaseFactor =1.25d;
+    private static final double seedChunkFrequency =0.012d;
+    private static final double reefStoneDensity =0.55d;
+    private static final double densityDecrease = 0.25d;
+    private static final boolean enableSecondarySeedChunk=false;
     private static final double MIN_LEVEL = 5;
 
     private static List SPAWNABLE_BLOCKS=Arrays.asList(Blocks.DIRT,Blocks.GRAVEL, Blocks.SAND);
@@ -46,10 +62,10 @@ public class ReefWorldGenerator implements IWorldGenerator {
                     generateDebugRing(chunkX, chunkZ, world);
                 }
 
-                generateReefInChunk(random, world, chunkX, chunkZ, OceanicaConfig.reef.reefStoneDensity);
+                generateReefInChunk(random, world, chunkX, chunkZ, reefStoneDensity);
 
-                if (OceanicaConfig.reef.enableSecondarySeedChunk) {
-                    double reducedDensity = OceanicaConfig.reef.reefStoneDensity - OceanicaConfig.reef.densityDecrease;
+                if (enableSecondarySeedChunk) {
+                    double reducedDensity = reefStoneDensity - densityDecrease;
                     generateReefInChunk(random, world, chunkX, chunkZ+1, reducedDensity);
                     generateReefInChunk(random, world, chunkX, chunkZ-1, reducedDensity);
                     generateReefInChunk(random, world, chunkX+1, chunkZ, reducedDensity);
@@ -62,9 +78,9 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
 
             } else if (isSecondaryChunk(world, chunkX, chunkZ)) {
-                double decreaseFactor= OceanicaConfig.reef.baseDecreaseFactor +random.nextDouble();
-                double density=decreaseFactor * OceanicaConfig.reef.densityDecrease;
-                double secondaryDensity = OceanicaConfig.reef.reefStoneDensity - density;
+                double decreaseFactor= baseDecreaseFactor +random.nextDouble();
+                double density=decreaseFactor * densityDecrease;
+                double secondaryDensity = reefStoneDensity - density;
 
                 if (secondaryDensity>0) {
                     OceanicaStats.INSTANCE.addSecondaryCount();
@@ -100,7 +116,7 @@ public class ReefWorldGenerator implements IWorldGenerator {
                     BlockPos topBlock = world.getTopSolidOrLiquidBlock(getPosByFacing(x+xOffset, z, EnumFacing.WEST, zOffset)).down();
                     if (canSpawnInBlock(world,topBlock) && ReefModule.REEF_STONE !=null) {
                         world.setBlockState(topBlock, ReefModule.REEF_STONE.getDefaultState(), 2 | 16);
-                        if (random.nextDouble()< OceanicaConfig.reef.coralDensity) {
+                        if (random.nextDouble()< OceanicaConfig.reef.procGen.coralDensity) {
                             IBlockState state = CORAL.getDefaultState().withProperty(BlockCoral.CORAL_TYPE, EnumDyeColor.byMetadata(random.nextInt(16)));
                             world.setBlockState(topBlock.up(),state, 2 | 16);
                         }
@@ -132,7 +148,7 @@ public class ReefWorldGenerator implements IWorldGenerator {
 
 
     private boolean isSeedChunk(Random random, World world, int chunkX, int chunkZ) {
-        return random.nextDouble() <= OceanicaConfig.reef.seedChunkFrequency;
+        return random.nextDouble() <= seedChunkFrequency;
     }
 
     private boolean isSecondaryChunk(World world, int chunkX, int chunkZ) {
