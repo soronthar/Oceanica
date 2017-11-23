@@ -5,3 +5,8 @@ tile.oceanica.diving.aquatorch.name=Aquatic Torch
 
 item.oceanica.diving.mask.name=Diving Mask
 item.oceanica.diving.buoyancy.belt.name=Buoyancy Belt
+
+
+
+death.attack.pressure.player=%s was crushed by the Abyss
+death.attack.pressure=%s was crushed by the Abyss

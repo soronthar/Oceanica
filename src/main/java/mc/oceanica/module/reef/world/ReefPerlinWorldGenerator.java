@@ -23,7 +23,7 @@
 
     import static mc.oceanica.module.reef.ReefModule.CORAL;
 
-
+//TODO: this "should" be configurable. maybe.
 public class ReefPerlinWorldGenerator implements IWorldGenerator {
     private static final int MIN_LEVEL = 5;
     private static final int MAX_LEVEL_OFFSET = 5;

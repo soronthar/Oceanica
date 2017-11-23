@@ -7,7 +7,7 @@ import java.io.File;
 import static mc.oceanica.OceanicaConfig.ConfigCategories.CATEGORY_ABYSS;
 import static mc.oceanica.OceanicaConfig.ConfigCategories.CATEGORY_GENERAL;
 import static mc.oceanica.OceanicaConfig.ConfigCategories.CATEGORY_REEF;
-
+//TODO: convert this to Annotations.
 public class OceanicaConfig {
     private static Configuration config;
 
