@@ -2,6 +2,7 @@ package mc.oceanica.module.diving.gear;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import mc.oceanica.OceanicaConfig;
 import mc.oceanica.OceanicaInfo;
 import mc.util.EntityUtil;
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,7 @@ import static mc.oceanica.OceanicaInfo.MODID;
 
 //TODO: have two different masks, one with Snorkel and one without it
 //TODO: The range for the snorkel must be configurable
+//TODO: Different Tiers for different depths
 @Mod.EventBusSubscriber
 public class ItemMask extends Item implements IBauble{
     public static final String REGISTRY_NAME = "diving.mask";
@@ -41,7 +43,7 @@ public class ItemMask extends Item implements IBauble{
 
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
         if (EntityUtil.isInWater(player)) {
-            if (player.getEntityWorld().getSeaLevel() - player.getPosition().getY() < 6 && player.getAir() < 300) {
+            if (player.getEntityWorld().getSeaLevel() - player.getPosition().getY() < OceanicaConfig.diving.snorkelDepth && player.getAir() < 300) {
                 if (player.getAir() < 200) {
                     player.playSound(SoundEvents.ENTITY_SQUID_AMBIENT, 0.4F, 1.2F);
                 }
