@@ -49,7 +49,7 @@ public class ReefPerlinWorldGenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        if (OceanicaConfig.generateReef) {
+        if (OceanicaConfig.reef.generateReef) {
             OceanicaStats.INSTANCE.addChunkProcessed();
             if (noiseGen == null) noiseGen = new PerlinNoiseGen(world.getSeed());
             generateReefInChunk(random, world, chunkX, chunkZ);
@@ -130,19 +130,7 @@ public class ReefPerlinWorldGenerator implements IWorldGenerator {
         BlockPos topBlock = world.getTopSolidOrLiquidBlock(blockPos).down();
         if (canSpawnInBlock(world,topBlock) && ReefModule.REEF_STONE !=null) {
             world.setBlockState(topBlock, ReefModule.REEF_STONE.getDefaultState(), 2 | 16);
-            if (random.nextDouble()<OceanicaConfig.coralDensity ) {
-                IBlockState state = CORAL.getDefaultState().withProperty(BlockCoral.CORAL_TYPE, EnumDyeColor.byMetadata(random.nextInt(16)));
-                world.setBlockState(topBlock.up(),state, 2 | 16);
-            }
-        }
-    }
-
-    private void addKelp(Random random, World world, int x, int z) {
-        BlockPos blockPos  = new BlockPos(x, 1, z);
-        BlockPos topBlock = world.getTopSolidOrLiquidBlock(blockPos).down();
-        if (canSpawnInBlock(world,topBlock) && ReefModule.REEF_STONE !=null) {
-            world.setBlockState(topBlock, ReefModule.REEF_STONE.getDefaultState(), 2 | 16);
-            if (random.nextDouble()<OceanicaConfig.coralDensity ) {
+            if (random.nextDouble()< OceanicaConfig.reef.coralDensity ) {
                 IBlockState state = CORAL.getDefaultState().withProperty(BlockCoral.CORAL_TYPE, EnumDyeColor.byMetadata(random.nextInt(16)));
                 world.setBlockState(topBlock.up(),state, 2 | 16);
             }

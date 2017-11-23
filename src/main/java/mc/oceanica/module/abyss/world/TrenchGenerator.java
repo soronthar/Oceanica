@@ -27,17 +27,17 @@ public class TrenchGenerator extends MapGenRavine {
         long j = rand.nextLong();
         long k = rand.nextLong();
 
-        int xStart = x - OceanicaConfig.trenchLength;
-        int xEnd = x + OceanicaConfig.trenchLength;
+        int xStart = x - OceanicaConfig.abyss.trenches.trenchLength;
+        int xEnd = x + OceanicaConfig.abyss.trenches.trenchLength;
 
         for (int l = xStart; l <= xEnd; ++l) {
-            int zStart = z - OceanicaConfig.trenchLength;
-            int zEnd = z + OceanicaConfig.trenchLength;
+            int zStart = z - OceanicaConfig.abyss.trenches.trenchLength;
+            int zEnd = z + OceanicaConfig.abyss.trenches.trenchLength;
             for (int i1 = zStart; i1 <= zEnd; ++i1) {
                 long j1 = (long) l * j;
                 long k1 = (long) i1 * k;
                 rand.setSeed(j1 ^ k1 ^ worldIn.getSeed());
-                int rand = this.rand.nextInt(OceanicaConfig.trenchRarity);
+                int rand = this.rand.nextInt(OceanicaConfig.abyss.trenches.trenchRarity);
 
                 if (rand == 0) {
                     recursiveGenerate(worldIn, l, i1, x, z, primer);
@@ -57,10 +57,14 @@ public class TrenchGenerator extends MapGenRavine {
         double d1 = findFirstSolidBlock(primer, rand.nextInt(16), rand.nextInt(16));
         double d0 = (double) (chunkX * 16 + rand.nextInt(16));
         double d2 = (double) (chunkZ * 16 + rand.nextInt(16));
-        float f = rand.nextFloat() * ((float) Math.PI * OceanicaConfig.trenchWidth);
-        float f1 = (rand.nextFloat() - OceanicaConfig.trenchWidthLower) * OceanicaConfig.trenchWidth / OceanicaConfig.trenchWidthUpper;
-        float f2 = (rand.nextFloat() * OceanicaConfig.trenchWidth + rand.nextFloat()) * OceanicaConfig.trenchWidth;
-        addTunnel(rand.nextLong(), int1, in2, primer, d0, d1, d2, f2, f, f1, 0, 0, d2 / OceanicaConfig.trenchDepth);
+        float trenchWidth = OceanicaConfig.abyss.trenches.trenchWidth;
+        float trenchWidthUpper= trenchWidth *2f;
+        float trenchWidthLower= trenchWidth /4f;
+
+        float f = rand.nextFloat() * ((float) Math.PI * trenchWidth);
+        float f1 = (rand.nextFloat() - trenchWidthLower) * trenchWidth / trenchWidthUpper;
+        float f2 = (rand.nextFloat() * trenchWidth + rand.nextFloat()) * trenchWidth;
+        addTunnel(rand.nextLong(), int1, in2, primer, d0, d1, d2, f2, f, f1, 0, 0, d2 / OceanicaConfig.abyss.trenches.trenchDepth);
     }
 
 
@@ -70,7 +74,7 @@ public class TrenchGenerator extends MapGenRavine {
     @Override
     protected void digBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop) {
         if (y < MIN_DEPTH || y > this.world.getSeaLevel()) return;
-        Block oceanFloorBlock = Block.getBlockFromName(OceanicaConfig.oceanFloorBlock);
+        Block oceanFloorBlock = Block.getBlockFromName(OceanicaConfig.abyss.oceanFloorBlock);
         if (oceanFloorBlock==null) return;
 
         IBlockState oceanFloor = oceanFloorBlock.getDefaultState();

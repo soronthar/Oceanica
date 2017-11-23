@@ -3,20 +3,12 @@ package mc.oceanica.module.abyss;
 import mc.oceanica.OceanicaConfig;
 import mc.oceanica.OceanicaInfo;
 import mc.oceanica.module.abyss.world.TrenchGenerator;
-import mc.util.EntityUtil;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import static mc.util.EntityUtil.hasArmor;
 
 @Mod.EventBusSubscriber(modid = OceanicaInfo.MODID)
 public class AbyssModule {
@@ -27,7 +19,7 @@ public class AbyssModule {
     @SubscribeEvent
     @SuppressWarnings("unchecked")
     public static void onChunkReplaceBlocks(ChunkGeneratorEvent.ReplaceBiomeBlocks event) {
-        if (OceanicaConfig.enableTrenches) {
+        if (OceanicaConfig.abyss.trenches.enableTrenches) {
             trenchGenerator.generate(event.getWorld(), event.getX(), event.getZ(), event.getPrimer());
         }
         event.setResult(Event.Result.DEFAULT);

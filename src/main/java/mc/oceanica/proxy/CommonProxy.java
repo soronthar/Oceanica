@@ -59,7 +59,7 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent e) {
         File directory = e.getModConfigurationDirectory();
 
-        OceanicaConfig.readConfig(new File(directory.getPath(), OceanicaInfo.MODID+".cfg"), true);
+//        OceanicaConfig.readConfig(new File(directory.getPath(), OceanicaInfo.MODID+".cfg"), true);
         ReefModule.preInit(e);
         DivingModule.preInit(e);
     }
@@ -70,7 +70,7 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent e) {
-        OceanicaConfig.save();
+//        OceanicaConfig.save();
     }
 
 
