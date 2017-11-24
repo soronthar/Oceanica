@@ -2,6 +2,8 @@ package mc.oceanica.module.diving.gear;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import mc.oceanica.Oceanica;
+import mc.oceanica.OceanicaConfig;
 import mc.oceanica.OceanicaInfo;
 import mc.util.EntityUtil;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,7 +30,9 @@ public class ItemBuoyancyBelt extends Item implements IBauble {
         if (!player.getEntityWorld().isRemote) return;
         if (EntityUtil.isInWater(player)) {
             if (player.isSneaking()) {
-                player.motionY=-0.1d;
+                player.motionY = OceanicaConfig.diving.buoyancyBeltDescendSpeed;
+            } else if (player.motionY>0 && player.motionY<OceanicaConfig.diving.buoyancyBeltAscendSpeed) {
+                player.motionY=OceanicaConfig.diving.buoyancyBeltAscendSpeed;
             } else {
                 player.motionY=0;
             }

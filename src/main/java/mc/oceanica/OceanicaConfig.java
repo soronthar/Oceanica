@@ -95,5 +95,13 @@ public class OceanicaConfig {
 
         @Config.Comment("Depth under sea level where the snorkel works.")
         public int snorkelDepth = 6;
+
+        @Config.Comment("Ascend speed when the player is underwater.")
+        public double buoyancyBeltAscendSpeed = 0.2d;
+
+        @Config.Comment("Descend speed when the player is underwater and sneaking.")
+        public double buoyancyBeltDescendSpeed = -0.1d;
+
+
     }
 }
