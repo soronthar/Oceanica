@@ -80,6 +80,12 @@ public class OceanicaConfig {
 
         }
 
+        @Config.Name("Trenches")
+        public final DeepPressure deepPressure=new DeepPressure();
+        public static class DeepPressure {
+            @Config.Comment("Enable damaging the player according to the submerged depth and armor equipped")
+            public boolean enableDeepPressure=true;
+        }
     }
 
     @Config.Name("Diving")

@@ -1,5 +1,6 @@
 package mc.oceanica;
 
+import mc.oceanica.command.PlayerInfoCommand;
 import mc.oceanica.command.StatCommand;
 import mc.oceanica.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
@@ -44,5 +45,6 @@ public class Oceanica {
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new StatCommand(OceanicaStats.INSTANCE));
+        event.registerServerCommand(new PlayerInfoCommand());
     }
 }
