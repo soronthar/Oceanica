@@ -4,6 +4,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import mc.oceanica.OceanicaConfig;
 import mc.oceanica.OceanicaInfo;
+import mc.oceanica.core.ItemBauble;
 import mc.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,23 +23,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static mc.oceanica.OceanicaInfo.MODID;
 
 //TODO: have two different masks, one with Snorkel and one without it
-//TODO: The range for the snorkel must be configurable
 //TODO: Different Tiers for different depths
 @Mod.EventBusSubscriber
-public class ItemMask extends Item implements IBauble{
+public class ItemMask extends ItemBauble {
     public static final String REGISTRY_NAME = "diving.mask";
     public static final String MOD_CONTEXT = OceanicaInfo.MODID + ":"+ REGISTRY_NAME;
 
     public ItemMask() {
-        this.setUnlocalizedName(OceanicaInfo.MODID + "."+ REGISTRY_NAME);
-        this.setRegistryName(new ResourceLocation(MODID, REGISTRY_NAME));
-        this.setMaxStackSize(1);
+        super(MODID, REGISTRY_NAME,BaubleType.HEAD);
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @Override
-    public BaubleType getBaubleType(ItemStack itemstack) {
-        return BaubleType.HEAD;
     }
 
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
@@ -51,7 +44,6 @@ public class ItemMask extends Item implements IBauble{
             }
         }
     }
-
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)

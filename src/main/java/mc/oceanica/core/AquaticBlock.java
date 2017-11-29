@@ -25,7 +25,7 @@ public abstract class AquaticBlock extends Block {
 
         setUnlocalizedName(OceanicaInfo.MODID + "."+ registryName);
         setRegistryName(OceanicaInfo.MODID, registryName);
-
+        //TODO: play with this, or wait until 1.14 to see if there is a better way for aquatic blocks
         this.setDefaultState(this.getDefaultState().withProperty(LEVEL, 15));
 
     }
