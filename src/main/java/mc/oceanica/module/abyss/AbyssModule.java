@@ -10,9 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = OceanicaInfo.MODID)
 public class AbyssModule {
-
     private static TrenchGenerator trenchGenerator = new TrenchGenerator();
-
 
     @SubscribeEvent
     @SuppressWarnings("unchecked")

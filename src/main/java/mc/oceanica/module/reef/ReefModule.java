@@ -1,5 +1,8 @@
 package mc.oceanica.module.reef;
 
+import mc.oceanica.OceanicaConfig;
+import mc.oceanica.OceanicaInfo;
+import mc.oceanica.module.diving.DivingModule;
 import mc.oceanica.module.reef.block.BlockCoral;
 import mc.oceanica.module.reef.block.BlockKelp;
 import mc.oceanica.module.reef.block.BlockReefStone;
@@ -12,12 +15,15 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 
+@Mod.EventBusSubscriber(modid = OceanicaInfo.MODID)
 public class ReefModule {
 
     @GameRegistry.ObjectHolder(BlockReefStone.MOD_CONTEXT)
@@ -32,17 +38,22 @@ public class ReefModule {
     @GameRegistry.ObjectHolder(BlockKelp.MOD_CONTEXT)
     public static Item KELP_ITEM;
 
-    public static void preInit(FMLPreInitializationEvent e) {
+    public static void registerWorldGeneration() {
 //        GameRegistry.registerWorldGenerator(new ReefWorldGenerator(), 1);
-        GameRegistry.registerWorldGenerator(new ReefPerlinWorldGenerator(), 1);
+        if (OceanicaConfig.reef.generateReef) {
+            GameRegistry.registerWorldGenerator(new ReefPerlinWorldGenerator(), 1);
+        }
     }
 
+
+    @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(new BlockReefStone());
         event.getRegistry().register(new BlockCoral());
         event.getRegistry().register(new BlockKelp());
     }
 
+    @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
         registry.register(REEF_STONE.getItem());
@@ -50,6 +61,7 @@ public class ReefModule {
         registry.register(KELP.getItem());
     }
 
+    @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(REEF_STONE), 0, new ModelResourceLocation(REEF_STONE.getRegistryName(), "inventory"));

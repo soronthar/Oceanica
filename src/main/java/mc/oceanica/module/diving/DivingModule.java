@@ -1,6 +1,7 @@
 package mc.oceanica.module.diving;
 
 import mc.oceanica.Oceanica;
+import mc.oceanica.OceanicaInfo;
 import mc.oceanica.module.diving.gear.ItemBuoyancyBelt;
 import mc.oceanica.module.diving.gear.ItemMask;
 import mc.oceanica.module.diving.tools.BlockAquaTorch;
@@ -11,11 +12,14 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@Mod.EventBusSubscriber(modid = OceanicaInfo.MODID)
 public class DivingModule {
 
     @GameRegistry.ObjectHolder(BlockAquaTorch.MOD_CONTEXT)
@@ -27,20 +31,20 @@ public class DivingModule {
     @GameRegistry.ObjectHolder(ItemBuoyancyBelt.MOD_CONTEXT)
     public static Item ITEM_BUOYANCY_BELT;
 
-    public static void preInit(FMLPreInitializationEvent e) { }
-
-
+    @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(new BlockAquaTorch());
     }
 
+    @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(AQUA_TORCH.getItem());
         event.getRegistry().register(new ItemMask());
         event.getRegistry().register(new ItemBuoyancyBelt());
     }
 
-    //TODO: fix bauble rendering. Make new textures
+    //TODO: Make new textures. Render baubles on Steve
+    @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
         ModelLoader.setCustomModelResourceLocation(ITEM_MASK,0,new ModelResourceLocation(ITEM_MASK.getRegistryName(), "inventory"));

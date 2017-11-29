@@ -49,7 +49,7 @@ public class OceanicaConfig {
         @Config.Comment("Offset under sea level where the coral spawn. I.e, if Sea Level=64 and maxLevelOffset=5, corals will spawn on y=59 and below")
         public int maxLevelOffset = 5;
 
-        @Config.Comment("Enable Coral Reef generation")
+        @Config.Comment("Enable Coral Reef and Kelp Forests generation")
         public boolean generateReef=true;
     }
 
