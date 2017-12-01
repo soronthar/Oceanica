@@ -29,6 +29,7 @@ public class ReefModule {
     @GameRegistry.ObjectHolder(BlockReefStone.MOD_CONTEXT)
     public static BlockReefStone REEF_STONE;
 
+    //TODO: one CORAL block per variant when 1.13 hits stable.... that is going to be fun
     @GameRegistry.ObjectHolder(BlockCoral.MOD_CONTEXT)
     public static BlockCoral CORAL;
 

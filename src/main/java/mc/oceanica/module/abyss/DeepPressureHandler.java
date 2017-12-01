@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import static mc.util.EntityUtil.hasArmor;
 
 @Mod.EventBusSubscriber(modid = OceanicaInfo.MODID)
-public class DeepPressureManager {
+public class DeepPressureHandler {
     private static final DamageSource OCEAN_PRESSURE_DAMAGE = new DamageSource("pressure").setDamageBypassesArmor().setDamageIsAbsolute();
 
     @SubscribeEvent

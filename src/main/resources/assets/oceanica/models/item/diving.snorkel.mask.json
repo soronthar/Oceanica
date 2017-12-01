@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "oceanica:diving/items/diving.mask",
+    "layer1": "oceanica:diving/items/diving.snorkel"
+  }
+}

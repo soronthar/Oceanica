@@ -2,6 +2,7 @@ package mc.util;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
+import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
 import mc.oceanica.module.diving.gear.ItemMask;
 import net.minecraft.block.Block;
@@ -54,10 +55,11 @@ public class EntityUtil {
         } else return false;
     }
 
-    public static boolean hasBaubleInSlot(EntityPlayer player, BaubleType baubleType, ItemMask item) {
+    public static boolean hasBaubleInSlot(EntityPlayer player, BaubleType baubleType, IBauble... items) {
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
         int[] validSlots = baubleType.getValidSlots();
         for (int validSlot : validSlots) {
+            for(IBauble item:items)
             if (baubles.getStackInSlot(validSlot).getItem().equals(item)) {
                 return true;
             }
