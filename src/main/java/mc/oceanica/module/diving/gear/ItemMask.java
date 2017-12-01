@@ -7,6 +7,7 @@ import mc.oceanica.OceanicaInfo;
 import mc.oceanica.core.ItemBauble;
 import mc.util.EntityUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -56,7 +57,12 @@ public class ItemMask extends ItemBauble {
         boolean equals = EntityUtil.hasBaubleInSlot(player, baubleType, item);
         if (event.getEntity() == player && equals) {
             if (EntityUtil.isInWater(player)) {
-                event.setDensity(0F);
+                event.setDensity(0.01F);
+                //When exiting and reentering the water, FogMode is set to LINEAR
+                //which makes everything visible up to the horizon.
+                //This hack to set it to EXP mode fixes that, there is no way to do it using forge hooks.
+                //Check EntityRender#setupFog for more info
+                GlStateManager.setFog(GlStateManager.FogMode.EXP);
                 event.setCanceled(true);
             }
         }
