@@ -2,20 +2,16 @@ package mc.oceanica;
 
 import mc.oceanica.command.PlayerInfoCommand;
 import mc.oceanica.command.StatCommand;
-import mc.oceanica.module.diving.DivingModule;
 import mc.oceanica.module.reef.ReefModule;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 
-import static mc.oceanica.OceanicaInfo.*;
+import static mc.oceanica.OceanicaInfo.MODID;
+import static mc.oceanica.OceanicaInfo.MODVERSION;
 
 /**
  * Main class of the mod.

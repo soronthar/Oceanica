@@ -29,8 +29,8 @@ public class BlockReefStone  extends Block {
         setRegistryName(REGISTRY_NAME);
     }
 
-    public Item getItem() { return new ItemBlock(this).setRegistryName(this.getRegistryName());
-    }
+    public Item getItem() { return new ItemBlock(this).setRegistryName(this.getRegistryName()); }
+
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
         return plantable.getPlantType(world, pos.offset(direction)) == BlockCoral.CORAL;
